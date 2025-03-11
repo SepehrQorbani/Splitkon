@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laravel 12 + React 19</title>
+    @viteReactRefresh
+    @vite('client/src/main.tsx')
+</head>
+<body>
+    <div id="app"></div>
+</body>
+</html>
