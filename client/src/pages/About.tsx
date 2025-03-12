@@ -1,41 +1,32 @@
-import React, { useEffect, useState } from "react";
+// client/src/pages/About.tsx
+import React from "react";
 import { Link } from "react-router";
-import { useUIStore } from "@/store";
+import { useQuery } from "@tanstack/react-query";
 import { fetchData } from "@/utils/api";
-
+import { useTranslations } from "@/hooks/useTranslations";
+import { useUIStore } from "@/store";
 const About: React.FC = () => {
-    const { startLoading, stopLoading } = useUIStore();
-    const [data, setData] = useState<string | null>(null);
-
-    useEffect(() => {
-        const loadData = async () => {
-            startLoading();
-            try {
-                const result = await fetchData();
-                setData(result.message);
-            } catch (error) {
-                console.error("API fetch error:", error);
-                setData("Failed to load data");
-            } finally {
-                stopLoading();
-            }
-        };
-
-        loadData();
-    }, [startLoading, stopLoading]);
+    const language = useUIStore((state) => state.language);
+    const { t, isLoading: isTransLoading } = useTranslations();
+    const { data, isLoading, error } = useQuery({
+        queryKey: ["aboutData", language],
+        queryFn: fetchData,
+    });
 
     return (
         <div className="p-4">
             <h1 className="text-3xl font-bold text-blue-600 dark:text-blue-400">
-                About Page
+                {t("aboutTitle")}
             </h1>
-            <p className="mt-4">{data || "Loading..."}</p>
+            <p className="mt-4">
+                {isLoading ? t("loading") : error ? t("error") : data?.message}
+            </p>
             <nav className="mt-4">
                 <Link
                     to="/"
                     className="text-blue-500 hover:underline dark:text-blue-400"
                 >
-                    Back to Home
+                    {t("backToHome")}
                 </Link>
             </nav>
         </div>

@@ -1,0 +1,10 @@
+{
+    "homeTitle": "Home Page",
+    "authenticated": "Authenticated",
+    "yes": "Yes",
+    "no": "No",
+    "login": "Login",
+    "logout": "Logout",
+    "loading": "Loading...",
+    "data_response": "Data after :delay seconds"
+}

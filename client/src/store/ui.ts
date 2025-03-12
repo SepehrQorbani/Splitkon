@@ -1,44 +1,59 @@
 import { create } from "zustand";
 
+type Language = "fa" | "en";
+type Direction = "rtl" | "ltr";
+type Theme = "dark" | "light" | "system";
+
 interface UIState {
-    isDarkMode: boolean;
-    isLoading: boolean;
-    toggleDarkMode: () => void;
-    resetToSystem: () => void;
-    startLoading: () => void; // Explicit start
-    stopLoading: () => void; // Explicit stop
+    language: Language;
+    direction: Direction;
+    translations: Record<string, string>;
+    theme: Theme;
+    setTheme: (theme: Theme) => void;
+    setLanguage: (lang: Language) => void;
 }
 
 export const useUIStore = create<UIState>((set) => {
-    const savedMode = localStorage.getItem("darkMode");
+    const savedTheme = localStorage.getItem("theme") as Theme | null;
+    const savedLang = localStorage.getItem("language") as Language | null;
     const isSystemDark = window.matchMedia(
         "(prefers-color-scheme: dark)"
     ).matches;
-    const initialMode =
-        savedMode !== null ? savedMode === "true" : isSystemDark;
+    const initialTheme = savedTheme || "system";
+    const initialLang = savedLang || "fa";
+    const initialDir = initialLang === "fa" ? "rtl" : "ltr";
 
-    if (initialMode) document.documentElement.classList.add("dark");
-    else document.documentElement.classList.remove("dark");
+    document.documentElement.dir = initialDir;
+    document.documentElement.lang = initialLang;
+    if (
+        initialTheme === "dark" ||
+        (initialTheme === "system" && isSystemDark)
+    ) {
+        document.documentElement.classList.add("dark");
+    } else {
+        document.documentElement.classList.remove("dark");
+    }
 
     return {
-        isDarkMode: initialMode,
-        isLoading: false,
-        toggleDarkMode: () =>
-            set((state) => {
-                const newMode = !state.isDarkMode;
-                document.documentElement.classList.toggle("dark", newMode);
-                localStorage.setItem("darkMode", newMode.toString());
-                return { isDarkMode: newMode };
-            }),
-        resetToSystem: () => {
-            localStorage.removeItem("darkMode");
-            const newMode = window.matchMedia(
-                "(prefers-color-scheme: dark)"
-            ).matches;
-            document.documentElement.classList.toggle("dark", newMode);
-            set({ isDarkMode: newMode });
+        language: initialLang,
+        direction: initialDir,
+        translations: {},
+        theme: initialTheme,
+        setTheme: (theme: Theme) => {
+            const isDark =
+                theme === "dark" ||
+                (theme === "system" &&
+                    window.matchMedia("(prefers-color-scheme: dark)").matches);
+            document.documentElement.classList.toggle("dark", isDark);
+            localStorage.setItem("theme", theme);
+            set({ theme });
         },
-        startLoading: () => set({ isLoading: true }),
-        stopLoading: () => set({ isLoading: false }),
+        setLanguage: (lang: Language) => {
+            const newDir = lang === "fa" ? "rtl" : "ltr";
+            document.documentElement.lang = lang;
+            document.documentElement.dir = newDir;
+            localStorage.setItem("language", lang);
+            set({ language: lang, direction: newDir });
+        },
     };
 });

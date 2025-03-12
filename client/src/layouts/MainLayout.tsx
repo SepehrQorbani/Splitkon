@@ -1,60 +1,112 @@
 import { useUIStore } from "@/store";
 import React from "react";
-import { motion } from "motion/react";
+import { Outlet } from "react-router";
 
-interface MainLayoutProps {
-    children: React.ReactNode;
-}
-
-const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
-    const { isDarkMode, toggleDarkMode } = useUIStore();
+const MainLayout: React.FC = () => {
+    const language = useUIStore((state) => state.language);
+    const setLanguage = useUIStore((state) => state.setLanguage);
+    const theme = useUIStore((state) => state.theme);
+    const setTheme = useUIStore((state) => state.setTheme);
 
     return (
-        <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
-            <header className="bg-gray-800 text-white p-4 flex justify-between items-center">
-                <h2 className="text-xl font-semibold">My App</h2>
-                <button
-                    onClick={toggleDarkMode}
-                    className="p-2 rounded-full bg-gray-700 hover:bg-gray-600 focus:outline-none cursor-pointer"
-                    aria-label="Toggle dark mode"
-                >
-                    {isDarkMode ? (
-                        <svg
-                            className="w-5 h-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
+        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+            <header className="p-4 bg-blue-500 text-white flex justify-between items-center">
+                <h1 className="text-xl font-bold">برنامه من</h1>
+                <div className="flex gap-6">
+                    <div className="flex gap-2">
+                        <button
+                            onClick={() => setLanguage("en")}
+                            className={`px-2 py-1 rounded ${
+                                language === "en"
+                                    ? "bg-blue-700"
+                                    : "bg-blue-600"
+                            } hover:bg-blue-700`}
                         >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-                            />
-                        </svg>
-                    ) : (
-                        <svg
-                            className="w-5 h-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
+                            English
+                        </button>
+                        <button
+                            onClick={() => setLanguage("fa")}
+                            className={`px-2 py-1 rounded ${
+                                language === "fa"
+                                    ? "bg-blue-700"
+                                    : "bg-blue-600"
+                            } hover:bg-blue-700`}
                         >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-                            />
-                        </svg>
-                    )}
-                </button>
+                            فارسی
+                        </button>
+                    </div>
+                    <div className="flex gap-2">
+                        <button
+                            onClick={() => setTheme("light")}
+                            className={`px-2 py-1 rounded ${
+                                theme === "light"
+                                    ? "bg-blue-700"
+                                    : "bg-blue-600"
+                            } hover:bg-blue-700`}
+                        >
+                            Light
+                        </button>
+                        <button
+                            onClick={() => setTheme("dark")}
+                            className={`px-2 py-1 rounded ${
+                                theme === "dark" ? "bg-blue-700" : "bg-blue-600"
+                            } hover:bg-blue-700`}
+                        >
+                            Dark
+                        </button>
+                        <button
+                            onClick={() => setTheme("system")}
+                            className={`px-2 py-1 rounded ${
+                                theme === "system"
+                                    ? "bg-blue-700"
+                                    : "bg-blue-600"
+                            } hover:bg-blue-700`}
+                        >
+                            System
+                        </button>
+                    </div>
+                </div>
             </header>
-            <main className="flex-grow p-4">{children}</main>
-            <footer className="bg-gray-200 dark:bg-gray-800 p-4 text-center text-gray-600 dark:text-gray-300">
-                <p>Footer Content</p>
-            </footer>
+            <main className="p-4">
+                <Outlet />
+            </main>
         </div>
     );
 };
-
 export default MainLayout;
+
+// client/src/layouts/MainLayout.tsx
+// import React from 'react';
+// import { Outlet } from 'react-router-dom';
+// import { useUIStore } from '@/store';
+
+// const MainLayout: React.FC = () => {
+//     const { language, setLanguage } = useUIStore();
+
+//     return (
+//         <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+//             <header className="p-4 bg-blue-500 text-white flex justify-between items-center">
+//                 <h1 className="text-xl font-bold">برنامه من</h1>
+//                 <div>
+//                     <button
+//                         onClick={() => setLanguage('en')}
+//                         className={`px-2 py-1 rounded ${language === 'en' ? 'bg-blue-700' : 'bg-blue-600'} hover:bg-blue-700`}
+//                     >
+//                         English
+//                     </button>
+//                     <button
+//                         onClick={() => setLanguage('fa')}
+//                         className={`px-2 py-1 rounded ${language === 'fa' ? 'bg-blue-700' : 'bg-blue-600'} hover:bg-blue-700 mr-2`}
+//                     >
+//                         فارسی
+//                     </button>
+//                 </div>
+//             </header>
+//             <main className="p-4">
+//                 <Outlet />
+//             </main>
+//         </div>
+//     );
+// };
+
+// export default MainLayout;
