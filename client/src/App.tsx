@@ -1,20 +1,13 @@
 import React, { useEffect } from "react";
-import {
-    BrowserRouter,
-    Routes,
-    Route,
-    useNavigationType,
-    useLocation,
-} from "react-router";
+import { BrowserRouter, Routes, Route } from "react-router";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import MainLayout from "./layouts/MainLayout";
-import LoadingIndicator from "./components/common/LoadingIndicator";
 
 const App: React.FC = () => {
     return (
         <BrowserRouter>
-            <LoadingIndicator />
+            {/* <LoadingIndicator /> */}
             <Routes>
                 <Route path="/" element={<MainLayout />}>
                     <Route index element={<Home />} />
@@ -25,4 +18,5 @@ const App: React.FC = () => {
         </BrowserRouter>
     );
 };
+
 export default App;
