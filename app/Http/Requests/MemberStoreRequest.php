@@ -21,20 +21,10 @@ class MemberStoreRequest extends FormRequest
         ];
     }
 
-    public function messages(): array
-    {
-        return [
-            'name.required' => trans('Member name is required.'),
-            'ratio.required' => trans('Member ratio is required.'),
-            'ratio.integer' => trans('Member ratio must be an integer.'),
-            'ratio.min' => trans('Member ratio must be at least 1.'),
-        ];
-    }
-
     protected function failedAuthorization()
     {
         throw new HttpResponseException(response()->json([
-            'message' => trans('Edit access required'),
+            'message' => __('messages.editAccessRequired'),
         ], 403));
     }
 }

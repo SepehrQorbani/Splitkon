@@ -1,13 +1,22 @@
 import { create } from "zustand";
+import en from "@/lang/en.json";
+import fa from "@/lang/fa.json";
 
 type Language = "fa" | "en";
 type Direction = "rtl" | "ltr";
 type Theme = "dark" | "light" | "system";
 
+interface Translations {
+    ui: Record<string, string>;
+    [key: string]: Record<string, string> | undefined;
+}
+
+const translationsMap: Record<Language, Translations> = { en, fa };
+
 interface UIState {
     language: Language;
     direction: Direction;
-    translations: Record<string, string>;
+    translations: Translations;
     theme: Theme;
     setTheme: (theme: Theme) => void;
     setLanguage: (lang: Language) => void;
@@ -37,7 +46,7 @@ export const useUIStore = create<UIState>((set) => {
     return {
         language: initialLang,
         direction: initialDir,
-        translations: {},
+        translations: translationsMap[initialLang],
         theme: initialTheme,
         setTheme: (theme: Theme) => {
             const isDark =
@@ -53,7 +62,11 @@ export const useUIStore = create<UIState>((set) => {
             document.documentElement.lang = lang;
             document.documentElement.dir = newDir;
             localStorage.setItem("language", lang);
-            set({ language: lang, direction: newDir });
+            set({
+                language: lang,
+                direction: newDir,
+                translations: translationsMap[lang],
+            });
         },
     };
 });

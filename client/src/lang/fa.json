@@ -1,0 +1,46 @@
+{
+    "ui": {
+        "homeTitle": "صفحه اصلی",
+        "aboutTitle": "درباره ما",
+        "authenticated": "وضعیت ورود",
+        "yes": "بله",
+        "no": "خیر",
+        "login": "ورود",
+        "logout": "خروج",
+        "loading": "در حال بارگذاری...",
+        "data_response": "داده بعد از :delay ثانیه",
+        "Page not found": "صفحه یافت نشد",
+        "Token required": "توکن الزامی است",
+        "Group not found": "گروه یافت نشد",
+        "Edit access required": "شما دسترسی ویرایش را ندارید",
+        "Group Title": "عنوان گروه",
+        "Group Description": "توضیحات گروه",
+        "Create Group": "ساخت گروه",
+        "Create a New Group": "ساخت یک گروه جدید",
+        "Failed to create group": "ساخت گروه با خطا مواجه شد",
+        "Loading translations...": "در حال بارگذاری ترجمه ها...",
+        "Error loading translations": "خطا در بارگذاری ترجمه ها",
+        "No results found.": "هیچ نتیجه ای یافت نشد"
+    },
+    "messages": {
+        "noMembersAdded": "هیچ عضوی اضافه نشده است",
+        "noResultsFound": "هیچ نتیجه ای یافت نشد"
+    },
+    "validation": {
+        "required": "فیلد :attribute الزامی است.",
+        "min.string": "فیلد :attribute باید حداقل :min کاراکتر باشد.",
+        "title_required": "عنوان گروه الزامی است"
+    },
+    "attributes": {
+        "name": "نام",
+        "group": "گروه",
+        "email": "ایمیل",
+        "phone": "شماره تلفن",
+        "title": "عنوان",
+        "description": "توضیحات",
+        "image": "تصویر",
+        "avatar": "آواتار",
+        "ratio": "نسبت",
+        "members": "اعضا"
+    }
+}

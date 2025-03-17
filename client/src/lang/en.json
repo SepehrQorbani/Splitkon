@@ -1,0 +1,46 @@
+{
+    "ui": {
+        "homeTitle": "Home Page",
+        "aboutTitle": "About Us",
+        "authenticated": "Authenticated",
+        "yes": "Yes",
+        "no": "No",
+        "login": "Login",
+        "logout": "Logout",
+        "loading": "Loading...",
+        "data_response": "Data after :delay seconds",
+        "Page not found": "Page not found",
+        "Token required": "Token required",
+        "Group not found": "Group not found",
+        "Edit access required": "You are not authorized",
+        "Group Title": "Group Title",
+        "Group Description": "Group Description",
+        "Create Group": "Create Group",
+        "Create a New Group": "Create a New Group",
+        "Failed to create group": "Failed to create group",
+        "Loading translations...": "Loading translations...",
+        "Error loading translations": "Error loading translations",
+        "No results found.": "No results found"
+    },
+    "messages": {
+        "noMembersAdded": "No members added",
+        "noResultsFound": "No results found"
+    },
+    "validation": {
+        "required": "The :attribute field is required.",
+        "min.string": "The :attribute must be at least :min characters.",
+        "title_required": "Title is required"
+    },
+    "attributes": {
+        "name": "name",
+        "group": "group",
+        "email": "email",
+        "phone": "phone",
+        "title": "title",
+        "description": "description",
+        "image": "image",
+        "avatar": "avatar",
+        "ratio": "ratio",
+        "members": "members"
+    }
+}

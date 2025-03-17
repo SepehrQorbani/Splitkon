@@ -25,18 +25,4 @@ class GroupStoreRequest extends FormRequest
             'members' => 'nullable|array',
         ], $prefixedMemberRules);
     }
-
-    public function messages(): array
-    {
-        $memberRequest = new MemberStoreRequest();
-        $memberMessages = $memberRequest->messages();
-
-        $prefixedMemberMessages = collect($memberMessages)->mapWithKeys(function ($message, $key) {
-            return ["members.*" . (string) $key => $message];
-        })->all();
-
-        return array_merge([
-            'title.required' => trans('The group title is required.'),
-        ], $prefixedMemberMessages);
-    }
 }

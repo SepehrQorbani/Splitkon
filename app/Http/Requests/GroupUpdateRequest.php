@@ -24,7 +24,7 @@ class GroupUpdateRequest extends FormRequest
     protected function failedAuthorization()
     {
         throw new HttpResponseException(response()->json([
-            'message' => trans('Edit access required'),
+            'message' => __('messages.editAccessRequired'),
         ], 403));
     }
 }

@@ -37,7 +37,7 @@ class GroupController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([
-                'message' => trans('Failed to create group'),
+                'message' => __('messages.failedToCreateGroup'),
                 'error' => $e->getMessage()
             ], 500);
         }

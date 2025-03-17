@@ -13,7 +13,7 @@ class CheckGroupAccess
         $token = $request->route('token');
 
         if (!$token) {
-            return response()->json(['message' => trans('Page not found')], 404);
+            return response()->json(['message' => __('messages.pageNotFound')], 404);
         }
 
         $group = Group::where('view_token', $token)
@@ -21,7 +21,7 @@ class CheckGroupAccess
             ->first();
 
         if (!$group) {
-            return response()->json(['message' => trans('Group not found')], 404);
+            return response()->json(['message' => __('messages.groupNotFound')], 404);
         }
 
         $access = $group->view_token === $token ? 'view' : 'edit';
