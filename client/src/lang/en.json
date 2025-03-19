@@ -1,46 +1,111 @@
 {
-    "ui": {
-        "homeTitle": "Home Page",
-        "aboutTitle": "About Us",
-        "authenticated": "Authenticated",
-        "yes": "Yes",
-        "no": "No",
-        "login": "Login",
-        "logout": "Logout",
-        "loading": "Loading...",
-        "data_response": "Data after :delay seconds",
-        "Page not found": "Page not found",
-        "Token required": "Token required",
-        "Group not found": "Group not found",
-        "Edit access required": "You are not authorized",
-        "Group Title": "Group Title",
-        "Group Description": "Group Description",
-        "Create Group": "Create Group",
-        "Create a New Group": "Create a New Group",
-        "Failed to create group": "Failed to create group",
-        "Loading translations...": "Loading translations...",
-        "Error loading translations": "Error loading translations",
-        "No results found.": "No results found"
+    "attributes": {
+        "avatar": "Avatar",
+        "description": "Description",
+        "email": "Email",
+        "group": "Group",
+        "image": "Image",
+        "members": "Members",
+        "name": "Name",
+        "phone": "Phone",
+        "ratio": "Companion Count",
+        "title": "Title",
+        "bankAccount": "Bank Account"
     },
     "messages": {
-        "noMembersAdded": "No members added",
+        "dataResponse": "Data received after :delay seconds",
+        "noMembersAdded": "No members have been added yet",
         "noResultsFound": "No results found"
     },
-    "validation": {
-        "required": "The :attribute field is required.",
-        "min.string": "The :attribute must be at least :min characters.",
-        "title_required": "Title is required"
+    "pages": {
+        "about": {
+            "title": "About Us"
+        },
+        "home": {
+            "title": "Home Page"
+        },
+        "new": {
+            "title": "Create a New Group"
+        }
     },
-    "attributes": {
-        "name": "name",
-        "group": "group",
-        "email": "email",
-        "phone": "phone",
-        "title": "title",
-        "description": "description",
-        "image": "image",
-        "avatar": "avatar",
-        "ratio": "ratio",
-        "members": "members"
+    "ui": {
+        "add": "Add",
+        "authenticated": "Authenticated",
+        "cancel": "Cancel",
+        "clear": "Clear",
+        "close": "Close",
+        "create": "Create",
+        "creating": "Creating",
+        "delete": "Delete",
+        "edit": "Edit",
+        "editAccessDenied": "You do not have edit access",
+        "errorLoadingTranslations": "Error loading translations",
+        "failedToCreateGroup": "Failed to create group",
+        "group": {
+            "title": "Group Title",
+            "description": "Group Description",
+            "notFound": "Group not found"
+        },
+        "members": "Members",
+        "member": "Member",
+        "loading": "Loading",
+        "loadingTranslations": "Loading translations",
+        "login": "Login",
+        "logout": "Logout",
+        "no": "No",
+        "pageNotFound": "Page Not Found",
+        "save": "Save",
+        "select": "Select",
+        "submissionError": "An error occurred while submitting the form",
+        "tokenRequired": "Token is required",
+        "yes": "Yes"
+    },
+    "validation": {
+        "min": "The :attribute must be at least :min",
+        "max": "The :attribute must not exceed :max",
+        "minLength": "The :attribute must be at least :min characters",
+        "required": "The :attribute field is required",
+        "url": "The :attribute must be a valid URL",
+        "bankAccount": "The :attribute must be a valid bank account number",
+        "bankAccountLength": "The :attribute must be 16 digits",
+        "bankAccountFormat": "The :attribute must contain only numbers"
+    },
+    "banks": {
+        "melli": "Bank Melli Iran",
+        "sepah": "Bank Sepah",
+        "saderat": "Bank Saderat Iran",
+        "keshavarzi": "Bank Keshavarzi",
+        "maskan": "Bank Maskan",
+        "ansar": "Bank Ansar",
+        "ayandeh": "Bank Ayandeh",
+        "day": "Bank Day",
+        "eghtesad": "Bank Eghtesad Novin",
+        "gardeshgari": "Bank Gardeshgari",
+        "ghavamin": "Bank Ghavamin",
+        "iranzamin": "Bank Iran Zamin",
+        "karafarin": "Bank Karafarin",
+        "khavarmiyaneh": "Bank Khavarmiyaneh",
+        "mehreqtesad": "Bank Mehr Eghtesad",
+        "mellat": "Bank Mellat",
+        "parsian": "Bank Parsian",
+        "pasargad": "Bank Pasargad",
+        "postbank": "Post Bank Iran",
+        "refah": "Bank Refah Kargaran",
+        "resalat": "Bank Resalat",
+        "saman": "Bank Saman",
+        "sanatmadan": "Bank Sanat va Madan",
+        "sarmaye": "Bank Sarmaye",
+        "shahr": "Bank Shahr",
+        "sina": "Bank Sina",
+        "tejarat": "Bank Tejarat",
+        "tosehe": "Bank Tose'e Taavon",
+        "toseesaderat": "Bank Tose'e Saderat",
+        "hekmat": "Bank Hekmat Iranian",
+        "markazi": "Central Bank of Iran",
+        "mehriran": "Bank Mehr Iran",
+        "kosar": "Kosar Institute",
+        "melal": "Melal Credit Institute",
+        "tosee": "Tose'e Credit Institute",
+        "unknown": "Unknown"
     }
 }

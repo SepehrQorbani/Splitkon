@@ -1,45 +1,39 @@
 import { Button } from "@/components/ui/Button";
-import { LoadingIndicator } from "@/components/ui/LoadingIndicator";
 import { useTranslations } from "@/hooks/useTranslations";
 import { useUIStore } from "@/store";
-import { cn } from "@/utils/cn";
 import {
     IconHome,
     IconInfoCircle,
     IconLanguage,
     IconMoon,
+    IconSquareRoundedPlus,
     IconSun,
 } from "@tabler/icons-react";
-import { motion } from "motion/react"; // Motion import as specified
 import React from "react";
 import { NavLink } from "react-router"; // Changed to NavLink, kept react-router per your setup
-import { NavItem } from "@/components/ui/NavItem";
 import { NavItems } from "./NavItems";
 
 export const Navbar: React.FC = () => {
     const { language, setLanguage, theme, setTheme } = useUIStore();
-    const { t, isLoading: isTransLoading } = useTranslations();
+    const { t } = useTranslations();
 
     const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
     const toggleLanguage = () => setLanguage(language === "en" ? "fa" : "en");
 
     const navItems = [
-        { path: "/", label: t("homeTitle"), icon: IconHome },
-        { path: "/about", label: t("aboutTitle"), icon: IconInfoCircle },
+        { path: "/", label: t("pages.home.title"), icon: IconHome },
+        { path: "/about", label: t("pages.about.title"), icon: IconInfoCircle },
+        {
+            path: "/new",
+            label: t("pages.new.title"),
+            icon: IconSquareRoundedPlus,
+        },
     ];
-
-    if (isTransLoading) {
-        return (
-            <nav className="fixed top-0 left-0 right-0 flex items-center justify-center px-4 py-2 min-h-16 bg-surface border-b border-border">
-                <LoadingIndicator />
-            </nav>
-        );
-    }
 
     return (
         <>
             {/* Top Navbar (Sticky) */}
-            <nav className="sticky top-0 left-0 right-0 z-10 flex items-center justify-between px-4 py-2 min-h-16 bg-surface border-b border-border text-xs md:text-base">
+            <nav className="sticky top-0 left-0 right-0 flex items-center justify-between px-4 py-2 min-h-16 bg-surface border-b border-border text-xs md:text-base z-999999">
                 <div className="flex items-center gap-4">
                     <NavLink to="/" className="text-brand text-xl font-bold">
                         MyApp
@@ -80,7 +74,7 @@ export const Navbar: React.FC = () => {
             <NavItems
                 navItems={navItems}
                 layoutId="nav-highlight-mobile"
-                className="fixed bottom-0 left-0 right-0 bg-surface border-t border-border p-2 justify-around md:hidden"
+                className="fixed bottom-0 left-0 right-0 bg-surface border-t border-border p-2 justify-around md:hidden z-999999"
                 iconSize="w-6 h-6"
                 hideLabels
             />

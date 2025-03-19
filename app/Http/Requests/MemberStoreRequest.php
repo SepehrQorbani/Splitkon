@@ -17,7 +17,7 @@ class MemberStoreRequest extends FormRequest
             'name' => 'required|string|max:255',
             'avatar' => 'nullable|string|max:255',
             'ratio' => 'required|integer|min:1',
-            'bank_info' => 'nullable|json',
+            'bank_info' => 'nullable|string',
         ];
     }
 

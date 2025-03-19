@@ -21,9 +21,9 @@ Route::middleware(CheckGroupAccess::class)->group(function () {
         abort(404, __('messages.pageNotFound'));
     })->name('api.root');
 
-    Route::get('/{token}', [GroupController::class, 'show']);
-    Route::put('/{token}', [GroupController::class, 'update']);
-    Route::post('/{token}/members', [GroupController::class, 'addMember'])->name('members.store');
+    Route::get('/groups/{token}', [GroupController::class, 'show']);
+    Route::put('/groups/{token}', [GroupController::class, 'update']);
+    Route::post('/groups/{token}/members', [GroupController::class, 'addMember'])->name('members.store');
 });
 
 Route::fallback(function (Request $request) {

@@ -1,6 +1,6 @@
-import { create } from "zustand";
 import en from "@/lang/en.json";
 import fa from "@/lang/fa.json";
+import { create } from "zustand";
 
 type Language = "fa" | "en";
 type Direction = "rtl" | "ltr";
@@ -62,6 +62,7 @@ export const useUIStore = create<UIState>((set) => {
             document.documentElement.lang = lang;
             document.documentElement.dir = newDir;
             localStorage.setItem("language", lang);
+
             set({
                 language: lang,
                 direction: newDir,

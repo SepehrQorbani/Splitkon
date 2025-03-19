@@ -1,117 +1,199 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
-
+@font-face {
+    font-family: "Vazirmatn";
+    src: url("../fonts/Vazirmatn[wght].woff2")
+            format("woff2 supports variations"),
+        url("../fonts/Vazirmatn[wght].woff2") format("woff2-variations");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Arad";
+    src: url("../fonts/Arad-VF.woff2") format("woff2 supports variations"),
+        url("../fonts/Arad-VF.woff2") format("woff2-variations");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
 @theme {
-    /* Core semantic colors */
-    --color-brand: var(--color-blue-600);
-    --color-brand-foreground: var(--color-blue-100);
-    --color-brand-subtle: var(--color-blue-200);
-    --color-brand-strong: var(--color-blue-800);
+    --color-background: var(--color-gray-100);
+    --color-foreground: var(--color-gray-900);
+    --color-text: var(--color-gray-900);
+    --color-text-light: var(--color-gray-600);
 
-    --color-action: var(--color-blue-700);
-    --color-action-foreground: var(--color-blue-100);
-    --color-action-subtle: var(--color-blue-200);
-    --color-action-strong: var(--color-blue-900);
+    --color-surface: var(--color-white);
+    --color-surface-light: var(--color-gray-50);
+    --color-surface-dark: var(--color-gray-200);
 
-    --color-highlight: var(--color-yellow-500);
-    --color-highlight-foreground: var(--color-yellow-100);
-    --color-highlight-subtle: var(--color-yellow-200);
-    --color-highlight-strong: var(--color-yellow-700);
+    --color-border: var(--color-gray-300);
+    --color-border-light: var(--color-gray-200);
+    --color-border-dark: var(--color-gray-500);
+    --color-border-input: var(--color-gray-300);
+
+    --color-brand: var(--color-indigo-600);
+    --color-brand-fg: var(--color-indigo-100);
+    --color-brand-light: var(--color-indigo-200);
+    --color-brand-dark: var(--color-indigo-800);
+
+    --color-action: var(--color-gray-800);
+    --color-action-fg: var(--color-gray-100);
+    --color-action-light: var(--color-gray-200);
+    --color-action-dark: var(--color-gray-950);
+
+    --color-muted: var(--color-gray-500);
+    --color-muted-fg: var(--color-gray-100);
+    --color-muted-light: var(--color-gray-300);
+    --color-muted-dark: var(--color-gray-600);
 
     --color-link: var(--color-blue-600);
-    --color-link-foreground: var(--color-white);
-    --color-link-subtle: var(--color-blue-200);
-    --color-link-strong: var(--color-blue-800);
+    --color-link-fg: var(--color-white);
+    --color-link-light: var(--color-blue-200);
+    --color-link-dark: var(--color-blue-800);
 
-    /* State colors */
     --color-success: var(--color-green-600);
-    --color-success-foreground: var(--color-white);
-    --color-success-subtle: var(--color-green-200);
-    --color-success-strong: var(--color-green-800);
+    --color-success-fg: var(--color-white);
+    --color-success-light: var(--color-green-200);
+    --color-success-dark: var(--color-green-800);
 
     --color-error: var(--color-red-600);
-    --color-error-foreground: var(--color-white);
-    --color-error-subtle: var(--color-red-200);
-    --color-error-strong: var(--color-red-800);
+    --color-error-fg: var(--color-white);
+    --color-error-light: var(--color-red-200);
+    --color-error-dark: var(--color-red-800);
 
     --color-warning: var(--color-yellow-500);
-    --color-warning-foreground: var(--color-yellow-100);
-    --color-warning-subtle: var(--color-yellow-200);
-    --color-warning-strong: var(--color-yellow-800);
+    --color-warning-fg: var(--color-yellow-100);
+    --color-warning-light: var(--color-yellow-200);
+    --color-warning-dark: var(--color-yellow-800);
 
     --color-info: var(--color-blue-500);
-    --color-info-foreground: var(--color-blue-100);
-    --color-info-subtle: var(--color-blue-200);
-    --color-info-strong: var(--color-blue-700);
+    --color-info-fg: var(--color-blue-100);
+    --color-info-light: var(--color-blue-200);
+    --color-info-dark: var(--color-blue-700);
 
-    /* Neutral colors */
-    --color-background: var(--color-gray-100);
-    --color-surface: var(--color-white);
-    --color-text: var(--color-gray-900);
-    --color-text-subtle: var(--color-gray-600);
-    --color-border: var(--color-gray-300);
-    --color-border-subtle: var(--color-gray-200);
-    --color-border-strong: var(--color-gray-500);
+    --color-input: var(--color-white);
+    --color-input-shadow: var(--color-gray-300);
+
+    --radius-input: var(--radius-sm);
+    --shadow-input: 0 1px 1px var(--color-input-shadow);
+
+    --animate-slide-down-in: slide-down-in 0.15s ease-out;
+    --animate-slide-down-out: slide-down-out 0.15s ease-out;
+    --animate-slide-up-in: slide-up-in 0.15s ease-out;
+    --animate-slide-up-out: slide-up-out 0.15s ease-out;
+    @keyframes slide-up-in {
+        0% {
+            opacity: 0;
+            transform: translateY(0.5rem);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    @keyframes slide-up-out {
+        0% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        100% {
+            opacity: 0;
+            transform: translateY(-0.5rem);
+        }
+    }
+    @keyframes slide-down-in {
+        0% {
+            opacity: 0;
+            transform: translateY(-0.5rem);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    @keyframes slide-down-out {
+        0% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        100% {
+            opacity: 0;
+            transform: translateY(0.5rem);
+        }
+    }
 }
 
 @layer base {
     /* Default styles */
     :root {
         background-color: var(--color-background);
-        color: var(--color-text);
+        color: var(--color-foreground);
+        border-color: var(--color-border);
+        font-family: "Arad", "Vazirmatn", sans-serif;
+    }
+    [lang="fa"] {
+        font-family: "Arad", "Vazirmatn", sans-serif;
+        font-feature-settings: "ss01" on;
     }
 
     /* Dark mode overrides */
     @variant dark {
-        /* Core semantic colors */
-        --color-brand: var(--color-blue-400);
-        --color-brand-foreground: var(--color-blue-950);
-        --color-brand-subtle: var(--color-blue-100);
-        --color-brand-strong: var(--color-blue-600);
-
-        --color-action: var(--color-blue-500);
-        --color-action-foreground: var(--color-blue-950);
-        --color-action-subtle: var(--color-blue-100);
-        --color-action-strong: var(--color-blue-600);
-
-        --color-highlight: var(--color-yellow-300);
-        --color-highlight-foreground: var(--color-yellow-950);
-        --color-highlight-subtle: var(--color-yellow-50);
-        --color-highlight-strong: var(--color-yellow-500);
-
-        --color-link: var(--color-blue-400);
-        --color-link-foreground: var(--color-blue-950);
-        --color-link-subtle: var(--color-blue-100);
-        --color-link-strong: var(--color-blue-600);
-
-        /* State colors */
-        --color-success: var(--color-green-400);
-        --color-success-foreground: var(--color-green-950);
-        --color-success-subtle: var(--color-green-100);
-        --color-success-strong: var(--color-green-600);
-
-        --color-error: var(--color-red-400);
-        --color-error-foreground: var(--color-red-950);
-        --color-error-subtle: var(--color-red-100);
-        --color-error-strong: var(--color-red-600);
-
-        --color-warning: var(--color-yellow-300);
-        --color-warning-foreground: var(--color-yellow-950);
-        --color-warning-subtle: var(--color-yellow-50);
-        --color-warning-strong: var(--color-yellow-500);
-
-        --color-info: var(--color-cyan-400);
-        --color-info-foreground: var(--color-cyan-950);
-        --color-info-subtle: var(--color-cyan-100);
-        --color-info-strong: var(--color-cyan-600);
-
-        /* Neutral colors */
         --color-background: var(--color-gray-900);
-        --color-surface: var(--color-gray-800);
+        --color-foreground: var(--color-gray-100);
         --color-text: var(--color-gray-100);
-        --color-text-subtle: var(--color-gray-400);
+        --color-text-light: var(--color-gray-400);
+
+        --color-surface: var(--color-gray-900);
+        --color-surface-light: var(--color-gray-800);
+        --color-surface-dark: var(--color-gray-700);
+
         --color-border: var(--color-gray-700);
-        --color-border-subtle: var(--color-gray-600);
-        --color-border-strong: var(--color-gray-800);
+        --color-border-light: var(--color-gray-600);
+        --color-border-dark: var(--color-gray-800);
+        --color-border-input: var(--color-gray-700);
+
+        --color-brand: var(--color-indigo-600);
+        --color-brand-fg: var(--color-indigo-100);
+        --color-brand-light: var(--color-indigo-200);
+        --color-brand-dark: var(--color-indigo-800);
+
+        --color-action: var(--color-gray-100);
+        --color-action-fg: var(--color-gray-900);
+        --color-action-light: var(--color-gray-200);
+        --color-action-dark: var(--color-gray-950);
+
+        --color-muted: var(--color-gray-500);
+        --color-muted-fg: var(--color-gray-900);
+        --color-muted-light: var(--color-gray-300);
+        --color-muted-dark: var(--color-gray-600);
+
+        --color-link: var(--color-blue-600);
+        --color-link-fg: var(--color-white);
+        --color-link-light: var(--color-blue-200);
+        --color-link-dark: var(--color-blue-800);
+
+        --color-success: var(--color-green-600);
+        --color-success-fg: var(--color-white);
+        --color-success-light: var(--color-green-200);
+        --color-success-dark: var(--color-green-800);
+
+        --color-error: var(--color-red-600);
+        --color-error-fg: var(--color-white);
+        --color-error-light: var(--color-red-200);
+        --color-error-dark: var(--color-red-800);
+
+        --color-warning: var(--color-yellow-500);
+        --color-warning-fg: var(--color-yellow-100);
+        --color-warning-light: var(--color-yellow-200);
+        --color-warning-dark: var(--color-yellow-800);
+
+        --color-info: var(--color-blue-500);
+        --color-info-fg: var(--color-blue-100);
+        --color-info-light: var(--color-blue-200);
+        --color-info-dark: var(--color-blue-700);
+
+        --color-input: var(--color-gray-800);
+        --color-input-shadow: var(--color-gray-900);
     }
 }

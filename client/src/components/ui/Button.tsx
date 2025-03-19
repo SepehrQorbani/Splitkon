@@ -7,9 +7,10 @@ import { cn } from "@/utils/cn"; // Import cn
 
 interface ButtonProps extends AriaButtonProps {
     variant?: "solid" | "outline" | "ghost";
-    intent?: "primary" | "brand" | "danger";
+    intent?: "primary" | "brand" | "danger" | "neutral";
     className?: string;
     size?: "sm" | "md" | "lg";
+    type?: "button" | "submit" | "reset";
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -17,29 +18,27 @@ export const Button: React.FC<ButtonProps> = ({
     intent = "primary",
     size = "md",
     className,
+    type = "button",
     ...props
 }) => {
     const baseStyles =
-        "inline-flex items-center justify-center px-4 py-2 rounded font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed";
+        "inline-flex items-center justify-center px-4 py-2 rounded-input font-medium transition-colors focus:outline-none focus:ring-2 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed";
 
     const variantStyles = {
         solid: {
             primary:
-                "bg-action text-action-foreground hover:bg-action-strong focus:ring-action disabled:bg-action-subtle",
-            brand: "bg-brand text-brand-foreground hover:bg-brand-strong focus:ring-brand disabled:bg-brand-subtle",
-            danger: "bg-error text-error-foreground hover:bg-error-strong focus:ring-error disabled:bg-error-subtle",
+                "bg-action text-action-fg hover:bg-action-strong focus:ring-action disabled:bg-action-light",
+            danger: "bg-error text-error-fg hover:bg-error-strong focus:ring-error disabled:bg-error-light",
         },
         outline: {
             primary:
-                "border border-action text-action hover:bg-action-subtle focus:ring-action disabled:border-action-subtle disabled:text-action-subtle",
-            brand: "border border-brand text-brand hover:bg-brand-subtle focus:ring-brand disabled:border-brand-subtle disabled:text-brand-subtle",
-            danger: "border border-error text-error hover:bg-error-subtle focus:ring-error disabled:border-error-subtle disabled:text-error-subtle",
+                "border border-action text-action hover:bg-action hover:text-action-fg focus:ring-action disabled:border-action-light disabled:text-action-light",
+            danger: "border border-error text-error hover:bg-error hover:text-error-fg focus:ring-error disabled:border-error-light disabled:text-error-light",
         },
         ghost: {
             primary:
-                "text-action hover:bg-action-subtle focus:ring-action disabled:text-action-subtle",
-            brand: "text-brand hover:bg-brand-subtle focus:ring-brand disabled:text-brand-subtle",
-            danger: "text-error hover:bg-error-subtle focus:ring-error disabled:text-error-subtle",
+                "text-action hover:bg-action-light hover:text-action-dark focus:ring-action disabled:text-action-light",
+            danger: "text-error hover:bg-error-light hover:text-error-dark focus:ring-error disabled:text-error-light",
         },
     };
     const sizeStyles = {
@@ -50,10 +49,13 @@ export const Button: React.FC<ButtonProps> = ({
 
     return (
         <AriaButton
+            type={type}
             {...props}
             className={cn(
                 baseStyles,
-                variantStyles[variant][intent],
+                variantStyles[variant][
+                    intent as keyof (typeof variantStyles)[typeof variant]
+                ],
                 sizeStyles[size],
                 className
             )}

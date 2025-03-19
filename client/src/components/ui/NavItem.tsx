@@ -24,9 +24,15 @@ export const NavItem: React.FC<NavItemProps> = ({
                 <>
                     <div
                         className={cn(
-                            "text-text hover:text-brand flex items-center gap-1 p-2 relative z-10",
-                            isActive && "text-brand",
-                            layoutId.includes("desktop") ? "px-2 py-1" : "p-2"
+                            "text-text-light hover:text-action flex items-center gap-1 p-2 relative text-sm z-10 transition-all duration-200",
+                            layoutId.includes("desktop")
+                                ? "px-2 py-1 hover:scale-[98%]"
+                                : "p-2 hover:scale-95",
+                            isActive && "hover:scale-100",
+                            isActive &&
+                                (layoutId.includes("desktop")
+                                    ? "text-action"
+                                    : "text-action-fg hover:text-action-fg")
                         )}
                     >
                         <Icon className={iconSize} />
@@ -35,10 +41,10 @@ export const NavItem: React.FC<NavItemProps> = ({
                     {isActive && (
                         <motion.div
                             className={cn(
-                                "absolute inset-0 bg-brand/20",
+                                "absolute bg-action",
                                 layoutId.includes("desktop")
-                                    ? "rounded-md"
-                                    : "rounded-full"
+                                    ? "rounded-md h-1 -bottom-4.5 left-0 right-0"
+                                    : "rounded-full inset-0"
                             )}
                             layoutId={layoutId}
                             initial={false}

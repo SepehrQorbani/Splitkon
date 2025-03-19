@@ -1,46 +1,111 @@
 {
-    "ui": {
-        "homeTitle": "صفحه اصلی",
-        "aboutTitle": "درباره ما",
-        "authenticated": "وضعیت ورود",
-        "yes": "بله",
-        "no": "خیر",
-        "login": "ورود",
-        "logout": "خروج",
-        "loading": "در حال بارگذاری...",
-        "data_response": "داده بعد از :delay ثانیه",
-        "Page not found": "صفحه یافت نشد",
-        "Token required": "توکن الزامی است",
-        "Group not found": "گروه یافت نشد",
-        "Edit access required": "شما دسترسی ویرایش را ندارید",
-        "Group Title": "عنوان گروه",
-        "Group Description": "توضیحات گروه",
-        "Create Group": "ساخت گروه",
-        "Create a New Group": "ساخت یک گروه جدید",
-        "Failed to create group": "ساخت گروه با خطا مواجه شد",
-        "Loading translations...": "در حال بارگذاری ترجمه ها...",
-        "Error loading translations": "خطا در بارگذاری ترجمه ها",
-        "No results found.": "هیچ نتیجه ای یافت نشد"
+    "attributes": {
+        "avatar": "آواتار",
+        "description": "توضیحات",
+        "email": "ایمیل",
+        "group": "گروه",
+        "image": "تصویر",
+        "members": "اعضا",
+        "name": "نام",
+        "phone": "شماره تلفن",
+        "ratio": "تعداد نفرات",
+        "title": "عنوان",
+        "bank_info": "شماره کارت"
     },
     "messages": {
-        "noMembersAdded": "هیچ عضوی اضافه نشده است",
-        "noResultsFound": "هیچ نتیجه ای یافت نشد"
+        "dataResponse": "داده‌ها پس از :delay ثانیه دریافت شد",
+        "noMembersAdded": "هنوز هیچ عضوی اضافه نشده است",
+        "noResultsFound": "نتیجه‌ای یافت نشد"
+    },
+    "pages": {
+        "about": {
+            "title": "درباره ما"
+        },
+        "home": {
+            "title": "صفحه اصلی"
+        },
+        "new": {
+            "title": "ایجاد گروه جدید"
+        }
+    },
+    "ui": {
+        "add": "اضافه کردن",
+        "authenticated": "وضعیت ورود",
+        "cancel": "انصراف",
+        "clear": "پاک کردن",
+        "close": "بستن",
+        "create": "ایجاد",
+        "creating": "در حال ایجاد",
+        "delete": "حذف",
+        "edit": "ویرایش",
+        "editAccessDenied": "شما دسترسی ویرایش ندارید",
+        "errorLoadingTranslations": "خطا در بارگذاری ترجمه‌ها",
+        "failedToCreateGroup": "ایجاد گروه با خطا مواجه شد",
+        "group": {
+            "title": "عنوان گروه",
+            "description": "توضیحات گروه",
+            "notFound": "گروه یافت نشد"
+        },
+        "members": "اعضا",
+        "member": "عضو",
+        "loading": "در حال بارگذاری",
+        "loadingTranslations": "در حال بارگذاری ترجمه‌ها",
+        "login": "ورود",
+        "logout": "خروج",
+        "no": "خیر",
+        "pageNotFound": "صفحه یافت نشد",
+        "save": "ذخیره",
+        "select": "انتخاب",
+        "submissionError": "خطایی هنگام ارسال فرم رخ داد",
+        "tokenRequired": "توکن الزامی است",
+        "yes": "بله"
     },
     "validation": {
-        "required": "فیلد :attribute الزامی است.",
-        "min.string": "فیلد :attribute باید حداقل :min کاراکتر باشد.",
-        "title_required": "عنوان گروه الزامی است"
+        "min": ":attribute باید حداقل :min باشد",
+        "max": ":attribute نباید بیشتر از :max باشد",
+        "minLength": ":attribute باید حداقل :min کاراکتر باشد",
+        "required": ":attribute الزامی است",
+        "url": ":attribute باید یک آدرس معتبر باشد",
+        "bankAccount": ":attribute باید یک شماره حساب معتبر باشد",
+        "bankAccountLength": ":attribute باید 16 رقم باشد",
+        "bankAccountFormat": ":attribute باید فقط شامل اعداد باشد"
     },
-    "attributes": {
-        "name": "نام",
-        "group": "گروه",
-        "email": "ایمیل",
-        "phone": "شماره تلفن",
-        "title": "عنوان",
-        "description": "توضیحات",
-        "image": "تصویر",
-        "avatar": "آواتار",
-        "ratio": "نسبت",
-        "members": "اعضا"
+    "banks": {
+        "melli": "بانک ملی ایران",
+        "sepah": "بانک سپه",
+        "saderat": "بانک صادرات ایران",
+        "keshavarzi": "بانک کشاورزی",
+        "maskan": "بانک مسکن",
+        "ansar": "بانک انصار",
+        "ayandeh": "بانک آینده",
+        "day": "بانک دی",
+        "eghtesad": "بانک اقتصاد نوین",
+        "gardeshgari": "بانک گردشگری",
+        "ghavamin": "بانک قوامین",
+        "iranzamin": "بانک ایران زمین",
+        "karafarin": "بانک کارآفرین",
+        "khavarmiyaneh": "بانک خاورمیانه",
+        "mehreqtesad": "بانک مهر اقتصاد",
+        "mellat": "بانک ملت",
+        "parsian": "بانک پارسیان",
+        "pasargad": "بانک پاسارگاد",
+        "postbank": "پست بانک ایران",
+        "refah": "بانک رفاه کارگران",
+        "resalat": "بانک رسالت",
+        "saman": "بانک سامان",
+        "sanatmadan": "بانک صنعت و معدن",
+        "sarmaye": "بانک سرمایه",
+        "shahr": "بانک شهر",
+        "sina": "بانک سینا",
+        "tejarat": "بانک تجارت",
+        "tosehe": "بانک توسعه تعاون",
+        "toseesaderat": "بانک توسعه صادرات",
+        "hekmat": "بانک حکمت ایرانیان",
+        "markazi": "بانک مرکزی ایران",
+        "mehriran": "بانک مهر ایران",
+        "kosar": "موسسه کوثر",
+        "melal": "موسسه اعتباری ملل",
+        "tosee": "موسسه اعتباری توسعه",
+        "unknown": "نامشخص"
     }
 }

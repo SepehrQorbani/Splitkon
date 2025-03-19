@@ -86,13 +86,13 @@ const Home: React.FC = () => {
                                                         logout();
                                                         close();
                                                     }}
-                                                    className="mt-2 bg-error text-error-foreground px-4 py-2 rounded"
+                                                    className="mt-2 bg-error text-error-fg px-4 py-2 rounded"
                                                 >
                                                     {t("yes")}
                                                 </Button>
                                                 <Button
                                                     onPress={close}
-                                                    className="mt-2 ml-2 bg-action text-action-foreground px-4 py-2 rounded"
+                                                    className="mt-2 ml-2 bg-action text-action-fg px-4 py-2 rounded"
                                                 >
                                                     {t("no")}
                                                 </Button>
@@ -107,13 +107,13 @@ const Home: React.FC = () => {
                             <Popover
                                 placement="top"
                                 className={({ isEntering, isExiting }) => `
-                    w-[280px] placement-bottom:mt-0 placement-left:mr-1 placement-right:ml-1 placement-top:mb-0 group bg-action-foreground border border-border p-4 rounded shadow"
+                    w-[280px] placement-bottom:mt-0 placement-left:mr-1 placement-right:ml-1 placement-top:mb-0 group bg-action-fg border border-border p-4 rounded shadow"
                                   `}
                             >
                                 <OverlayArrow>
                                     <svg
                                         viewBox="0 0 12 12"
-                                        className="block fill-action-foreground stroke-1 stroke-border group-data-[placement=bottom]:rotate-180
+                                        className="block fill-action-fg stroke-1 stroke-border group-data-[placement=bottom]:rotate-180
                                 group-data-[placement=left]:rotate-270
                                 group-data-[placement=right]:rotate-90
                     
