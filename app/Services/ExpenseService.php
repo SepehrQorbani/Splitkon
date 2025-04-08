@@ -140,26 +140,18 @@ class ExpenseService
             $calculatedShares[$memberId] = [
                 'ratio' => $data['ratio'],
                 'share' => $share,
+                'remainder' => 0,
             ];
             $sumOfShares += $share;
         }
 
         $remainder = $amount - $sumOfShares;
         if ($remainder > 0) {
-            $remainderEntry = [
-                'amount' => 1,
-                'expense_id' => $this->expense->id,
-                'members' => array_map(fn($id) => [$id, $ratios[$id]['ratio']], array_keys($ratios)),
-            ];
-
             $i = 0;
             foreach ($calculatedShares as $memberId => &$data) {
                 if ($i < $remainder) {
                     $data['share'] += 1;
-                    $member = Member::find($memberId);
-                    $history = $member->remainder_history ?? [];
-                    $history[] = $remainderEntry;
-                    $member->update(['remainder_history' => $history]);
+                    $data['remainder'] = 1;
                     $i++;
                 } else {
                     break;
@@ -197,9 +189,6 @@ class ExpenseService
             $member->update([
                 'total_expenses' => $member->total_expenses - $share,
             ]);
-            $history = $member->remainder_history ?? [];
-            $history = array_filter($history, fn($entry) => $entry['expense_id'] != $this->expense->id);
-            $member->update(['remainder_history' => $history ?: null]);
         }
     }
 

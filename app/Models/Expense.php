@@ -33,7 +33,7 @@ class Expense extends Model
     public function members()
     {
         return $this->belongsToMany(Member::class)
-            ->withPivot(['ratio', 'share'])
+            ->withPivot(['ratio', 'share', 'remainder'])
             ->withTimestamps();
     }
 

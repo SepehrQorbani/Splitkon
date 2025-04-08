@@ -9,7 +9,7 @@ class Member extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['group_id', 'avatar', 'name', 'ratio', 'bank_info', 'total_expenses', 'total_payments', 'remainder_history'];
+    protected $fillable = ['group_id', 'avatar', 'name', 'ratio', 'bank_info', 'total_expenses', 'total_payments'];
 
     protected $casts = [
         'bank_info' => 'array',
@@ -21,5 +21,11 @@ class Member extends Model
     public function group()
     {
         return $this->belongsTo(Group::class);
+    }
+
+    public function expenses()
+    {
+        return $this->belongsToMany(Expense::class)
+            ->withPivot('ratio', 'share', 'remainder');
     }
 }

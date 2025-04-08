@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->foreignId('expense_id')->constrained('expenses')->onDelete('cascade');
             $table->integer('ratio')->default(1);
             $table->decimal('share', 15, 3)->default(0);
+            $table->decimal('remainder', 15, 3)->default(0);
             $table->timestamps();
         });
     }
