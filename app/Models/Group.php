@@ -22,4 +22,13 @@ class Group extends Model
     {
         return $this->hasMany(Member::class);
     }
+
+    public function expenses()
+    {
+        return $this->hasMany(Expense::class);
+    }
+    public function repays()
+    {
+        return $this->hasMany(Repay::class);
+    }
 }

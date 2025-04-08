@@ -13,6 +13,19 @@ class MemberStoreRequest extends FormRequest
 
     public function rules(): array
     {
+        $input = $this->all();
+
+        // Check if input is an array of members or a single member
+        if (isset($input[0]) && is_array($input[0])) {
+            return [
+                '*.name' => 'required|string|max:255',
+                '*.avatar' => 'nullable|string|max:255',
+                '*.ratio' => 'required|integer|min:1',
+                '*.bank_info' => 'nullable|string',
+            ];
+        }
+
+        // Rules for single member
         return [
             'name' => 'required|string|max:255',
             'avatar' => 'nullable|string|max:255',

@@ -56,11 +56,4 @@ class GroupController extends Controller
         $group->update($request->validated());
         return new GroupResource($group);
     }
-
-    public function addMember(MemberStoreRequest $request)
-    {
-        $group = $request->attributes->get('group');
-        $member = $group->members()->create($request->validated());
-        return new MemberResource($member);
-    }
 }
