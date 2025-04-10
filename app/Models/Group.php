@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 
 class Group extends Model
 {
-    protected $fillable = ['title', 'description', 'view_token', 'edit_token'];
+    protected $fillable = ['title', 'description', 'date', 'view_token', 'edit_token'];
 
     public static function boot()
     {

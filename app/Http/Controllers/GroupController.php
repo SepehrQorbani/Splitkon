@@ -18,7 +18,7 @@ class GroupController extends Controller
         try {
             DB::beginTransaction();
 
-            $groupData = $request->only(['title', 'description']);
+            $groupData = $request->only(['title', 'date', 'description']);
             $groupData['view_token'] = Str::random(32);
             $groupData['edit_token'] = Str::random(32);
             $group = Group::create($groupData);

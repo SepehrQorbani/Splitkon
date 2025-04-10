@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('title');
             $table->string('description')->nullable();
+            $table->dateTime('date');
             $table->string('view_token', 32)->unique()->index();
             $table->string('edit_token', 32)->unique()->index();
             $table->timestamps();

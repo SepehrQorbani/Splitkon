@@ -21,6 +21,7 @@ class GroupStoreRequest extends FormRequest
 
         return array_merge([
             'title' => 'required|string|max:255',
+            'date' => 'required|date',
             'description' => 'nullable|string|max:1000',
             'members' => 'nullable|array',
         ], $prefixedMemberRules);

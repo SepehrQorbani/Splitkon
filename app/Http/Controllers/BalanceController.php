@@ -12,6 +12,6 @@ class BalanceController extends Controller
         $group = request()->attributes->get('group');
         $balance = (new BalanceService($group->members))->calculate();
 
-        return response()->json($balance);
+        return response()->json(['data' => $balance]);
     }
 }

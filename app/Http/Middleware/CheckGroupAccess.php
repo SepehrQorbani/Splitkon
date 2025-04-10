@@ -17,8 +17,7 @@ class CheckGroupAccess
         }
 
         // $group = Cache::remember("group:token:$token", 3600, function () use ($token) {
-        $group = Group::with('members')
-            ->where('view_token', $token)
+        $group = Group::where('view_token', $token)
             ->orWhere('edit_token', $token)
             ->firstOrFail();
         // });

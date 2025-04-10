@@ -5,6 +5,7 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\RepayController;
+use App\Http\Controllers\SummaryController;
 use App\Http\Middleware\CheckGroupAccess;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,8 @@ Route::prefix('groups')->middleware(CheckGroupAccess::class)->group(function () 
 
     Route::get('/{token}', [GroupController::class, 'show']);
     Route::put('/{token}', [GroupController::class, 'update']);
+
+    Route::get('/{token}/summary', [SummaryController::class, 'show']);
 
     Route::get('/{token}/members', [MemberController::class, 'index']);
     Route::post('/{token}/members', [MemberController::class, 'store'])->name('members.store');

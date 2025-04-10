@@ -17,6 +17,7 @@ class GroupUpdateRequest extends FormRequest
     {
         return [
             'title' => 'string|max:255',
+            'date' => 'date',
             'description' => 'nullable|string|max:1000',
         ];
     }
