@@ -10,17 +10,19 @@ class BalanceService
 {
     protected Collection $members;
     protected array $balance = [];
+    protected bool $arrayFormat = false;
 
     public function __construct(Collection $members)
     {
         $this->members = $members;
     }
 
-    public function calculate($includeRemainders = false): array
+    public function calculate($includeRemainders = false, $arrayFormat = false): array
     {
         if ($this->members->isEmpty()) {
             return $this->balance;
         }
+        $this->arrayFormat = $arrayFormat;
 
         $statuses = $this->members->mapWithKeys(function (Member $member) use ($includeRemainders) {
             $net = $member->total_payments - $member->total_expenses;
@@ -60,8 +62,12 @@ class BalanceService
 
     protected function addTransaction(int $fromId, int $toId, float $amount): void
     {
-        $this->balance[$fromId][] = ['to' => $toId, 'amount' => $amount];
-        $this->balance[$toId][] = ['to' => $fromId, 'amount' => -$amount];
+        if ($this->arrayFormat) {
+            $this->balance[] = ['from' => $fromId, 'to' => $toId, 'amount' => $amount];
+        } else {
+            $this->balance[$fromId][] = ['to' => $toId, 'amount' => $amount];
+            $this->balance[$toId][] = ['to' => $fromId, 'amount' => -$amount];
+        }
     }
 
     public function getBalance(): array

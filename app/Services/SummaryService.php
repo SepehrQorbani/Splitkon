@@ -20,8 +20,7 @@ class SummaryService
 
         $totalExpenses = $group->expenses->sum('amount');
         $totalRepays = $group->repays->sum('amount');
-        $pendingBalances = (new BalanceService($group->members))->calculate(true);
-
+        $pendingBalances = (new BalanceService($group->members))->calculate(false, true);
         $totalOutstanding = 0;
         $netBalances = $group->members->map(function ($member) use (&$totalOutstanding) {
             $net = $member->total_payments - $member->total_expenses;
