@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Concerns\RecordsActivity;
 
 class Member extends Model
 {
-    use HasFactory;
+    use HasFactory, RecordsActivity;
 
     protected $fillable = ['group_id', 'avatar', 'name', 'ratio', 'bank_info', 'total_expenses', 'total_payments'];
 
@@ -17,6 +18,8 @@ class Member extends Model
         'total_expenses' => 'integer',
         'remainder_history' => 'array',
     ];
+
+    protected static array $recordableEvents = ['created', 'updated', 'deleted'];
 
     public function group()
     {

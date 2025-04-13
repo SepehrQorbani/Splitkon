@@ -3,9 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Concerns\RecordsActivity;
 
 class Repay extends Model
 {
+    use RecordsActivity;
+
+    protected static array $recordableEvents = ['created', 'updated', 'deleted'];
+
     protected $fillable = [
         'from_id',
         'to_id',
