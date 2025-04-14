@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\LogsActivity;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +10,7 @@ use App\Models\Concerns\RecordsActivity;
 
 class Expense extends Model
 {
-    use HasFactory, RecordsActivity;
+    use HasFactory, LogsActivity;
 
     protected $fillable = [
         'title',
@@ -26,8 +27,6 @@ class Expense extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
-
-    protected static array $recordableEvents = ['created', 'updated', 'deleted'];
 
     public function setDateAttribute($value)
     {

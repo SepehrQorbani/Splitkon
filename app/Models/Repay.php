@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\LogsActivity;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Concerns\RecordsActivity;
 
 class Repay extends Model
 {
-    use RecordsActivity;
-
-    protected static array $recordableEvents = ['created', 'updated', 'deleted'];
+    use LogsActivity;
 
     protected $fillable = [
         'from_id',

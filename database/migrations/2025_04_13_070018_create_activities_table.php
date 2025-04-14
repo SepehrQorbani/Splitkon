@@ -13,9 +13,11 @@ return new class extends Migration {
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
             $table->foreignId('group_id')->constrained()->cascadeOnDelete();
+            $table->string('action');
             $table->nullableMorphs('subject');
             $table->string('description');
             $table->json('changes')->nullable();
+            $table->string('transaction_id')->nullable()->index();
             $table->timestamps();
 
             $table->index('created_at');

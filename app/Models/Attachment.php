@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\LogsActivity;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,13 +11,11 @@ use App\Models\Concerns\RecordsActivity;
 
 class Attachment extends Model
 {
-    use HasFactory, RecordsActivity;
+    use HasFactory, LogsActivity;
 
     protected $fillable = ['title', 'description', 'path', 'group_id'];
 
     protected $appends = ['url'];
-
-    protected static array $recordableEvents = ['created', 'updated', 'deleted'];
 
     protected static function booted(): void
     {
