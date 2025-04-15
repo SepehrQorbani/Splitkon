@@ -23,7 +23,7 @@ class MemberResource extends JsonResource
             }),
             'bank_info' => $this->bank_info,
             'total_expenses' => $this->total_expenses,
-            'total_payments' => $this->total_payments,
+            'payment_balance' => $this->payment_balance,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

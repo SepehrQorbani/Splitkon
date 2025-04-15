@@ -141,7 +141,7 @@ class ExpenseService
             $members[$originalSpenderId] = Member::find($originalSpenderId);
         }
 
-        $members[$originalSpenderId]->total_payments -= $originalAmount;
+        $members[$originalSpenderId]->payment_balance -= $originalAmount;
         return $members;
     }
 
@@ -161,7 +161,7 @@ class ExpenseService
         if (!isset($members[$spenderId])) {
             $members[$spenderId] = Member::find($spenderId);
         }
-        $members[$spenderId]->total_payments += $amount;
+        $members[$spenderId]->payment_balance += $amount;
 
         return $members;
     }

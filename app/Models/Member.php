@@ -11,13 +11,10 @@ class Member extends Model
 {
     use HasFactory, LogsActivity;
 
-    protected $fillable = ['group_id', 'avatar', 'name', 'ratio', 'bank_info', 'total_expenses', 'total_payments'];
+    protected $fillable = ['group_id', 'avatar', 'name', 'ratio', 'bank_info', 'total_expenses', 'payment_balance'];
 
     protected $casts = [
         'bank_info' => 'array',
-        'total_payments' => 'integer',
-        'total_expenses' => 'integer',
-        'remainder_history' => 'array',
     ];
 
     public function group()

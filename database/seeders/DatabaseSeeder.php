@@ -5,19 +5,464 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Disable foreign key checks to insert data with specific IDs
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // Seed groups
+        DB::table('groups')->truncate();
+        DB::table('groups')->insert([
+            [
+                'id' => 1,
+                'title' => 'سفر نوروز',
+                'date' => '2025-04-08 08:00:00',
+                'description' => 'سفر به شهرهای شمالی ایران و فیلان',
+                'view_token' => 'pKIyLydc7fj8fIH6QfnNYrYOshTjwTVL',
+                'edit_token' => 'aaHcr5w5ywXiajnqN1w9n07ttvzd0nXu',
+                'created_at' => '2025-04-08 07:06:50',
+                'updated_at' => '2025-04-08 07:06:50',
+            ],
         ]);
+
+        // Seed members
+        DB::table('members')->truncate();
+        DB::table('members')->insert([
+            [
+                'id' => 1,
+                'avatar' => '/images/avatars/set-01/Avatar04.png',
+                'name' => 'سپهر',
+                'ratio' => 2,
+                'bank_info' => '"6037991212121212"',
+                'payment_balance' => 5966667.000,
+                'total_expenses' => 4260003.000,
+                'group_id' => 1,
+                'created_at' => '2025-04-08 07:06:50',
+                'updated_at' => '2025-04-12 21:24:58',
+            ],
+            [
+                'id' => 2,
+                'avatar' => '/images/avatars/set-01/Avatar15.png',
+                'name' => 'سروش',
+                'ratio' => 3,
+                'bank_info' => null,
+                'payment_balance' => 2725000.000,
+                'total_expenses' => 5910000.000,
+                'group_id' => 1,
+                'created_at' => '2025-04-08 07:06:50',
+                'updated_at' => '2025-04-12 21:24:58',
+            ],
+            [
+                'id' => 3,
+                'avatar' => '/images/avatars/set-01/Avatar72.png',
+                'name' => 'آروین',
+                'ratio' => 1,
+                'bank_info' => '"1234123412434142"',
+                'payment_balance' => 3608333.000,
+                'total_expenses' => 2129997.000,
+                'group_id' => 1,
+                'created_at' => '2025-04-08 07:06:50',
+                'updated_at' => '2025-04-12 21:24:58',
+            ],
+        ]);
+
+        // Seed expenses
+        DB::table('expenses')->truncate();
+        DB::table('expenses')->insert([
+            [
+                'id' => 1,
+                'title' => 'صبحانه بین راه',
+                'amount' => 1650000.000,
+                'split' => 6,
+                'date' => '2025-04-08 00:00:00',
+                'description' => 'نان داغ و املت',
+                'group_id' => 1,
+                'spender_id' => 1,
+                'created_at' => '2025-04-08 07:09:39',
+                'updated_at' => '2025-04-08 07:09:39',
+            ],
+            [
+                'id' => 2,
+                'title' => 'سوپر بین راه',
+                'amount' => 800000.000,
+                'split' => 6,
+                'date' => '2025-04-08 00:00:00',
+                'description' => 'آب معدنی و چیپس و ...',
+                'group_id' => 1,
+                'spender_id' => 2,
+                'created_at' => '2025-04-08 07:10:08',
+                'updated_at' => '2025-04-08 07:10:08',
+            ],
+            [
+                'id' => 3,
+                'title' => 'خرید مزه',
+                'amount' => 1800000.000,
+                'split' => 6,
+                'date' => '2025-04-09 00:00:00',
+                'description' => 'چیپس و ...',
+                'group_id' => 1,
+                'spender_id' => 2,
+                'created_at' => '2025-04-09 08:00:00',
+                'updated_at' => '2025-04-09 08:00:00',
+            ],
+            [
+                'id' => 4,
+                'title' => 'جوجه',
+                'amount' => 1000000.000,
+                'split' => 6,
+                'date' => '2025-04-10 00:00:00',
+                'description' => 'سینه مزه دارشده',
+                'group_id' => 1,
+                'spender_id' => 3,
+                'created_at' => '2025-04-10 08:00:00',
+                'updated_at' => '2025-04-10 08:00:00',
+            ],
+            [
+                'id' => 5,
+                'title' => 'میوه',
+                'amount' => 850000.000,
+                'split' => 6,
+                'date' => '2025-04-09 00:00:00',
+                'description' => null,
+                'group_id' => 1,
+                'spender_id' => 1,
+                'created_at' => '2025-04-09 08:30:00',
+                'updated_at' => '2025-04-09 08:30:00',
+            ],
+            [
+                'id' => 6,
+                'title' => 'نهار',
+                'amount' => 2200000.000,
+                'split' => 6,
+                'date' => '2025-04-11 00:00:00',
+                'description' => 'لب آب',
+                'group_id' => 1,
+                'spender_id' => 1,
+                'created_at' => '2025-04-11 08:00:00',
+                'updated_at' => '2025-04-11 08:00:00',
+            ],
+            [
+                'id' => 7,
+                'title' => 'مشروب',
+                'amount' => 2400000.000,
+                'split' => 5,
+                'date' => '2025-04-07 00:00:00',
+                'description' => null,
+                'group_id' => 1,
+                'spender_id' => 3,
+                'created_at' => '2025-04-07 08:00:00',
+                'updated_at' => '2025-04-07 08:00:00',
+            ],
+            [
+                'id' => 8,
+                'title' => 'شام جنگل',
+                'amount' => 1600000.000,
+                'split' => 6,
+                'date' => '2025-04-13 00:00:00',
+                'description' => 'سوسیس آتیشی',
+                'group_id' => 1,
+                'spender_id' => 1,
+                'created_at' => '2025-04-13 08:00:00',
+                'updated_at' => '2025-04-13 08:00:00',
+            ],
+        ]);
+
+        // Seed expense_member
+        DB::table('expense_member')->truncate();
+        DB::table('expense_member')->insert([
+            // Expense 1: صبحانه بین راه
+            [
+                'id' => 1,
+                'member_id' => 1,
+                'expense_id' => 1,
+                'ratio' => 2,
+                'share' => 550000.000,
+                'remainder' => 0.000,
+                'created_at' => '2025-04-08 07:09:39',
+                'updated_at' => '2025-04-08 07:09:39',
+            ],
+            [
+                'id' => 2,
+                'member_id' => 2,
+                'expense_id' => 1,
+                'ratio' => 3,
+                'share' => 825000.000,
+                'remainder' => 0.000,
+                'created_at' => '2025-04-08 07:09:39',
+                'updated_at' => '2025-04-08 07:09:39',
+            ],
+            [
+                'id' => 3,
+                'member_id' => 3,
+                'expense_id' => 1,
+                'ratio' => 1,
+                'share' => 275000.000,
+                'remainder' => 0.000,
+                'created_at' => '2025-04-08 07:09:39',
+                'updated_at' => '2025-04-08 07:09:39',
+            ],
+            // Expense 2: سوپر بین راه
+            [
+                'id' => 4,
+                'member_id' => 1,
+                'expense_id' => 2,
+                'ratio' => 2,
+                'share' => 266667.000,
+                'remainder' => 1.000,
+                'created_at' => '2025-04-08 07:10:08',
+                'updated_at' => '2025-04-08 07:10:08',
+            ],
+            [
+                'id' => 5,
+                'member_id' => 2,
+                'expense_id' => 2,
+                'ratio' => 3,
+                'share' => 400000.000,
+                'remainder' => 0.000,
+                'created_at' => '2025-04-08 07:10:08',
+                'updated_at' => '2025-04-08 07:10:08',
+            ],
+            [
+                'id' => 6,
+                'member_id' => 3,
+                'expense_id' => 2,
+                'ratio' => 1,
+                'share' => 133333.000,
+                'remainder' => 0.000,
+                'created_at' => '2025-04-08 07:10:08',
+                'updated_at' => '2025-04-08 07:10:08',
+            ],
+            // Expense 3: خرید مزه
+            [
+                'id' => 7,
+                'member_id' => 1,
+                'expense_id' => 3,
+                'ratio' => 2,
+                'share' => 600000.000,
+                'remainder' => 0.000,
+                'created_at' => '2025-04-09 08:00:00',
+                'updated_at' => '2025-04-09 08:00:00',
+            ],
+            [
+                'id' => 8,
+                'member_id' => 2,
+                'expense_id' => 3,
+                'ratio' => 3,
+                'share' => 900000.000,
+                'remainder' => 0.000,
+                'created_at' => '2025-04-09 08:00:00',
+                'updated_at' => '2025-04-09 08:00:00',
+            ],
+            [
+                'id' => 9,
+                'member_id' => 3,
+                'expense_id' => 3,
+                'ratio' => 1,
+                'share' => 300000.000,
+                'remainder' => 0.000,
+                'created_at' => '2025-04-09 08:00:00',
+                'updated_at' => '2025-04-09 08:00:00',
+            ],
+            // Expense 4: جوجه
+            [
+                'id' => 10,
+                'member_id' => 1,
+                'expense_id' => 4,
+                'ratio' => 2,
+                'share' => 333334.000,
+                'remainder' => 1.000,
+                'created_at' => '2025-04-10 08:00:00',
+                'updated_at' => '2025-04-10 08:00:00',
+            ],
+            [
+                'id' => 11,
+                'member_id' => 2,
+                'expense_id' => 4,
+                'ratio' => 3,
+                'share' => 500000.000,
+                'remainder' => 0.000,
+                'created_at' => '2025-04-10 08:00:00',
+                'updated_at' => '2025-04-10 08:00:00',
+            ],
+            [
+                'id' => 12,
+                'member_id' => 3,
+                'expense_id' => 4,
+                'ratio' => 1,
+                'share' => 166666.000,
+                'remainder' => 0.000,
+                'created_at' => '2025-04-10 08:00:00',
+                'updated_at' => '2025-04-10 08:00:00',
+            ],
+            // Expense 5: میوه
+            [
+                'id' => 13,
+                'member_id' => 1,
+                'expense_id' => 5,
+                'ratio' => 2,
+                'share' => 283334.000,
+                'remainder' => 1.000,
+                'created_at' => '2025-04-09 08:30:00',
+                'updated_at' => '2025-04-09 08:30:00',
+            ],
+            [
+                'id' => 14,
+                'member_id' => 2,
+                'expense_id' => 5,
+                'ratio' => 3,
+                'share' => 425000.000,
+                'remainder' => 0.000,
+                'created_at' => '2025-04-09 08:30:00',
+                'updated_at' => '2025-04-09 08:30:00',
+            ],
+            [
+                'id' => 15,
+                'member_id' => 3,
+                'expense_id' => 5,
+                'ratio' => 1,
+                'share' => 141666.000,
+                'remainder' => 0.000,
+                'created_at' => '2025-04-09 08:30:00',
+                'updated_at' => '2025-04-09 08:30:00',
+            ],
+            // Expense 6: نهار
+            [
+                'id' => 16,
+                'member_id' => 1,
+                'expense_id' => 6,
+                'ratio' => 2,
+                'share' => 733334.000,
+                'remainder' => 1.000,
+                'created_at' => '2025-04-11 08:00:00',
+                'updated_at' => '2025-04-11 08:00:00',
+            ],
+            [
+                'id' => 17,
+                'member_id' => 2,
+                'expense_id' => 6,
+                'ratio' => 3,
+                'share' => 1100000.000,
+                'remainder' => 0.000,
+                'created_at' => '2025-04-11 08:00:00',
+                'updated_at' => '2025-04-11 08:00:00',
+            ],
+            [
+                'id' => 18,
+                'member_id' => 3,
+                'expense_id' => 6,
+                'ratio' => 1,
+                'share' => 366666.000,
+                'remainder' => 0.000,
+                'created_at' => '2025-04-11 08:00:00',
+                'updated_at' => '2025-04-11 08:00:00',
+            ],
+            // Expense 7: مشروب
+            [
+                'id' => 19,
+                'member_id' => 1,
+                'expense_id' => 7,
+                'ratio' => 2,
+                'share' => 960000.000,
+                'remainder' => 0.000,
+                'created_at' => '2025-04-07 08:00:00',
+                'updated_at' => '2025-04-07 08:00:00',
+            ],
+            [
+                'id' => 20,
+                'member_id' => 2,
+                'expense_id' => 7,
+                'ratio' => 2,
+                'share' => 960000.000,
+                'remainder' => 0.000,
+                'created_at' => '2025-04-07 08:00:00',
+                'updated_at' => '2025-04-07 08:00:00',
+            ],
+            [
+                'id' => 21,
+                'member_id' => 3,
+                'expense_id' => 7,
+                'ratio' => 1,
+                'share' => 480000.000,
+                'remainder' => 0.000,
+                'created_at' => '2025-04-07 08:00:00',
+                'updated_at' => '2025-04-07 08:00:00',
+            ],
+            // Expense 8: شام جنگل
+            [
+                'id' => 22,
+                'member_id' => 1,
+                'expense_id' => 8,
+                'ratio' => 2,
+                'share' => 533334.000,
+                'remainder' => 1.000,
+                'created_at' => '2025-04-13 08:00:00',
+                'updated_at' => '2025-04-13 08:00:00',
+            ],
+            [
+                'id' => 23,
+                'member_id' => 2,
+                'expense_id' => 8,
+                'ratio' => 3,
+                'share' => 800000.000,
+                'remainder' => 0.000,
+                'created_at' => '2025-04-13 08:00:00',
+                'updated_at' => '2025-04-13 08:00:00',
+            ],
+            [
+                'id' => 24,
+                'member_id' => 3,
+                'expense_id' => 8,
+                'ratio' => 1,
+                'share' => 266666.000,
+                'remainder' => 0.000,
+                'created_at' => '2025-04-13 08:00:00',
+                'updated_at' => '2025-04-13 08:00:00',
+            ],
+        ]);
+
+        // Seed repays
+        DB::table('repays')->truncate();
+        DB::table('repays')->insert([
+            [
+                'id' => 1,
+                'from_id' => 3,
+                'to_id' => 1,
+                'amount' => 108333.000,
+                'description' => 'نقدی',
+                'date' => '2025-04-10 00:00:00',
+                'group_id' => 1,
+                'created_at' => '2025-04-10 09:16:53',
+                'updated_at' => '2025-04-10 09:16:53',
+            ],
+            [
+                'id' => 2,
+                'from_id' => 2,
+                'to_id' => 1,
+                'amount' => 125000.000,
+                'description' => 'کارت به کارت',
+                'date' => '2025-04-09 00:00:00',
+                'group_id' => 1,
+                'created_at' => '2025-04-10 09:19:35',
+                'updated_at' => '2025-04-10 09:19:35',
+            ],
+            [
+                'id' => 3,
+                'from_id' => 3,
+                'to_id' => 1,
+                'amount' => 100000.000,
+                'description' => 'کارت',
+                'date' => '2025-04-10 00:00:00',
+                'group_id' => 1,
+                'created_at' => '2025-04-10 09:24:16',
+                'updated_at' => '2025-04-10 09:24:16',
+            ],
+        ]);
+
+        // Re-enable foreign key checks
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

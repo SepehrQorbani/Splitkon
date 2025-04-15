@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string('name');
             $table->unsignedInteger('ratio');
             $table->json('bank_info')->nullable();
-            $table->integer('total_payments')->default(0);
+            $table->integer('payment_balance')->default(0);
             $table->integer('total_expenses')->default(0);
             $table->foreignId('group_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();

@@ -25,7 +25,7 @@ class BalanceService
         $this->arrayFormat = $arrayFormat;
 
         $statuses = $this->members->mapWithKeys(function (Member $member) use ($includeRemainders) {
-            $net = $member->total_payments - $member->total_expenses;
+            $net = $member->payment_balance - $member->total_expenses;
             if ($includeRemainders && $member->remainder_history) {
                 $remainderTotal = array_sum(array_column($member->remainder_history, 'amount'));
                 $net -= $remainderTotal; // Subtract remainders as a liability

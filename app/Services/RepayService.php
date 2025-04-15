@@ -118,8 +118,8 @@ class RepayService
             $members[$toId] = Member::find($toId);
         }
 
-        $members[$fromId]->total_payments += $amount;
-        $members[$toId]->total_payments -= $amount;
+        $members[$fromId]->payment_balance += $amount;
+        $members[$toId]->payment_balance -= $amount;
 
         return $members;
     }
@@ -137,8 +137,8 @@ class RepayService
             $members[$toId] = Member::find($toId);
         }
 
-        $members[$fromId]->total_payments -= $amount;
-        $members[$toId]->total_payments += $amount;
+        $members[$fromId]->payment_balance -= $amount;
+        $members[$toId]->payment_balance += $amount;
 
         return $members;
     }
