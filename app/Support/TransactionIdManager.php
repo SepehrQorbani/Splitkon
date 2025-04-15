@@ -13,6 +13,10 @@ class TransactionIdManager
     {
         self::$eventCount++;
 
+        if (DB::transactionLevel() === 0 && self::$eventCount === 1) {
+            return Str::uuid()->toString();
+        }
+
         if (self::$eventCount === 1) {
             self::$transactionId = Str::uuid()->toString();
             DB::afterCommit(function () {
