@@ -48,6 +48,7 @@ Route::prefix('groups')->middleware(CheckGroupAccess::class)->group(function () 
     Route::get('/{token}/repays', [RepayController::class, 'index']);
     Route::post('/{token}/repays', [RepayController::class, 'store']);
     Route::get('/{token}/repays/{repay}', [RepayController::class, 'show']);
+    Route::patch('/{token}/repays/{repay}', [RepayController::class, 'update']);
 
     Route::get('/{token}/balance', [BalanceController::class, 'index']);
 

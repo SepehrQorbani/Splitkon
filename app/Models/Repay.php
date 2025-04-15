@@ -19,6 +19,12 @@ class Repay extends Model
         'group_id',
     ];
 
+    protected $casts = [
+        'date' => 'date',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     public function from()
     {
         return $this->belongsTo(Member::class, 'from_id');

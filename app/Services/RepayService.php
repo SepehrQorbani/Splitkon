@@ -27,12 +27,19 @@ class RepayService
                 'group_id' => $group->id,
             ]));
 
-            $this->updateTotalPayments($this->repay->amount);
+            $localMembers = $this->loadMembers([$data['from_id'], $data['to_id']]);
+            $localMembers = $this->updateTotalPayments(
+                $localMembers,
+                $this->repay->from_id,
+                $this->repay->to_id,
+                $this->repay->amount
+            );
 
             if (isset($data['file'])) {
                 $this->attachmentManager->storeAttachment($this->repay, $data['file'], $group);
             }
 
+            $this->persistMemberChanges($localMembers);
             return $this->repay;
         });
     }
@@ -43,15 +50,37 @@ class RepayService
             $this->repay = $repay;
             $group = $this->request->attributes->get('group');
 
-            $this->revertTotalPayments($repay->getOriginal('amount'));
-            $this->updateTotalPayments($data['amount'] ?? $repay->amount);
+            $localMembers = $this->loadMembers([
+                $this->repay->from_id,
+                $this->repay->to_id,
+                $data['from_id'] ?? null,
+                $data['to_id'] ?? null
+            ]);
+            $this->repay->fill($data);
+
+            if ($this->repay->isDirty(['amount', 'from_id', 'to_id'])) {
+                $localMembers = $this->revertTotalPayments(
+                    $localMembers,
+                    $this->repay->getOriginal('from_id'),
+                    $this->repay->getOriginal('to_id'),
+                    $this->repay->getOriginal('amount')
+                );
+
+                $localMembers = $this->updateTotalPayments(
+                    $localMembers,
+                    $data['from_id'] ?? $this->repay->from_id,
+                    $data['to_id'] ?? $this->repay->to_id,
+                    $data['amount'] ?? $this->repay->amount
+                );
+            }
 
             if (isset($data['file'])) {
                 $this->attachmentManager->replaceAttachment($this->repay, $data['file'], $group);
             }
 
+            $this->persistMemberChanges($localMembers);
             $this->repay->update($data);
-            return $this->repay->fresh();
+            return $this->repay;
         });
     }
 
@@ -59,28 +88,65 @@ class RepayService
     {
         return DB::transaction(function () use ($repay) {
             $this->repay = $repay;
-            $this->revertTotalPayments($repay->amount);
-            $this->repay->delete();
+            $localMembers = $this->loadMembers([$repay->from_id, $repay->to_id]);
+            $localMembers = $this->revertTotalPayments(
+                $localMembers,
+                $repay->from_id,
+                $repay->to_id,
+                $repay->amount
+            );
+            $this->persistMemberChanges($localMembers);
+            $repay->delete();
         });
     }
 
-    protected function updateTotalPayments($amount)
+    protected function loadMembers(array $memberIds)
     {
-        if ($amount <= 0) {
-            return;
-        }
-
-        Member::where('id', $this->repay->from_id)->increment('total_payments', $amount);
-        Member::where('id', $this->repay->to_id)->decrement('total_payments', $amount);
+        return Member::whereIn('id', array_filter($memberIds))->get()->keyBy('id');
     }
 
-    protected function revertTotalPayments($originalAmount)
+    protected function updateTotalPayments($members, $fromId, $toId, $amount)
     {
-        if ($originalAmount <= 0) {
-            return;
+        if ($amount <= 0) {
+            return $members;
         }
 
-        Member::where('id', $this->repay->from_id)->decrement('total_payments', $originalAmount);
-        Member::where('id', $this->repay->to_id)->increment('total_payments', $originalAmount);
+        if (!isset($members[$fromId])) {
+            $members[$fromId] = Member::find($fromId);
+        }
+        if (!isset($members[$toId])) {
+            $members[$toId] = Member::find($toId);
+        }
+
+        $members[$fromId]->total_payments += $amount;
+        $members[$toId]->total_payments -= $amount;
+
+        return $members;
+    }
+
+    protected function revertTotalPayments($members, $fromId, $toId, $amount)
+    {
+        if ($amount <= 0) {
+            return $members;
+        }
+
+        if (!isset($members[$fromId])) {
+            $members[$fromId] = Member::find($fromId);
+        }
+        if (!isset($members[$toId])) {
+            $members[$toId] = Member::find($toId);
+        }
+
+        $members[$fromId]->total_payments -= $amount;
+        $members[$toId]->total_payments += $amount;
+
+        return $members;
+    }
+
+    protected function persistMemberChanges($localMembers)
+    {
+        foreach ($localMembers as $member) {
+            $member->save();
+        }
     }
 }
