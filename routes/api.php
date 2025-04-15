@@ -41,6 +41,7 @@ Route::prefix('groups')->middleware(CheckGroupAccess::class)->group(function () 
 
     Route::get('/{token}/expenses', [ExpenseController::class, 'index']);
     Route::post('/{token}/expenses', [ExpenseController::class, 'store']);
+    Route::get('/{token}/expenses/daily-totals', [ExpenseController::class, 'dailyTotals']);
     Route::get('/{token}/expenses/{expense}', [ExpenseController::class, 'show']);
     Route::patch('/{token}/expenses/{expense}', [ExpenseController::class, 'update']);
     Route::delete('/{token}/expenses/{expense}', [ExpenseController::class, 'destroy']);
