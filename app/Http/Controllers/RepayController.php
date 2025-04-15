@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RepayStoreRequest;
+use App\Http\Requests\RepayUpdateRequest;
 use App\Services\RepayService;
 use App\Models\Repay;
 
@@ -28,7 +29,7 @@ class RepayController extends Controller
         return response()->json(['data' => $repay]);
     }
 
-    public function update(RepayStoreRequest $request, Repay $repay, RepayService $repayService)
+    public function update(RepayUpdateRequest $request, $token, Repay $repay, RepayService $repayService)
     {
         $repay = $repayService->updateRepay($repay, $request->validated());
         return response()->json(['data' => $repay->load(['from', 'to', 'attachments'])]);
