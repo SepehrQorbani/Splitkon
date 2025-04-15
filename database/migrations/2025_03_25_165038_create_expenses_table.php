@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('title');
             // $table->unsignedInteger('amount');
-            $table->decimal('amount', 15, 3);
+            $table->integer('amount');
             $table->integer('split');
             $table->dateTime('date');
             $table->string('description')->nullable();

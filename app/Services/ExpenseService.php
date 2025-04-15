@@ -33,7 +33,7 @@ class ExpenseService
                 throw new \InvalidArgumentException('Cannot create expense with zero split (no valid members or ratios).');
             }
 
-            $amount = (float) $data['amount'];
+            $amount = $data['amount'];
             $this->expense = Expense::create(array_merge($data, [
                 'group_id' => $group->id,
                 'split' => $ratioData['split'],
@@ -77,7 +77,7 @@ class ExpenseService
 
                 $this->expense->split = $ratioData['split'];
                 $this->expense->amount = isset($data['amount']) && $data['amount'] != $this->expense->amount
-                    ? (float) $data['amount'] : $this->expense->amount;
+                    ? $data['amount'] : $this->expense->amount;
                 $this->expense->spender_id = $data['spender_id'] ?? $this->expense->spender_id;
 
                 $newShares = $this->calculateShares($ratioData['ratios'], $this->expense->amount, $ratioData['split']);
@@ -156,7 +156,7 @@ class ExpenseService
         return $members;
     }
 
-    protected function updateTotalPayments($members, $spenderId, float $amount)
+    protected function updateTotalPayments($members, $spenderId, int $amount)
     {
         if (!isset($members[$spenderId])) {
             $members[$spenderId] = Member::find($spenderId);
@@ -204,7 +204,7 @@ class ExpenseService
         return ['ratios' => $ratios, 'split' => $split];
     }
 
-    protected function calculateShares(array $ratios, float $amount, float $split): array
+    protected function calculateShares(array $ratios, int $amount, int $split): array
     {
         $baseShare = $amount / $split;
         $calculatedShares = [];

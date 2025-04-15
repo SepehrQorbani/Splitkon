@@ -13,7 +13,7 @@ class ExpenseFactory extends Factory
     {
         return [
             'title' => $this->faker->sentence,
-            'amount' => $this->faker->randomFloat(2, 10, 1000),
+            'amount' => $this->faker->numberBetween(3000, 10000),
             'description' => $this->faker->paragraph,
             'date' => $this->faker->date(),
             'split' => 1,

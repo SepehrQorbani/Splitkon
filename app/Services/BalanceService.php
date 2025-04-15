@@ -60,7 +60,7 @@ class BalanceService
         }
     }
 
-    protected function addTransaction(int $fromId, int $toId, float $amount): void
+    protected function addTransaction(int $fromId, int $toId, int $amount): void
     {
         if ($this->arrayFormat) {
             $this->balance[] = ['from' => $fromId, 'to' => $toId, 'amount' => $amount];
