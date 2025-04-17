@@ -13,6 +13,10 @@ class Group extends Model
 
     protected $fillable = ['title', 'description', 'date', 'view_token', 'edit_token'];
 
+    protected $casts = [
+        'date' => 'date',
+    ];
+
     public static function boot()
     {
         parent::boot();

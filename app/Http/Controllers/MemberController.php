@@ -6,6 +6,7 @@ use App\Http\Requests\MemberStoreRequest;
 use App\Http\Requests\MemberUpdateRequest;
 use App\Http\Resources\MemberResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class MemberController extends Controller
 {
@@ -21,11 +22,9 @@ class MemberController extends Controller
         $validatedData = $request->validated();
 
         if (isset($validatedData[0]) && is_array($validatedData[0])) {
-            // Multiple members
             $members = $group->members()->createMany($validatedData);
             return MemberResource::collection($members);
         } else {
-            // Single member
             $member = $group->members()->create($validatedData);
             return new MemberResource($member);
         }

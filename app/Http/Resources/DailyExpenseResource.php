@@ -9,7 +9,7 @@ class DailyExpenseResource extends JsonResource
     {
         return [
             'date' => $this->expense_date,
-            'total' => $this->total_amount,
+            'total' => (int) $this->total_amount,
         ];
     }
 }
