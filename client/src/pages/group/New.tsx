@@ -1,10 +1,12 @@
-import { Button } from "@/components/ui/Button";
-import { Card, CardFooter, CardTitle } from "@/components/ui/Card";
-import InputField from "@/components/ui/InputField";
-import MemberForm from "@/components/ui/MemberForm";
+import { createGroup } from "@/api/endpoints/groups";
+import { Button } from "@/components/common/Button";
+import { Card, CardTitle } from "@/components/common/Card";
+import DatePicker from "@/components/common/DatePicker";
+import InputField from "@/components/common/InputField";
+import MemberListWithForm from "@/components/features/members/MemberListWithForm";
 import { useTranslations } from "@/hooks/useTranslations";
-import { createGroup } from "@/utils/api";
-import { createGroupSchema, Group } from "@/utils/schema";
+import { GroupRequest } from "@/types/api/group";
+import { GroupInput, GroupInputSchema } from "@/types/schemas/group";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "react-aria-components";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
@@ -19,13 +21,14 @@ function New() {
         formState: { errors, isSubmitting },
         setError,
         clearErrors,
-    } = useForm<Group>({
+    } = useForm<GroupInput>({
         defaultValues: {
             title: "",
             description: "",
+            date: undefined,
             members: [],
         },
-        resolver: zodResolver(createGroupSchema(t)),
+        resolver: zodResolver(GroupInputSchema(t)),
         mode: "onBlur",
     });
     const {
@@ -38,14 +41,14 @@ function New() {
         name: "members",
     });
 
-    const onSubmit = async (data: Group) => {
+    const onSubmit = async (data: GroupRequest) => {
         clearErrors();
         try {
-            const result = await createGroup(data); // Returns JSON directly
+            const result = await createGroup(data);
             navigate(`/${result.data.edit_token}`);
         } catch (err: any) {
             // Handle API errors (e.g., validation errors)
-            if (err.message === "Failed to fetch /api/create") {
+            if (err.message.startsWith("Failed to fetch")) {
                 const errorData = err.cause || {};
                 if (errorData.errors) {
                     Object.entries(errorData.errors).forEach(
@@ -91,6 +94,19 @@ function New() {
                 />
                 <Controller
                     control={control}
+                    name="date"
+                    render={({ field }) => (
+                        <DatePicker
+                            label={t("attributes.date")}
+                            {...field}
+                            isInvalid={!!errors.date}
+                            error={errors?.date}
+                            // disabled={disabled || isSubmitting}
+                        />
+                    )}
+                />
+                <Controller
+                    control={control}
                     name="description"
                     render={({ field }) => (
                         <InputField
@@ -109,7 +125,7 @@ function New() {
                     <div className="text-red-500">{errors.members.message}</div>
                 )}
             </Form>
-            <MemberForm
+            <MemberListWithForm
                 members={members}
                 onAdd={append}
                 onUpdate={update}

@@ -10,7 +10,10 @@
         "phone": "Phone",
         "ratio": "Companion Count",
         "title": "Title",
-        "bankAccount": "Bank Account"
+        "date": "Date",
+        "amount": "Amount",
+        "bankAccount": "Bank Account",
+        "ratio_unit": "Person"
     },
     "messages": {
         "dataResponse": "Data received after :delay seconds",
@@ -30,6 +33,10 @@
     },
     "ui": {
         "add": "Add",
+        "addExpense": "Add Expense",
+        "addMember": "Add Member",
+        "addPayment": "Add Payment",
+        "newExpense": "New Expense",
         "authenticated": "Authenticated",
         "cancel": "Cancel",
         "clear": "Clear",
@@ -48,6 +55,7 @@
         },
         "members": "Members",
         "member": "Member",
+        "selectMembers": "Select members",
         "loading": "Loading",
         "loadingTranslations": "Loading translations",
         "login": "Login",
@@ -58,7 +66,9 @@
         "select": "Select",
         "submissionError": "An error occurred while submitting the form",
         "tokenRequired": "Token is required",
-        "yes": "Yes"
+        "yes": "Yes",
+        "all": "All",
+        "dashboard": "Dashboard"
     },
     "validation": {
         "min": "The :attribute must be at least :min",

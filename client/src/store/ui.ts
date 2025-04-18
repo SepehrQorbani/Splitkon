@@ -7,8 +7,7 @@ type Direction = "rtl" | "ltr";
 type Theme = "dark" | "light" | "system";
 
 interface Translations {
-    ui: Record<string, string>;
-    [key: string]: Record<string, string> | undefined;
+    [key: string]: Record<string, string | Record<string, string>> | undefined;
 }
 
 const translationsMap: Record<Language, Translations> = { en, fa };

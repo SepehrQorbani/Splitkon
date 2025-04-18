@@ -1,4 +1,4 @@
-import { Navbar } from "@/components/ui/Navbar";
+import { Navbar } from "@/components/features/navigation/Navbar";
 import { useTranslations } from "@/hooks/useTranslations";
 import React from "react";
 import { Outlet } from "react-router";
