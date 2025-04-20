@@ -34,13 +34,12 @@ function MemberCard({ member }: MemberCardProps) {
     const status = netAmount === 0 ? 0 : netAmount > 0 ? 1 : 2;
     const statusText =
         netAmount === 0 ? "تسویه" : netAmount > 0 ? "طلبکار" : "بدهکار";
-    // text-success text-error text-muted bg-success bg-error bg-muted
-    const statusColor = ["muted", "success", "error"];
+    const statusColor = ["action", "success", "error"] as const;
     const statusPercent =
         netAmount === 0
             ? 100
             : member.payment_balance
-            ? (netAmount / member.payment_balance) * 100
+            ? Math.abs(netAmount / member.payment_balance) * 100
             : 0;
 
     return (
@@ -94,10 +93,7 @@ function MemberCard({ member }: MemberCardProps) {
                         </div>
 
                         <div
-                            className={cn(
-                                "flex flex-col gap-1.5 ms-auto items-end",
-                                `text-${statusColor[status]}`
-                            )}
+                            className={`flex flex-col gap-1.5 ms-auto items-end text-${statusColor[status]}`}
                         >
                             <div className="text-sm font-medium">
                                 <span
@@ -185,6 +181,9 @@ function MemberCard({ member }: MemberCardProps) {
                             className="mt-6 space-y-1"
                             label={statusText}
                             value={statusPercent}
+                            color={statusColor[status]}
+                            remainFlag={statusPercent < 100}
+                            percentageMode="plain"
                         />
                     </motion.div>
 

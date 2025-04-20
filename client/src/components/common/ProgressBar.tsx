@@ -7,15 +7,34 @@ import {
 
 interface ProgressChartProps extends AriaProgressBarProps {
     label?: string;
+    color?: "action" | "error" | "success" | "warning";
     className?: string;
+    remainFlag?: boolean;
+    percentageMode?: "plain" | "tooltip";
 }
-function ProgressBar({ label, className, ...props }: ProgressChartProps) {
+function ProgressBar({
+    label,
+    color = "action",
+    className,
+    remainFlag = false,
+    percentageMode = "tooltip",
+    ...props
+}: ProgressChartProps) {
     return (
-        <AriaProgressBar className={cn("text-xs pe-2", className)} {...props}>
+        <AriaProgressBar
+            className={cn("text-[10px] pe-2", className)}
+            {...props}
+        >
             {({ percentage, valueText }) => (
                 <>
-                    <div className="w-full text-right mb-1.5 relative">
-                        {percentage && (
+                    <div
+                        className={cn(
+                            "w-full text-right relative",
+                            percentageMode === "tooltip" && "mb-1.5"
+                        )}
+                    >
+                        {percentage !== undefined &&
+                        percentageMode === "tooltip" ? (
                             <div className="-me-2">
                                 <span
                                     className="bg-action text-action-fg px-1 rounded-sm relative z-1 shadow"
@@ -37,17 +56,29 @@ function ProgressBar({ label, className, ...props }: ProgressChartProps) {
                                     {valueText}
                                 </span>
                             </div>
+                        ) : (
+                            <div className="flex justify-between ms-2">
+                                <span>{valueText}</span>
+                                <Label>{label}</Label>
+                            </div>
                         )}
-                        {/* <Label>{label}</Label> */}
                     </div>
                     <div
-                        className="h-1.5 box-content relative w-full rounded-full border border-border p-1 flex"
+                        className="h-1.5 box-content relative w-full rounded-full border border-border p-1 flex gap-1"
                         dir="ltr"
                     >
                         <div
-                            className="rounded-full bg-action/40 border border-action"
+                            className={`rounded-full border bg-${color}/40 border-${color}`}
                             style={{ width: percentage + "%" }}
                         />
+                        {remainFlag &&
+                            percentage !== undefined &&
+                            percentage !== 100 && (
+                                <div
+                                    className={`rounded-full border bg-action/40 border-action`}
+                                    style={{ width: 100 - percentage + "%" }}
+                                />
+                            )}
                     </div>
                 </>
             )}
