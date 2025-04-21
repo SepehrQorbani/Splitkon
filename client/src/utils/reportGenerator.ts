@@ -78,7 +78,7 @@ function formatSection(title: string, content: string): string {
 }
 
 export function generateGroupSummary(
-    data: { group: Group; summary: Summary },
+    data: { group: Group | null; summary: Summary },
     getMember: (id: number) => Member | undefined,
     options: ReportOptions
 ): string {
@@ -127,11 +127,12 @@ export function generateGroupSummary(
         .join("\n");
 
     const report = [
-        formatHeader(
-            data.group.title,
-            "GROUP",
-            formatDate(data.group.date, options.locale)
-        ),
+        data.group &&
+            formatHeader(
+                data.group.title,
+                "GROUP",
+                formatDate(data.group.date, options.locale)
+            ),
         formatSection(t("ui.groupStatus"), status),
         `${t("ui.balancePercent")}: ${balancePercent}%`,
         formatSection(

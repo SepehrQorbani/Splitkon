@@ -25,7 +25,6 @@ export function useReportGenerator() {
         currency,
         t,
     };
-    if (!group) return;
 
     return {
         generateExpenseReport: (expense: Expense) =>
