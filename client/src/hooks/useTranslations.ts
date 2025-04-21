@@ -13,20 +13,23 @@ export const useTranslations = () => {
         const parts = key.split(".");
         let message: string = key; // Fallback to key
 
-        if (parts.length > 1) {
-            let current: any = translations;
-            for (const part of parts) {
-                current = current?.[part];
-                if (!current) break;
-            }
-            message = typeof current === "string" ? current : key;
-        } else {
-            if (translations.ui?.[key]) {
-                message = translations.ui[key] as string;
+        let current: any = translations;
+        for (const part of parts) {
+            if (!current || typeof current !== "object") break;
+            current = current[part];
+        }
+
+        if (typeof current === "string") {
+            message = current;
+        } else if (parts.length === 1) {
+            const uiTranslation = translations.ui?.[key];
+            if (typeof uiTranslation === "string") {
+                message = uiTranslation;
             } else {
                 for (const category in translations) {
-                    if (translations[category]?.[key]) {
-                        message = translations[category][key] as string;
+                    const value = translations[category]?.[key];
+                    if (category !== "ui" && typeof value === "string") {
+                        message = value;
                         break;
                     }
                 }
