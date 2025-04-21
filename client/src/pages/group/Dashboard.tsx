@@ -2,12 +2,14 @@ import { getSummary } from "@/api/endpoints/summary";
 import { AsyncContent } from "@/components/common/AsyncContent";
 import Avatar from "@/components/common/Avatar";
 import { Card } from "@/components/common/Card";
+import CopyButton from "@/components/common/CopyButton";
 import ProgressBar from "@/components/common/ProgressBar";
 import ToggleButtonGroup from "@/components/common/ToggleButtonGroup";
 import BalanceCard from "@/components/features/balance/BalanceCard";
 import { DashboardSkeleton } from "@/components/features/dashboard/DashboardSkeleton";
 import MembersStatusChart from "@/components/features/dashboard/MembersStatusChart";
 import { DailyExpenseChart } from "@/components/features/expenses/DailyExpenseChart";
+import { useReportGenerator } from "@/hooks/useReportGenerator";
 import { useTranslations } from "@/hooks/useTranslations";
 import { useMemberStore } from "@/store/members";
 import { Summary } from "@/types/schemas/summary";
@@ -72,6 +74,7 @@ function Dashboard() {
             setSummary(summaryData.summary);
         }
     }, [summaryData]);
+    const { generateGroupReport } = useReportGenerator();
 
     const memberBalanceDistribution = summary?.net_balances.reduce(
         (prev, curr) => {
@@ -116,8 +119,13 @@ function Dashboard() {
                                 <div className="flex items-center gap-2">
                                     <IconAbacus className="w-12 h-12 p-3 rounded text-muted-fg bg-action" />
                                     <div className="flex flex-col justify-between">
-                                        <h4 className="text-sm font-medium ">
-                                            {t("groupStatus")}
+                                        <h4 className="text-sm font-medium space-x-1">
+                                            <span>{t("groupStatus")}</span>
+                                            <CopyButton
+                                                data={generateGroupReport(
+                                                    summary
+                                                )}
+                                            />
                                         </h4>
                                         <div>
                                             <span className="text-sm">
@@ -403,7 +411,10 @@ function Dashboard() {
                                     </div>
                                     <div className="space-y-2 p-2 ms-2 text-sm">
                                         {activity.expenses.map((expense) => (
-                                            <div className="flex items-center justify-between gap-1 border border-border rounded p-2">
+                                            <div
+                                                key={expense.id}
+                                                className="flex items-center justify-between gap-1 border border-border rounded p-2"
+                                            >
                                                 <div className="space-y-2">
                                                     <div className="flex items-center gap-1">
                                                         <IconCash className="size-6 p-1 rounded-full bg-action text-action-fg" />

@@ -19,6 +19,9 @@ import {
 import { motion } from "motion/react";
 import { Heading } from "react-aria-components";
 import MemberForm from "./MemberForm";
+import { useReportGenerator } from "@/hooks/useReportGenerator";
+import CopyButton from "@/components/common/CopyButton";
+import { useMemberStore } from "@/store/members";
 
 type MemberCardProps = {
     member: Member;
@@ -33,8 +36,14 @@ function MemberCard({ member }: MemberCardProps) {
     const netAmount = member.payment_balance - member.total_expenses;
     const status = netAmount === 0 ? 0 : netAmount > 0 ? 1 : 2;
     const statusText =
-        netAmount === 0 ? "تسویه" : netAmount > 0 ? "طلبکار" : "بدهکار";
+        netAmount === 0
+            ? t("statusSettled")
+            : netAmount > 0
+            ? t("statusCreditor")
+            : t("statusDebtor");
     const statusColor = ["action", "success", "error"] as const;
+    const { generateMemberReport } = useReportGenerator();
+
     const statusPercent =
         netAmount === 0
             ? 100
@@ -81,6 +90,13 @@ function MemberCard({ member }: MemberCardProps) {
                                             variant: "ghost",
                                             className: "h-8 w-8 p-1",
                                         }}
+                                    />
+                                    <CopyButton
+                                        data={generateMemberReport(
+                                            member,
+                                            memberBalance
+                                        )}
+                                        className="h-8 w-8 p-1"
                                     />
                                 </div>
                             </Heading>

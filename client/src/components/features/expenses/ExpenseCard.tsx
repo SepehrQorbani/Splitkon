@@ -15,6 +15,8 @@ import { motion } from "motion/react";
 import { Drawer } from "@/components/common/Drawer";
 import ExpandableCard from "@/components/common/ExpandableCard";
 import { ExpenseForm } from "./ExpenseForm";
+import { useReportGenerator } from "@/hooks/useReportGenerator";
+import CopyButton from "@/components/common/CopyButton";
 
 type ExpenseCardProps = {
     expense: Expense;
@@ -23,6 +25,7 @@ type ExpenseCardProps = {
 function ExpenseCard({ expense }: ExpenseCardProps) {
     const { t } = useTranslations();
     const id = `expense-${expense.id}`;
+    const { generateExpenseReport } = useReportGenerator();
 
     const spender = expense.spender;
 
@@ -48,7 +51,7 @@ function ExpenseCard({ expense }: ExpenseCardProps) {
                             aria-label="Expense Card"
                         >
                             <div className="flex items-center justify-between border-b border-border">
-                                <div className="flex items-center text-sm font-medium px-1">
+                                <div className="flex items-center text-sm font-medium px-1 gap-1">
                                     {expense.title}
                                     <Drawer
                                         triggerLabel={
@@ -66,6 +69,10 @@ function ExpenseCard({ expense }: ExpenseCardProps) {
                                             variant: "ghost",
                                             className: "h-8 w-8 p-1",
                                         }}
+                                    />
+                                    <CopyButton
+                                        data={generateExpenseReport(expense)}
+                                        className="h-8 w-8 p-1"
                                     />
                                 </div>
                                 <div className="text-xs text-gray-500 px-1">

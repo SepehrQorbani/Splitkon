@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { Member } from "./members";
 
-type ExpenseMember = Member & {
+export type ExpenseMember = Member & {
     share: number;
     remainder: number;
 };
