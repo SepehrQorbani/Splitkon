@@ -107,7 +107,7 @@ function Dashboard() {
         <AsyncContent
             isLoading={isLoading}
             error={error}
-            loadingMessage={t("ui.loadingDashboard")}
+            loadingMessage={t("ui.loading")}
             errorMessage={t("ui.errorFetchingData")}
             skeleton={<DashboardSkeleton />}
         >

@@ -61,7 +61,7 @@ export const DailyExpenseChart: React.FC<DailyExpenseChartProps> = ({
         <AsyncContent
             isLoading={isLoading}
             error={error}
-            loadingMessage={t("ui.loadingChart")}
+            loadingMessage={t("ui.loading")}
             errorMessage={t("ui.errorFetchingData")}
             skeleton={<Skeleton className="w-full h-40" aria-hidden="true" />}
         >

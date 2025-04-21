@@ -33,14 +33,14 @@ function ShareForm() {
         <div className="space-y-4 mb-4">
             {editUrl && (
                 <div className="space-y-1">
-                    <h3 className="text-muted text-xs">{t("لینک ویرایش")}</h3>
+                    <h3 className="text-muted text-xs">{t("ui.editLink")}</h3>
                     <div className="flex items-center justify-between gap-2 rounded border border-border p-1">
                         <div className="flex gap-1">
                             {canShare(shareData(editUrl)) && (
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    aria-label={t("اشتراک لینک ویرایش")}
+                                    aria-label={t("ui.editLinkShare")}
                                     onPress={() => share(shareData(editUrl))}
                                 >
                                     <IconShare className="size-4" />
@@ -50,7 +50,7 @@ function ShareForm() {
                             <Button
                                 variant="ghost"
                                 size="icon"
-                                aria-label={t("کپی لینک ویرایش")}
+                                aria-label={t("ui.editLinkCopy")}
                                 onPress={() => copyToClipboard(editUrl)}
                             >
                                 {isCopied(editUrl) ? (
@@ -71,20 +71,20 @@ function ShareForm() {
                         !isCopied(editUrl) &&
                         !isShared && (
                             <p className="text-red-500 text-xs">
-                                {t("خطا در عملیات")}
+                                {t("ui.errorInAction")}
                             </p>
                         )}
                 </div>
             )}
             <div className="space-y-1">
-                <h3 className="text-muted text-xs">{t("لینک نمایش")}</h3>
+                <h3 className="text-muted text-xs">{t("ui.viewLink")}</h3>
                 <div className="flex items-center justify-between gap-2 rounded border border-border p-1">
                     <div className="flex gap-1">
                         {canShare(shareData(viewUrl)) && (
                             <Button
                                 variant="ghost"
                                 size="icon"
-                                aria-label={t("اشتراک لینک نمایش")}
+                                aria-label={t("ui.viewLinkShare")}
                                 onPress={() => share(shareData(viewUrl))}
                             >
                                 <IconShare className="size-4" />
@@ -94,7 +94,7 @@ function ShareForm() {
                         <Button
                             variant="ghost"
                             size="icon"
-                            aria-label={t("کپی لینک نمایش")}
+                            aria-label={t("ui.viewLinkCopy")}
                             onPress={() => copyToClipboard(viewUrl)}
                         >
                             {isCopied(viewUrl) ? (
@@ -115,7 +115,7 @@ function ShareForm() {
                     !isCopied(viewUrl) &&
                     !isShared && (
                         <p className="text-red-500 text-xs">
-                            {t("خطا در عملیات")}
+                            {t("ui.errorInAction")}
                         </p>
                     )}
             </div>

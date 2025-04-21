@@ -56,6 +56,6 @@ export const RepayInputSchema = (
         })
         .refine((data) => data.from_id !== data.to_id, {
             message: t("validation.from_to_different"),
-            path: ["to_id"], // Show error on to_id field
+            path: ["to_id"],
         });
 export type RepayInput = z.infer<ReturnType<typeof RepayInputSchema>>;
