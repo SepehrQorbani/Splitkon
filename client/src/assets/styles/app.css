@@ -211,8 +211,8 @@
         --color-action-faint: var(--color-gray-600);
         --color-action-subtle: var(--color-gray-300);
         --color-action-soft: var(--color-gray-200);
-        --color-action-bold: var(--color-gray-50);
-        --color-action-strong: var(--color-gray-900);
+        --color-action-bold: var(--color-gray-100);
+        --color-action-strong: var(--color-gray-50);
         --color-action-fg: var(--color-gray-950);
 
         --color-muted: var(--color-gray-500);

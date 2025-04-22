@@ -25,7 +25,107 @@
             "title": "About Us"
         },
         "home": {
-            "title": "Home Page"
+            "title": "Home Page",
+            "hero": {
+                "title": "Manage Group Expenses Easily!",
+                "subtitle": "Add expenses, split costs, and settle up without registration.",
+                "createGroup": "Create Your Group Now",
+                "howItWorks": "See How It Works"
+            },
+            "features": {
+                "title": "Key Features",
+                "subtitle": "Everything you need to manage group expenses",
+                "cards": {
+                    "createGroup": {
+                        "title": "Create Groups Easily",
+                        "description": "Create your group in seconds, add members, and start tracking expenses."
+                    },
+                    "trackExpenses": {
+                        "title": "Track & Split Expenses",
+                        "description": "Add expenses, split them equally or custom, and see who owes whom."
+                    },
+                    "realtime": {
+                        "title": "Real-time Dashboard",
+                        "description": "See total expenses and member statuses at a glance."
+                    },
+                    "multilingual": {
+                        "title": "Multi-language Support",
+                        "description": "Use the app in Persian or English, with more languages coming soon!"
+                    },
+                    "noLogin": {
+                        "title": "No Login Required",
+                        "description": "Access your group with a unique link—no registration needed."
+                    },
+                    "bankInfo": {
+                        "title": "Bank Information",
+                        "description": "Store member card numbers for easier settlements."
+                    }
+                }
+            },
+            "howItWorks": {
+                "title": "How It Works?",
+                "subtitle": "Manage group expenses in three easy steps",
+                "steps": {
+                    "create": {
+                        "title": "Create Your Group",
+                        "description": "Enter your group name and add members."
+                    },
+                    "track": {
+                        "title": "Add Expenses",
+                        "description": "Enter expenses, select who paid, and split the cost."
+                    },
+                    "settle": {
+                        "title": "Track & Settle Up",
+                        "description": "See who owes whom and settle up easily."
+                    }
+                }
+            },
+            "useCases": {
+                "title": "Who Can Use It?",
+                "subtitle": "A solution for any group, any size",
+                "cards": {
+                    "travelers": {
+                        "title": "Group Travelers",
+                        "description": "Planning a group trip? Split food, accommodation, and other costs."
+                    },
+                    "roommates": {
+                        "title": "Roommates",
+                        "description": "Living together? Manage rent, bills, and groceries easily."
+                    },
+                    "events": {
+                        "title": "Event Organizers",
+                        "description": "Having an event? Handle catering, decor, and ticket expenses."
+                    }
+                }
+            },
+            "testimonials": {
+                "title": "What Our Users Say?",
+                "quotes": {
+                    "traveler": {
+                        "text": "This app made our group trip so much easier!",
+                        "author": "Sarah",
+                        "role": "Traveler"
+                    },
+                    "roommate": {
+                        "text": "We don't argue about bills anymore!",
+                        "author": "Ali",
+                        "role": "Roommate"
+                    },
+                    "organizer": {
+                        "text": "Perfect for managing gathering expenses!",
+                        "author": "Mary",
+                        "role": "Event Organizer"
+                    }
+                }
+            },
+            "footer": {
+                "description": "Manage group expenses with ease",
+                "usefulLinks": "Useful Links",
+                "contact": "Contact Us",
+                "privacy": "Privacy",
+                "socialMedia": "Social Media",
+                "copyright": "All rights reserved"
+            }
         },
         "new": {
             "title": "Create a New Group"

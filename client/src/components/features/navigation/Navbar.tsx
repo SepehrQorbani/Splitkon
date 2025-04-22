@@ -35,7 +35,7 @@ export const Navbar: React.FC = () => {
             <nav className="sticky top-0 left-0 right-0 flex items-center justify-between px-4 py-2 min-h-16 bg-surface border-b border-border text-xs md:text-base z-999999">
                 <div className="flex items-center gap-4">
                     <NavLink to="/" className="text-brand text-xl font-bold">
-                        Dongemoon
+                        SplitKon
                     </NavLink>
                     <NavItems
                         navItems={navItems}
