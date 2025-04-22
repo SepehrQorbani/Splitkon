@@ -445,7 +445,10 @@ function Dashboard() {
                                             </div>
                                         ))}
                                         {activity.repays.map((repay) => (
-                                            <div className="flex items-center justify-between border border-border rounded p-2">
+                                            <div
+                                                key={repay.id}
+                                                className="flex items-center justify-between border border-border rounded p-2"
+                                            >
                                                 <div className="flex items-center gap-2">
                                                     <IconTransfer className="size-6 p-1 rounded-full bg-action text-action-fg" />
                                                     <div className="flex items-center text-xs">
