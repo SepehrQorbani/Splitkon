@@ -70,7 +70,8 @@ class SummaryService
             'total_expenses' => (int) $group->expenses_sum_amount ?? 0,
             'total_repays' => (int) $group->repays_sum_amount ?? 0,
             'total_outstanding' => $totalOutstanding,
-            'balance_status' => $netBalances->every(fn($balance) => $balance['net'] === 0) ? 'تراز شده' : 'تراز نشده',
+            //TODO: change balance_status
+            'balance_status' => $netBalances->every(fn($balance) => $balance['net'] === 0) ? __('messages.balanceStatus.settled') : __('messages.balanceStatus.unsettled'),
             'net_balances' => $netBalances->toArray(),
             'pending_balances' => $pendingBalances,
             'recent_activity' => $recentActivities,
