@@ -14,11 +14,12 @@ import { NavLink } from "react-router";
 import { NavItems } from "@/components/features/navigation/NavItems";
 
 export const Navbar: React.FC = () => {
-    const { language, setLanguage, theme, setTheme } = useUIStore();
+    const { language, setLocale, theme, setTheme } = useUIStore();
     const { t } = useTranslations();
 
     const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
-    const toggleLanguage = () => setLanguage(language === "en" ? "fa" : "en");
+    const toggleLanguage = () =>
+        setLocale(language === "en" ? "fa-IR-u-ca-persian" : "en-US");
 
     const navItems = [
         { path: "/", label: t("pages.home.title"), icon: IconHome },

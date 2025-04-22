@@ -1,17 +1,19 @@
 import { useUIStore } from "@/store";
+import { formatDate } from "@/utils/date";
 
 interface TranslationOptions {
     [key: string]: string;
 }
 export const useTranslations = () => {
+    const locale = useUIStore((state) => state.locale);
     const language = useUIStore((state) => state.language);
     const direction = useUIStore((state) => state.direction);
-    const setLanguage = useUIStore((state) => state.setLanguage);
+    const setLocale = useUIStore((state) => state.setLocale);
     const translations = useUIStore((state) => state.translations);
 
     const t = (key: string, options: TranslationOptions = {}): string => {
         const parts = key.split(".");
-        let message: string = key; // Fallback to key
+        let message: string = key;
 
         let current: any = translations;
         for (const part of parts) {
@@ -60,5 +62,23 @@ export const useTranslations = () => {
         return message;
     };
 
-    return { language, direction, setLanguage, t };
+    const formatNumber = (
+        number: number,
+        options?: Intl.NumberFormatOptions
+    ) => {
+        return new Intl.NumberFormat(locale.toString(), options).format(number);
+    };
+
+    return {
+        locale,
+        language,
+        direction,
+        setLocale,
+        t,
+        formatDate: (
+            date: Date | string,
+            options?: Intl.DateTimeFormatOptions
+        ) => formatDate(locale.toString(), date, options),
+        formatNumber,
+    };
 };

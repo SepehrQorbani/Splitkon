@@ -36,22 +36,10 @@ const Dashboard = lazy(() => import("./Dashboard"));
 // const Home = lazy(() => import("../Home"));
 // const About = lazy(() => import("../About"));
 
-const LoadingFallback = () => (
-    <div className="flex items-center justify-center p-4">
-        <span className="text-gray-500">Loading...</span>
-    </div>
-);
-function PersianDate(date: Date) {
-    return new Intl.DateTimeFormat("fa-IR-u-ca-persian", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-    }).format(date);
-}
 const GroupIndex = () => {
     const { pathname } = useLocation();
     const { token } = useParams<{ token: string }>();
-    const { t } = useTranslations();
+    const { t, formatDate } = useTranslations();
     const { setGroup } = useGroupStore();
     const setMembers = useMemberStore((state) => state.setMembers);
     const { data, isLoading, error } = useQuery({
@@ -101,7 +89,7 @@ const GroupIndex = () => {
                             <div className="flex items-center gap-1">
                                 <IconCalendar className="w-4 h-4 text-muted" />
                                 <span className="text-xs text-muted">
-                                    {PersianDate(new Date(group.date))}
+                                    {formatDate(new Date(group.date))}
                                 </span>
                             </div>
                         </div>

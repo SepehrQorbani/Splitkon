@@ -17,7 +17,7 @@ type RepayCardProps = {
 };
 
 function RepayCard({ repay }: RepayCardProps) {
-    const { t, direction } = useTranslations();
+    const { t, direction, formatDate } = useTranslations();
     const id = `repay-${repay.id}`;
 
     const fromMember = repay.from;
@@ -65,9 +65,7 @@ function RepayCard({ repay }: RepayCardProps) {
                                 />
                             </div>
                             <div className="text-xs text-gray-500">
-                                {new Date(repay.date).toLocaleDateString(
-                                    "fa-IR"
-                                )}
+                                {formatDate(new Date(repay.date))}
                             </div>
                         </div>
                         <div className="flex flex-col items-end gap-1">

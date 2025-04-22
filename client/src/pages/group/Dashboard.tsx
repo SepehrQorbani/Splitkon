@@ -35,23 +35,9 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-function PersianDate(date: Date) {
-    return new Intl.DateTimeFormat("fa-IR-u-ca-persian", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-    }).format(date);
-}
+
 function Dashboard() {
-    const { t } = useTranslations();
-    // const { group } = useGroupStore();
-    // const {
-    //     isCopied,
-    //     error: copyError,
-    //     copyToClipboard,
-    // } = useCopyToClipboard({
-    //     timeout: 2000,
-    // });
+    const { t, formatDate } = useTranslations();
     const { token } = useParams();
     const { direction } = useTranslations();
     const members = useMemberStore((state) => state.members);
@@ -404,7 +390,7 @@ function Dashboard() {
                                     <div className="flex items-center">
                                         <IconTimelineEvent className="size-4 text-action" />
                                         <span className="text-xs ps-1">
-                                            {PersianDate(
+                                            {formatDate(
                                                 new Date(activity.date)
                                             )}
                                         </span>

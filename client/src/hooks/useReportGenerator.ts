@@ -13,11 +13,9 @@ import { Member } from "@/types/schemas/members";
 import { useGroupStore } from "@/store/group";
 
 export function useReportGenerator() {
-    const language = useUIStore((state) => state.language);
     const group = useGroupStore((state) => state.group);
     const getMember = useMemberStore((state) => state.getMember);
-    const locale = language === "fa" ? "fa-IR" : "en-US";
-    const { t } = useTranslations();
+    const { t, locale, language } = useTranslations();
     const currency = language === "fa" ? "تومان" : "IRR";
 
     const options = {

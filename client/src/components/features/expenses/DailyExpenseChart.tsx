@@ -24,20 +24,12 @@ interface DailyExpenseChartProps {
     onChartTypeChange: (type: "area" | "line" | "bar") => void;
 }
 
-function PersianDate(date: string) {
-    return new Intl.DateTimeFormat("fa-IR-u-ca-persian", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-    }).format(new Date(date));
-}
-
 export const DailyExpenseChart: React.FC<DailyExpenseChartProps> = ({
     groupToken,
     chartType,
     onChartTypeChange,
 }) => {
-    const { t } = useTranslations();
+    const { t, formatDate } = useTranslations();
 
     const {
         data: dailyExpenses,
@@ -92,7 +84,7 @@ export const DailyExpenseChart: React.FC<DailyExpenseChartProps> = ({
                                 <XAxis
                                     className="[&_text]:fill-action/60 text-xs [&_line]:stroke-action-soft"
                                     dataKey="date"
-                                    tickFormatter={(date) => PersianDate(date)}
+                                    tickFormatter={(date) => formatDate(date)}
                                     tickLine={false}
                                     interval="preserveStartEnd"
                                 />
@@ -121,7 +113,7 @@ export const DailyExpenseChart: React.FC<DailyExpenseChartProps> = ({
                                         `${value.toLocaleString()} تومان`,
                                         t("ui.total"),
                                     ]}
-                                    labelFormatter={(date) => PersianDate(date)}
+                                    labelFormatter={(date) => formatDate(date)}
                                 />
                                 <defs>
                                     <linearGradient
@@ -170,7 +162,7 @@ export const DailyExpenseChart: React.FC<DailyExpenseChartProps> = ({
                                 <XAxis
                                     className="[&_text]:fill-action/60 text-xs [&_line]:stroke-action-soft"
                                     dataKey="date"
-                                    tickFormatter={(date) => PersianDate(date)}
+                                    tickFormatter={(date) => formatDate(date)}
                                     tickLine={false}
                                     interval="equidistantPreserveStart"
                                 />
@@ -195,7 +187,7 @@ export const DailyExpenseChart: React.FC<DailyExpenseChartProps> = ({
                                         `${value.toLocaleString()} تومان`,
                                         t("ui.total"),
                                     ]}
-                                    labelFormatter={(date) => PersianDate(date)}
+                                    labelFormatter={(date) => formatDate(date)}
                                 />
                                 <Line
                                     type="monotone"
@@ -222,7 +214,7 @@ export const DailyExpenseChart: React.FC<DailyExpenseChartProps> = ({
                                 <XAxis
                                     className="[&_text]:fill-action/60 text-xs [&_line]:stroke-action-soft"
                                     dataKey="date"
-                                    tickFormatter={(date) => PersianDate(date)}
+                                    tickFormatter={(date) => formatDate(date)}
                                     tickLine={false}
                                 />
                                 <YAxis
@@ -246,7 +238,7 @@ export const DailyExpenseChart: React.FC<DailyExpenseChartProps> = ({
                                         `${value.toLocaleString()} تومان`,
                                         t("ui.total"),
                                     ]}
-                                    labelFormatter={(date) => PersianDate(date)}
+                                    labelFormatter={(date) => formatDate(date)}
                                 />
                                 <Bar
                                     dataKey="total"

@@ -23,7 +23,7 @@ type ExpenseCardProps = {
 };
 
 function ExpenseCard({ expense }: ExpenseCardProps) {
-    const { t } = useTranslations();
+    const { t, locale, formatDate } = useTranslations();
     const id = `expense-${expense.id}`;
     const { generateExpenseReport } = useReportGenerator();
 
@@ -77,9 +77,7 @@ function ExpenseCard({ expense }: ExpenseCardProps) {
                                 </div>
                                 <div className="text-xs text-gray-500 px-1">
                                     <span>
-                                        {new Date(
-                                            expense.date
-                                        ).toLocaleDateString("fa-IR")}
+                                        {formatDate(new Date(expense.date))}
                                     </span>
                                 </div>
                             </div>

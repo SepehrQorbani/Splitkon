@@ -5,30 +5,34 @@ import { create } from "zustand";
 type Language = "fa" | "en";
 type Direction = "rtl" | "ltr";
 type Theme = "dark" | "light" | "system";
+type Locale = Intl.Locale;
 
+type NestedTranslations = string | { [key: string]: NestedTranslations };
 interface Translations {
-    [key: string]: Record<string, string | Record<string, string>> | undefined;
+    [key: string]: Record<string, NestedTranslations> | undefined;
 }
 
 const translationsMap: Record<Language, Translations> = { en, fa };
 
 interface UIState {
+    locale: Locale;
     language: Language;
     direction: Direction;
     translations: Translations;
     theme: Theme;
     setTheme: (theme: Theme) => void;
-    setLanguage: (lang: Language) => void;
+    setLocale: (locale: string) => void;
 }
 
 export const useUIStore = create<UIState>((set) => {
+    const savedLocale = localStorage.getItem("locale") || "fa-IR";
     const savedTheme = localStorage.getItem("theme") as Theme | null;
-    const savedLang = localStorage.getItem("language") as Language | null;
     const isSystemDark = window.matchMedia(
         "(prefers-color-scheme: dark)"
     ).matches;
     const initialTheme = savedTheme || "system";
-    const initialLang = savedLang || "fa";
+    const initialLocale = new Intl.Locale(savedLocale);
+    const initialLang = initialLocale.language as Language;
     const initialDir = initialLang === "fa" ? "rtl" : "ltr";
 
     document.documentElement.dir = initialDir;
@@ -43,6 +47,7 @@ export const useUIStore = create<UIState>((set) => {
     }
 
     return {
+        locale: initialLocale,
         language: initialLang,
         direction: initialDir,
         translations: translationsMap[initialLang],
@@ -56,16 +61,18 @@ export const useUIStore = create<UIState>((set) => {
             localStorage.setItem("theme", theme);
             set({ theme });
         },
-        setLanguage: (lang: Language) => {
-            const newDir = lang === "fa" ? "rtl" : "ltr";
-            document.documentElement.lang = lang;
+        setLocale: (locale: string) => {
+            const newLocale = new Intl.Locale(locale);
+            const newDir = newLocale.language === "fa" ? "rtl" : "ltr";
+            document.documentElement.lang = newLocale.language;
             document.documentElement.dir = newDir;
-            localStorage.setItem("language", lang);
+            localStorage.setItem("locale", locale);
 
             set({
-                language: lang,
+                locale: newLocale,
+                language: newLocale.language as Language,
                 direction: newDir,
-                translations: translationsMap[lang],
+                translations: translationsMap[newLocale.language as Language],
             });
         },
     };

@@ -4,6 +4,7 @@ import { Member } from "@/types/schemas/members";
 import { BalanceTransaction } from "@/types/schemas/balance";
 import { Repay } from "@/types/schemas/repays";
 import { Group } from "@/types/schemas/group";
+import { formatDate } from "./date";
 
 // Constants for Emojis
 const EMOJIS = {
@@ -30,15 +31,10 @@ const EMOJIS = {
 const UNKNOWN_MEMBER_NAME = "[Unknown Member]";
 
 export interface ReportOptions {
-    locale: string;
+    locale: Intl.Locale;
     currency: string;
     t: (key: string) => string;
 }
-
-const defaultOptions: Partial<ReportOptions> = {
-    locale: "fa-IR",
-    currency: "تومان",
-};
 
 function formatCurrency(amount: number, options: ReportOptions): string {
     return `${amount.toLocaleString(options.locale)} ${options.currency}`;
@@ -54,14 +50,6 @@ function getMemberStatusEmoji(amount: number): string {
     if (amount > 0) return EMOJIS.MEMBER_CREDITOR;
     if (amount < 0) return EMOJIS.MEMBER_DEBTOR;
     return EMOJIS.MEMBER_SETTLED;
-}
-
-function formatDate(date: string, locale: string): string {
-    return new Intl.DateTimeFormat(locale, {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-    }).format(new Date(date));
 }
 
 function formatHeader(
@@ -131,7 +119,7 @@ export function generateGroupSummary(
             formatHeader(
                 data.group.title,
                 "GROUP",
-                formatDate(data.group.date, options.locale)
+                formatDate(options.locale.toString(), data.group.date)
             ),
         formatSection(t("ui.groupStatus"), status),
         `${t("ui.balancePercent")}: ${balancePercent}%`,
@@ -200,8 +188,8 @@ ${EMOJIS.DOLLAR} ${t("attributes.amount")}: ${formatCurrency(
                 options
             )}
 ${EMOJIS.DATE} ${t("attributes.date")}: ${formatDate(
-                expense.date,
-                options.locale
+                options.locale.toString(),
+                expense.date
             )}
 ${EMOJIS.MEMBER} ${t("attributes.spender")}: ${expense.spender.name}`
         ),
@@ -302,8 +290,8 @@ ${EMOJIS.AMOUNT} ${t("attributes.amount")}: ${formatCurrency(
                 options
             )}
 ${EMOJIS.DATE} ${t("attributes.date")}: ${formatDate(
-                repay.date,
-                options.locale
+                options.locale.toString(),
+                repay.date
             )}`
         ),
         repay.description
