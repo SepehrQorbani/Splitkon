@@ -21,7 +21,7 @@ import { Heading } from "react-aria-components";
 import MemberForm from "./MemberForm";
 import { useReportGenerator } from "@/hooks/useReportGenerator";
 import CopyButton from "@/components/common/CopyButton";
-import { useMemberStore } from "@/store/members";
+import Amount from "@/components/common/Amount";
 
 type MemberCardProps = {
     member: Member;
@@ -47,9 +47,11 @@ function MemberCard({ member }: MemberCardProps) {
     const statusPercent =
         netAmount === 0
             ? 100
-            : member.payment_balance
+            : netAmount > 0 && member.payment_balance !== 0
             ? Math.abs(netAmount / member.payment_balance) * 100
-            : 0;
+            : netAmount < 0 && member.total_expenses !== 0
+            ? Math.abs(netAmount / member.total_expenses) * 100
+            : 100;
 
     return (
         <ExpandableCard id={id}>
@@ -112,15 +114,7 @@ function MemberCard({ member }: MemberCardProps) {
                             className={`flex flex-col gap-1.5 ms-auto items-end text-${statusColor[status]}`}
                         >
                             <div className="text-sm font-medium">
-                                <span
-                                    className="text-sm font-medium px-1"
-                                    dir="ltr"
-                                >
-                                    {netAmount.toLocaleString()}
-                                </span>
-                                <span className="text-xs text-gray-500">
-                                    تومان
-                                </span>
+                                <Amount amount={netAmount} />
                             </div>
                             <div className="flex items-center justify-end gap-1 text-xs text-gray-500">
                                 <IconReplace className="w-3 h-3" />
@@ -135,7 +129,7 @@ function MemberCard({ member }: MemberCardProps) {
                         <div className="border border-border-subtle rounded-md py-1 px-2 flex items-center gap-2 justify-between">
                             <div className="flex items-center gap-1 text-xs text-muted">
                                 <IconCreditCard className="w-3 h-3" />
-                                <span>شماره کارت</span>
+                                <span>{t("bank_info")}</span>
                             </div>
                             <div>
                                 <span className="text-sm">
@@ -155,14 +149,14 @@ function MemberCard({ member }: MemberCardProps) {
                         >
                             <div className="flex items-center justify-between">
                                 <h3 className="text-sm font-medium text-muted">
-                                    جزئیات حساب
+                                    {t("details")}
                                 </h3>
                                 <div>
                                     <Drawer
                                         triggerLabel={
                                             <IconTransform className="w-4 h-4" />
                                         }
-                                        title="پرداخت"
+                                        title={t("repay")}
                                         children={({ close }) => (
                                             <RepaysForm
                                                 defaultValue={{
@@ -217,12 +211,7 @@ function MemberCard({ member }: MemberCardProps) {
                                     <span>مجموع هزینه ها:</span>
                                 </div>
                                 <div>
-                                    <span>
-                                        {member.total_expenses.toLocaleString()}
-                                    </span>
-                                    <span className="ps-1 text-muted">
-                                        تومان
-                                    </span>
+                                    <Amount amount={member.total_expenses} />
                                 </div>
                             </div>
                             <div className="flex items-center justify-between gap-2 p-2 text-xs rounded bg-muted/10 border border-border">
@@ -231,12 +220,7 @@ function MemberCard({ member }: MemberCardProps) {
                                     <span>مجموع پرداخت ها:</span>
                                 </div>
                                 <div>
-                                    <span>
-                                        {member.payment_balance.toLocaleString()}
-                                    </span>
-                                    <span className="ps-1 text-muted">
-                                        تومان
-                                    </span>
+                                    <Amount amount={member.payment_balance} />
                                 </div>
                             </div>
                         </motion.div>

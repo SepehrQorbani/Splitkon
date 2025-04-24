@@ -17,6 +17,7 @@ import ExpandableCard from "@/components/common/ExpandableCard";
 import { ExpenseForm } from "./ExpenseForm";
 import { useReportGenerator } from "@/hooks/useReportGenerator";
 import CopyButton from "@/components/common/CopyButton";
+import Amount from "@/components/common/Amount";
 
 type ExpenseCardProps = {
     expense: Expense;
@@ -57,7 +58,7 @@ function ExpenseCard({ expense }: ExpenseCardProps) {
                                         triggerLabel={
                                             <IconPencilDollar className="w-4 h-4 text-muted" />
                                         }
-                                        title="افزودن اعضا"
+                                        title={t("expense")}
                                         children={({ close }) => (
                                             <ExpenseForm
                                                 onSubmitSuccess={close}
@@ -94,13 +95,7 @@ function ExpenseCard({ expense }: ExpenseCardProps) {
                                     </div>
                                 )}
                                 <div className="text-sm font-medium">
-                                    <span>
-                                        {expense.amount.toLocaleString()}
-                                    </span>
-                                    <span className="text-xs text-gray-500">
-                                        {" "}
-                                        تومان
-                                    </span>
+                                    <Amount amount={expense.amount} />
                                 </div>
                             </div>
                         </motion.div>
@@ -204,13 +199,11 @@ function ExpenseCard({ expense }: ExpenseCardProps) {
                                                                 </div>
                                                             </div>
                                                             <div className="text-sm">
-                                                                <span>
-                                                                    {member.share.toLocaleString()}
-                                                                </span>
-                                                                <span className="text-xs text-gray-500">
-                                                                    {" "}
-                                                                    تومان
-                                                                </span>
+                                                                <Amount
+                                                                    amount={
+                                                                        member.share
+                                                                    }
+                                                                />
                                                             </div>
                                                         </div>
                                                     )

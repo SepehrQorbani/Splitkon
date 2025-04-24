@@ -1,4 +1,5 @@
 import { getSummary } from "@/api/endpoints/summary";
+import Amount from "@/components/common/Amount";
 import { AsyncContent } from "@/components/common/AsyncContent";
 import Avatar from "@/components/common/Avatar";
 import { Card } from "@/components/common/Card";
@@ -129,12 +130,9 @@ function Dashboard() {
                                     </h4>
                                     <div className="flex gap-1 items-center">
                                         <IconPlusEqual className="size-4 text-muted-soft" />
-                                        <span className="text-sm">
-                                            {summary.total_outstanding.toLocaleString()}
-                                        </span>
-                                        <span className="text-xs ps-1 text-muted">
-                                            تومان
-                                        </span>
+                                        <Amount
+                                            amount={summary.total_outstanding}
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -231,18 +229,15 @@ function Dashboard() {
                                             </span>
                                         </div>
                                         <div>
-                                            <span className="text-sm" dir="ltr">
-                                                {summary.net_balances
-                                                    .find(
+                                            <Amount
+                                                amount={
+                                                    summary.net_balances.find(
                                                         (balance) =>
                                                             balance?.id ===
                                                             member?.id
-                                                    )
-                                                    ?.net.toLocaleString()}
-                                            </span>
-                                            <span className="text-xs ps-1 text-muted">
-                                                تومان
-                                            </span>
+                                                    )?.net || 0
+                                                }
+                                            />
                                         </div>
                                         <span
                                             className={cn(
@@ -298,31 +293,26 @@ function Dashboard() {
                                         </div>
 
                                         <div>
-                                            <span className="text-sm">
-                                                {summary.total_expenses.toLocaleString()}
-                                            </span>
-                                            <span className="text-xs ps-1 text-muted">
-                                                تومان
-                                            </span>
+                                            <Amount
+                                                amount={summary.total_expenses}
+                                            />
                                         </div>
                                     </Card>
                                     <Card className="flex-row items-center justify-between gap-2 px-4 py-2">
                                         <div className="flex items-center gap-2">
                                             <IconCongruentTo className="size-4" />
                                             <h4 className="text-sm font-medium ">
-                                                {t("average")}{" "}
-                                                <span className="">روزانه</span>
+                                                {t("dailyAverage")}
                                             </h4>
                                         </div>
 
                                         <div className="text-sm">
-                                            {Math.round(
-                                                summary.total_expenses /
-                                                    summary.days_count
-                                            ).toLocaleString()}
-                                            <span className="text-xs ps-1 text-muted">
-                                                تومان
-                                            </span>
+                                            <Amount
+                                                amount={Math.round(
+                                                    summary.total_expenses /
+                                                        summary.days_count
+                                                )}
+                                            />
                                         </div>
                                     </Card>
                                 </div>
@@ -432,10 +422,11 @@ function Dashboard() {
                                                 </div>
                                                 <div className="space-y-2">
                                                     <div className="h-6">
-                                                        {expense.amount}
-                                                        <span className="text-xs ps-1 text-muted">
-                                                            تومان
-                                                        </span>
+                                                        <Amount
+                                                            amount={
+                                                                expense.amount
+                                                            }
+                                                        />
                                                     </div>
                                                     <div className="flex items-center gap-1 justify-end text-xs">
                                                         <IconPercentage className="size-3 text-muted" />
@@ -470,10 +461,9 @@ function Dashboard() {
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    {repay.amount}
-                                                    <span className="text-xs ps-1 text-muted">
-                                                        تومان
-                                                    </span>
+                                                    <Amount
+                                                        amount={repay.amount}
+                                                    />
                                                 </div>
                                             </div>
                                         ))}

@@ -5,6 +5,12 @@ export const GroupSchema = z.object({
     id: z.number(),
     title: z.string(),
     date: z.string(),
+    currency: z.object({
+        code: z.string(),
+        display_unit: z.string(),
+        conversion_factor: z.number(),
+        decimal_precision: z.number(),
+    }),
     description: z.string().optional(),
     view_token: z.string(),
     edit_token: z.string().nullable(),

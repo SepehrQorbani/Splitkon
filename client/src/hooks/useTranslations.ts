@@ -1,4 +1,4 @@
-import { useUIStore } from "@/store";
+import { useGroupStore, useUIStore } from "@/store";
 import { formatDate } from "@/utils/date";
 
 interface TranslationOptions {
@@ -10,6 +10,7 @@ export const useTranslations = () => {
     const direction = useUIStore((state) => state.direction);
     const setLocale = useUIStore((state) => state.setLocale);
     const translations = useUIStore((state) => state.translations);
+    const currency = useGroupStore((state) => state.currency);
 
     const t = (key: string, options: TranslationOptions = {}): string => {
         const parts = key.split(".");
@@ -69,6 +70,16 @@ export const useTranslations = () => {
         return new Intl.NumberFormat(locale.toString(), options).format(number);
     };
 
+    function formatCurrency(
+        amount: number,
+        options?: Intl.NumberFormatOptions
+    ): [string, string] {
+        if (!currency?.display_unit) {
+            return [amount.toLocaleString(locale), ""];
+        }
+        return [amount.toLocaleString(locale), t(currency?.display_unit)];
+    }
+
     return {
         locale,
         language,
@@ -80,5 +91,6 @@ export const useTranslations = () => {
             options?: Intl.DateTimeFormatOptions
         ) => formatDate(locale.toString(), date, options),
         formatNumber,
+        formatCurrency,
     };
 };

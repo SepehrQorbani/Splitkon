@@ -11,6 +11,7 @@ import { Drawer } from "@/components/common/Drawer";
 import { RepaysForm } from "@/components/features/repays/RepayForm";
 import { PendingBalance } from "@/types/schemas/summary";
 import { useTranslations } from "@/hooks/useTranslations";
+import Amount from "@/components/common/Amount";
 
 type BalanceCardProps = {
     transaction: BalanceTransaction | PendingBalance;
@@ -18,7 +19,7 @@ type BalanceCardProps = {
 };
 
 function BalanceCard({ transaction, member }: BalanceCardProps) {
-    const { direction } = useTranslations();
+    const { direction, t } = useTranslations();
     const getMember = useMemberStore((state) => state.getMember);
     let fromMember = member;
     if (!member && "from" in transaction && transaction.from) {
@@ -45,7 +46,9 @@ function BalanceCard({ transaction, member }: BalanceCardProps) {
                             )}
                         </>
                     ) : (
-                        <span>{transaction.amount > 0 ? "به" : "از"}</span>
+                        <span>
+                            {transaction.amount > 0 ? t("to") : t("from")}
+                        </span>
                     )}
                     <Avatar
                         size="sm"
@@ -56,14 +59,11 @@ function BalanceCard({ transaction, member }: BalanceCardProps) {
                 </div>
                 <div className="flex items-center gap-2">
                     <div>
-                        <span dir="ltr">
-                            {Math.abs(transaction.amount).toLocaleString()}
-                        </span>
-                        <span className="ps-1 text-muted">تومان</span>
+                        <Amount amount={Math.abs(transaction.amount)} />
                     </div>
                     <Drawer
                         triggerLabel={<IconTransform className="size-3" />}
-                        title="بازپرداخت"
+                        title={t("repay")}
                         children={({ close }) => (
                             <RepaysForm
                                 defaultValue={{

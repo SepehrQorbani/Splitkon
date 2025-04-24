@@ -11,6 +11,7 @@ import { motion } from "motion/react";
 import { Drawer } from "@/components/common/Drawer";
 import ExpandableCard from "@/components/common/ExpandableCard";
 import { RepaysForm } from "./RepayForm";
+import Amount from "@/components/common/Amount";
 
 type RepayCardProps = {
     repay: Repay;
@@ -70,11 +71,7 @@ function RepayCard({ repay }: RepayCardProps) {
                         </div>
                         <div className="flex flex-col items-end gap-1">
                             <div className="text-sm font-medium">
-                                <span>{repay.amount.toLocaleString()}</span>
-                                <span className="text-xs text-gray-500">
-                                    {" "}
-                                    تومان
-                                </span>
+                                <Amount amount={repay.amount} />
                             </div>
                         </div>
                     </motion.div>
@@ -145,13 +142,7 @@ function RepayCard({ repay }: RepayCardProps) {
                                         </div>
                                     </div>
                                     <div className="text-sm">
-                                        <span>
-                                            {repay.amount.toLocaleString()}
-                                        </span>
-                                        <span className="text-xs text-gray-500">
-                                            {" "}
-                                            تومان
-                                        </span>
+                                        <Amount amount={repay.amount} />
                                     </div>
                                 </div>
                                 <div className="flex items-center justify-between gap-2 p-2 rounded bg-muted/10 border border-border">
@@ -171,13 +162,7 @@ function RepayCard({ repay }: RepayCardProps) {
                                         </div>
                                     </div>
                                     <div className="text-sm">
-                                        <span>
-                                            {repay.amount.toLocaleString()}
-                                        </span>
-                                        <span className="text-xs text-gray-500">
-                                            {" "}
-                                            تومان
-                                        </span>
+                                        <Amount amount={repay.amount} />
                                     </div>
                                 </div>
                             </div>

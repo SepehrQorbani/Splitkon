@@ -13,10 +13,16 @@ import {
     LineChart,
     ResponsiveContainer,
     Tooltip,
+    TooltipProps,
     XAxis,
     YAxis,
 } from "recharts";
 import { Skeleton } from "../../common/Skeleton";
+import Amount from "@/components/common/Amount";
+import {
+    NameType,
+    ValueType,
+} from "recharts/types/component/DefaultTooltipContent";
 
 interface DailyExpenseChartProps {
     groupToken: string;
@@ -103,18 +109,7 @@ export const DailyExpenseChart: React.FC<DailyExpenseChartProps> = ({
                                         `${(value / 1000).toLocaleString()}`
                                     }
                                 />
-                                <Tooltip
-                                    labelClassName="text-muted"
-                                    wrapperClassName="text-xs rounded shadow border-border bg-surface"
-                                    cursor={{
-                                        opacity: 0.5,
-                                    }}
-                                    formatter={(value: number) => [
-                                        `${value.toLocaleString()} تومان`,
-                                        t("ui.total"),
-                                    ]}
-                                    labelFormatter={(date) => formatDate(date)}
-                                />
+                                <Tooltip content={<ChartTooltip />} />
                                 <defs>
                                     <linearGradient
                                         id="fillColor"
@@ -177,18 +172,7 @@ export const DailyExpenseChart: React.FC<DailyExpenseChartProps> = ({
                                         `${(value / 1000).toLocaleString()}`
                                     }
                                 />
-                                <Tooltip
-                                    labelClassName="text-muted"
-                                    wrapperClassName="text-xs rounded shadow border-border bg-surface"
-                                    cursor={{
-                                        opacity: 0.5,
-                                    }}
-                                    formatter={(value: number) => [
-                                        `${value.toLocaleString()} تومان`,
-                                        t("ui.total"),
-                                    ]}
-                                    labelFormatter={(date) => formatDate(date)}
-                                />
+                                <Tooltip content={<ChartTooltip />} />
                                 <Line
                                     type="monotone"
                                     dataKey="total"
@@ -228,18 +212,7 @@ export const DailyExpenseChart: React.FC<DailyExpenseChartProps> = ({
                                         `${(value / 1000).toLocaleString()}`
                                     }
                                 />
-                                <Tooltip
-                                    labelClassName="text-muted"
-                                    wrapperClassName="text-xs rounded shadow border-border bg-surface"
-                                    cursor={{
-                                        opacity: 0.5,
-                                    }}
-                                    formatter={(value: number) => [
-                                        `${value.toLocaleString()} تومان`,
-                                        t("ui.total"),
-                                    ]}
-                                    labelFormatter={(date) => formatDate(date)}
-                                />
+                                <Tooltip content={<ChartTooltip />} />
                                 <Bar
                                     dataKey="total"
                                     className="fill-action shadow"
@@ -257,4 +230,27 @@ export const DailyExpenseChart: React.FC<DailyExpenseChartProps> = ({
             )}
         </AsyncContent>
     );
+};
+
+const ChartTooltip = ({
+    active,
+    payload,
+    label,
+}: TooltipProps<ValueType, NameType>) => {
+    const { direction, formatDate } = useTranslations();
+    if (active && payload && payload.length && payload[0].value) {
+        return (
+            <div
+                className="text-xs rounded shadow border-border bg-surface p-2 space-y-2"
+                dir={direction}
+            >
+                <div className="text-muted">{formatDate(label)}</div>
+                <div>
+                    <Amount amount={+payload[0].value} />
+                </div>
+            </div>
+        );
+    }
+
+    return null;
 };
