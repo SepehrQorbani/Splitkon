@@ -213,6 +213,8 @@
         "select": "Select",
         "selectMember": "Select a person",
         "selectMembers": "Select members",
+        "settled": "Settled",
+        "unSettled": "No Settled",
         "splitBy": "Split By",
         "status": "Status",
         "statusCreditor": "Creditor",

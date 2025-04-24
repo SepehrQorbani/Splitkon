@@ -40,10 +40,8 @@ function formatCurrency(amount: number, options: ReportOptions): string {
     return `${amount.toLocaleString(options.locale)} ${options.currency}`;
 }
 
-function getStatusEmoji(status: "تراز شده" | "تراز نشده"): string {
-    return status === "تراز شده"
-        ? EMOJIS.STATUS_BALANCED
-        : EMOJIS.STATUS_UNBALANCED;
+function getStatusEmoji(status: boolean): string {
+    return status ? EMOJIS.STATUS_BALANCED : EMOJIS.STATUS_UNBALANCED;
 }
 
 function getMemberStatusEmoji(amount: number): string {
@@ -71,8 +69,8 @@ export function generateGroupSummary(
     options: ReportOptions
 ): string {
     const { t } = options;
-    const status = `${getStatusEmoji(data.summary.balance_status)} ${
-        data.summary.balance_status
+    const status = `${getStatusEmoji(data.summary.total_outstanding === 0)} ${
+        data.summary.total_outstanding === 0 ? t("settled") : t("unSettled")
     }`;
 
     const balancePercent = Math.round(

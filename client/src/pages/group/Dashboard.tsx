@@ -116,7 +116,9 @@ function Dashboard() {
                                         </h4>
                                         <div>
                                             <span className="text-sm">
-                                                {summary.balance_status}
+                                                {summary.total_outstanding === 0
+                                                    ? t("settled")
+                                                    : t("unSettled")}
                                             </span>
                                         </div>
                                     </div>

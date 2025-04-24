@@ -22,7 +22,6 @@ export type Summary = {
     total_expenses: number;
     total_repays: number;
     total_outstanding: number;
-    balance_status: "تراز شده" | "تراز نشده";
     net_balances: NetBalance[];
     pending_balances: PendingBalance[];
     recent_activity: {

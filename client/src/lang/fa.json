@@ -213,6 +213,8 @@
         "select": "انتخاب",
         "selectMember": "یک نفر را انتخاب کنید",
         "selectMembers": "انتخاب اعضا",
+        "settled": "تسویه شده",
+        "unSettled": "تسویه نشده",
         "splitBy": "تقسیم بر",
         "status": "وضعیت",
         "statusCreditor": "طلبکار",
