@@ -13,6 +13,7 @@ class GroupResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'date' => $this->date,
+            'currency' => $this->currency,
             'description' => $this->description,
             'view_token' => $this->view_token,
             'edit_token' => $this->edit_token,

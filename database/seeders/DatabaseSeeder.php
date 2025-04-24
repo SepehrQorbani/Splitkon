@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
                 'id' => 1,
                 'title' => 'سفر نوروز',
                 'date' => '2025-04-08 08:00:00',
+                'currency' => '{"code":"IRR","display_unit":"toman","conversion_factor":10,"decimal_precision":0}',
                 'description' => 'سفر به شهرهای شمالی ایران و فیلان',
                 'view_token' => 'pKIyLydc7fj8fIH6QfnNYrYOshTjwTVL',
                 'edit_token' => 'aaHcr5w5ywXiajnqN1w9n07ttvzd0nXu',

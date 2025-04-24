@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\Currency;
 use App\Models\Concerns\LogsActivity;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -24,6 +25,7 @@ class Expense extends Model
 
     protected $casts = [
         'date' => 'date',
+        'amount' => Currency::class,
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
@@ -36,6 +38,7 @@ class Expense extends Model
     public function members()
     {
         return $this->belongsToMany(Member::class)
+            ->using(ExpenseMember::class)
             ->withPivot(['ratio', 'share', 'remainder'])
             ->withTimestamps();
     }

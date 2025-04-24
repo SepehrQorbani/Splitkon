@@ -32,7 +32,7 @@ class ActivityService
         }
         if ($action === 'update') {
             return [
-                'before' => Arr::except(array_intersect_key($model->getOriginal(), $model->getDirty()), 'updated_at'),
+                'before' => Arr::except(array_intersect_key($model->getRawOriginal(), $model->getDirty()), 'updated_at'),
                 'after' => Arr::except($model->getDirty(), 'updated_at'),
             ];
         }

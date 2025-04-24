@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\Currency;
 use App\Models\Concerns\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +16,8 @@ class Member extends Model
 
     protected $casts = [
         'bank_info' => 'array',
+        'total_expenses' => Currency::class,
+        'payment_balance' => Currency::class,
     ];
 
     public function group()
@@ -25,6 +28,8 @@ class Member extends Model
     public function expenses()
     {
         return $this->belongsToMany(Expense::class)
-            ->withPivot('ratio', 'share', 'remainder');
+            ->using(ExpenseMember::class)
+            ->withPivot('ratio', 'share', 'remainder')
+            ->withTimestamps();
     }
 }

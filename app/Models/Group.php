@@ -11,10 +11,15 @@ class Group extends Model
 {
     use LogsActivity;
 
-    protected $fillable = ['title', 'description', 'date', 'view_token', 'edit_token'];
+    protected $fillable = ['title', 'description', 'date', 'currency', 'view_token', 'edit_token'];
+
+    protected $attributes = [
+        'currency' => '{"code":"IRR","display_unit":"toman","conversion_factor":10,"decimal_precision":0}',
+    ];
 
     protected $casts = [
         'date' => 'date',
+        'currency' => 'array',
     ];
 
     public static function boot()

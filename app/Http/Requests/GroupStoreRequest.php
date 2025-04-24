@@ -22,6 +22,11 @@ class GroupStoreRequest extends FormRequest
         return array_merge([
             'title' => 'required|string|max:255',
             'date' => 'required|date',
+            'currency' => 'sometimes|array',
+            'currency.code' => 'required_with:currency|string',
+            'currency.display_unit' => 'required_with:currency|string',
+            'currency.conversion_factor' => 'required_with:currency|numeric|min:1',
+            'currency.decimal_precision' => 'required_with:currency|integer|min:0',
             'description' => 'nullable|string|max:1000',
             'members' => 'nullable|array',
         ], $prefixedMemberRules);

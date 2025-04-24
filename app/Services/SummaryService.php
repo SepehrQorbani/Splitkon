@@ -2,9 +2,17 @@
 namespace App\Services;
 
 use App\Models\Group;
+use App\Casts\Currency;
 
 class SummaryService
 {
+    private Currency $currencyCast;
+
+    public function __construct()
+    {
+        $this->currencyCast = new Currency();
+    }
+
     public function getFinancialSummary(Group $group): array
     {
         $group->load([
@@ -61,14 +69,18 @@ class SummaryService
         });
         $recentActivities = collect($recentActivities)->sortByDesc('date')->values()->all();
 
+        // Cast monetary values using Currency cast
+        $totalExpenses = (int) $group->expenses_sum_amount ?? 0;
+        $totalRepays = (int) $group->repays_sum_amount ?? 0;
+
         return [
             'members_count' => $group->members->count(),
             'expenses_count' => $group->expenses_count,
             'days_count' => ceil($group->date->diffInDays()),
             'repays_count' => $group->repays_count,
             'total_ratio' => $totalRatio,
-            'total_expenses' => (int) $group->expenses_sum_amount ?? 0,
-            'total_repays' => (int) $group->repays_sum_amount ?? 0,
+            'total_expenses' => $this->currencyCast->get(null, null, $totalExpenses, []),
+            'total_repays' => $this->currencyCast->get(null, null, $totalRepays, []),
             'total_outstanding' => $totalOutstanding,
             //TODO: change balance_status
             'balance_status' => $netBalances->every(fn($balance) => $balance['net'] === 0) ? __('messages.balanceStatus.settled') : __('messages.balanceStatus.unsettled'),

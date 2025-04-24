@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\Currency;
 use App\Models\Concerns\LogsActivity;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Concerns\RecordsActivity;
@@ -21,6 +22,7 @@ class Repay extends Model
 
     protected $casts = [
         'date' => 'date',
+        'amount' => Currency::class,
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
