@@ -82,8 +82,6 @@ class SummaryService
             'total_expenses' => $this->currencyCast->get(null, null, $totalExpenses, []),
             'total_repays' => $this->currencyCast->get(null, null, $totalRepays, []),
             'total_outstanding' => $totalOutstanding,
-            //TODO: change balance_status
-            'balance_status' => $netBalances->every(fn($balance) => $balance['net'] === 0) ? __('messages.balanceStatus.settled') : __('messages.balanceStatus.unsettled'),
             'net_balances' => $netBalances->toArray(),
             'pending_balances' => $pendingBalances,
             'recent_activity' => $recentActivities,
