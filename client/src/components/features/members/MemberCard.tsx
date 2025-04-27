@@ -22,12 +22,14 @@ import MemberForm from "./MemberForm";
 import { useReportGenerator } from "@/hooks/useReportGenerator";
 import CopyButton from "@/components/common/CopyButton";
 import Amount from "@/components/common/Amount";
+import { usePermissions } from "@/hooks/usePermissions";
 
 type MemberCardProps = {
     member: Member;
 };
 
 function MemberCard({ member }: MemberCardProps) {
+    const { canEdit } = usePermissions();
     const { t } = useTranslations();
     const balance = useBalanceStore((state) => state.balance);
 
@@ -74,25 +76,27 @@ function MemberCard({ member }: MemberCardProps) {
                             <Heading slot="title">
                                 <div className="text-sm font-medium flex items-center gap-1">
                                     {member.name}
-                                    <Drawer
-                                        triggerLabel={
-                                            <IconUserEdit className="w-4 h-4" />
-                                        }
-                                        title="ویرایش"
-                                        children={({ close }) => (
-                                            <MemberForm
-                                                onSubmitSuccess={(data) => {
-                                                    close();
-                                                }}
-                                                member={member}
-                                            />
-                                        )}
-                                        buttonProps={{
-                                            intent: "neutral",
-                                            variant: "ghost",
-                                            className: "h-8 w-8 p-1",
-                                        }}
-                                    />
+                                    {canEdit && (
+                                        <Drawer
+                                            triggerLabel={
+                                                <IconUserEdit className="w-4 h-4" />
+                                            }
+                                            title="ویرایش"
+                                            children={({ close }) => (
+                                                <MemberForm
+                                                    onSubmitSuccess={(data) => {
+                                                        close();
+                                                    }}
+                                                    member={member}
+                                                />
+                                            )}
+                                            buttonProps={{
+                                                intent: "neutral",
+                                                variant: "ghost",
+                                                className: "h-8 w-8 p-1",
+                                            }}
+                                        />
+                                    )}
                                     <CopyButton
                                         data={generateMemberReport(
                                             member,
@@ -152,28 +156,30 @@ function MemberCard({ member }: MemberCardProps) {
                                     {t("details")}
                                 </h3>
                                 <div>
-                                    <Drawer
-                                        triggerLabel={
-                                            <IconTransform className="w-4 h-4" />
-                                        }
-                                        title={t("repay")}
-                                        children={({ close }) => (
-                                            <RepaysForm
-                                                defaultValue={{
-                                                    from_id: member.id,
-                                                }}
-                                                onSubmitSuccess={(data) => {
-                                                    console.log(data);
-                                                    close();
-                                                }}
-                                            />
-                                        )}
-                                        buttonProps={{
-                                            intent: "neutral",
-                                            // variant: "outline",
-                                            className: "h-8 w-8 p-1",
-                                        }}
-                                    />
+                                    {canEdit && (
+                                        <Drawer
+                                            triggerLabel={
+                                                <IconTransform className="w-4 h-4" />
+                                            }
+                                            title={t("repay")}
+                                            children={({ close }) => (
+                                                <RepaysForm
+                                                    defaultValue={{
+                                                        from_id: member.id,
+                                                    }}
+                                                    onSubmitSuccess={(data) => {
+                                                        console.log(data);
+                                                        close();
+                                                    }}
+                                                />
+                                            )}
+                                            buttonProps={{
+                                                intent: "neutral",
+                                                // variant: "outline",
+                                                className: "h-8 w-8 p-1",
+                                            }}
+                                        />
+                                    )}
                                 </div>
                             </div>
                             {memberBalance?.map((transaction, index) => (

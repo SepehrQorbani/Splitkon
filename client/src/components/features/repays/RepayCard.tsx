@@ -12,12 +12,14 @@ import { Drawer } from "@/components/common/Drawer";
 import ExpandableCard from "@/components/common/ExpandableCard";
 import { RepaysForm } from "./RepayForm";
 import Amount from "@/components/common/Amount";
+import { usePermissions } from "@/hooks/usePermissions";
 
 type RepayCardProps = {
     repay: Repay;
 };
 
 function RepayCard({ repay }: RepayCardProps) {
+    const { canEdit } = usePermissions();
     const { t, direction, formatDate } = useTranslations();
     const id = `repay-${repay.id}`;
 
@@ -47,23 +49,25 @@ function RepayCard({ repay }: RepayCardProps) {
                         <div className="flex flex-col gap-1">
                             <div className="flex items-center text-sm font-medium">
                                 {t("repayment")}
-                                <Drawer
-                                    triggerLabel={
-                                        <IconPencilDollar className="w-4 h-4 text-muted" />
-                                    }
-                                    title={t("edit_repayment")}
-                                    children={({ close }) => (
-                                        <RepaysForm
-                                            onSubmitSuccess={close}
-                                            repay={repay}
-                                        />
-                                    )}
-                                    buttonProps={{
-                                        intent: "neutral",
-                                        variant: "ghost",
-                                        className: "h-8 w-8 p-1",
-                                    }}
-                                />
+                                {canEdit && (
+                                    <Drawer
+                                        triggerLabel={
+                                            <IconPencilDollar className="w-4 h-4 text-muted" />
+                                        }
+                                        title={t("edit_repayment")}
+                                        children={({ close }) => (
+                                            <RepaysForm
+                                                onSubmitSuccess={close}
+                                                repay={repay}
+                                            />
+                                        )}
+                                        buttonProps={{
+                                            intent: "neutral",
+                                            variant: "ghost",
+                                            className: "h-8 w-8 p-1",
+                                        }}
+                                    />
+                                )}
                             </div>
                             <div className="text-xs text-gray-500">
                                 {formatDate(new Date(repay.date))}

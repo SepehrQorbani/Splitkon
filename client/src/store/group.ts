@@ -1,5 +1,6 @@
 import { Group } from "@/types/schemas/group";
 import { create } from "zustand";
+import { usePermissionStore } from "./permissions";
 
 interface GroupStore {
     group: Group | null;
@@ -12,5 +13,6 @@ export const useGroupStore = create<GroupStore>((set, get) => ({
     setGroup: (group: Group) => {
         set({ group });
         set({ currency: group.currency });
+        usePermissionStore.getState().setPermissions(group);
     },
 }));

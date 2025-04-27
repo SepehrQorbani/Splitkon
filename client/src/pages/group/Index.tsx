@@ -31,6 +31,7 @@ import { Route, Routes, useLocation, useParams } from "react-router";
 import ExpensesIndex from "../expenses/Index";
 import MembersIndex from "../members/Index";
 import RepaysIndex from "../repays";
+import { usePermissions } from "@/hooks/usePermissions";
 
 const Dashboard = lazy(() => import("./Dashboard"));
 // const Home = lazy(() => import("../Home"));
@@ -39,6 +40,7 @@ const Dashboard = lazy(() => import("./Dashboard"));
 const GroupIndex = () => {
     const { pathname } = useLocation();
     const { token } = useParams<{ token: string }>();
+    const { canEdit } = usePermissions();
     const { t, formatDate } = useTranslations();
     const { setGroup } = useGroupStore();
     const setMembers = useMemberStore((state) => state.setMembers);
@@ -101,42 +103,52 @@ const GroupIndex = () => {
                                 children={({ close }) => <ShareForm />}
                                 buttonProps={{ intent: "neutral" }}
                             />
-                            <Drawer
-                                triggerLabel={
-                                    <IconUsersPlus className="w-4 h-4" />
-                                }
-                                title="افزودن اعضا"
-                                children={({ close }) => (
-                                    <MemberForm onSubmitSuccess={close} />
-                                )}
-                                buttonProps={{ intent: "neutral" }}
-                            />
-                            <Drawer
-                                triggerLabel={
-                                    <IconTransform className="w-4 h-4" />
-                                }
-                                title="بازپرداخت"
-                                children={({ close }) => (
-                                    <RepaysForm onSubmitSuccess={close} />
-                                )}
-                                buttonProps={{ intent: "neutral" }}
-                            />
-                            <Drawer
-                                triggerLabel={
-                                    <>
-                                        {/* <IconTransactionDollar className="w-4 h-4" />
-                                <IconCashBanknotePlus className="w-4 h-4" /> */}
-                                        <IconCashPlus className="w-4 h-4" />
-                                        <span className="hidden md:inline">
-                                            {t("ui.newExpense")}
-                                        </span>
-                                    </>
-                                }
-                                title="هزینه جدید"
-                                children={({ close }) => (
-                                    <ExpenseForm onSubmitSuccess={close} />
-                                )}
-                            />
+                            {canEdit && (
+                                <>
+                                    <Drawer
+                                        triggerLabel={
+                                            <IconUsersPlus className="w-4 h-4" />
+                                        }
+                                        title="افزودن اعضا"
+                                        children={({ close }) => (
+                                            <MemberForm
+                                                onSubmitSuccess={close}
+                                            />
+                                        )}
+                                        buttonProps={{ intent: "neutral" }}
+                                    />
+                                    <Drawer
+                                        triggerLabel={
+                                            <IconTransform className="w-4 h-4" />
+                                        }
+                                        title="بازپرداخت"
+                                        children={({ close }) => (
+                                            <RepaysForm
+                                                onSubmitSuccess={close}
+                                            />
+                                        )}
+                                        buttonProps={{ intent: "neutral" }}
+                                    />
+                                    <Drawer
+                                        triggerLabel={
+                                            <>
+                                                {/* <IconTransactionDollar className="w-4 h-4" />
+                                    <IconCashBanknotePlus className="w-4 h-4" /> */}
+                                                <IconCashPlus className="w-4 h-4" />
+                                                <span className="hidden md:inline">
+                                                    {t("ui.newExpense")}
+                                                </span>
+                                            </>
+                                        }
+                                        title="هزینه جدید"
+                                        children={({ close }) => (
+                                            <ExpenseForm
+                                                onSubmitSuccess={close}
+                                            />
+                                        )}
+                                    />
+                                </>
+                            )}
                         </div>
                     </div>
                     <AriaTabs

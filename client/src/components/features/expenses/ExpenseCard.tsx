@@ -18,13 +18,15 @@ import { ExpenseForm } from "./ExpenseForm";
 import { useReportGenerator } from "@/hooks/useReportGenerator";
 import CopyButton from "@/components/common/CopyButton";
 import Amount from "@/components/common/Amount";
+import { usePermissions } from "@/hooks/usePermissions";
 
 type ExpenseCardProps = {
     expense: Expense;
 };
 
 function ExpenseCard({ expense }: ExpenseCardProps) {
-    const { t, locale, formatDate } = useTranslations();
+    const { canEdit } = usePermissions();
+    const { t, formatDate } = useTranslations();
     const id = `expense-${expense.id}`;
     const { generateExpenseReport } = useReportGenerator();
 
@@ -54,23 +56,25 @@ function ExpenseCard({ expense }: ExpenseCardProps) {
                             <div className="flex items-center justify-between border-b border-border">
                                 <div className="flex items-center text-sm font-medium px-1 gap-1">
                                     {expense.title}
-                                    <Drawer
-                                        triggerLabel={
-                                            <IconPencilDollar className="w-4 h-4 text-muted" />
-                                        }
-                                        title={t("expense")}
-                                        children={({ close }) => (
-                                            <ExpenseForm
-                                                onSubmitSuccess={close}
-                                                expense={expense}
-                                            />
-                                        )}
-                                        buttonProps={{
-                                            intent: "neutral",
-                                            variant: "ghost",
-                                            className: "h-8 w-8 p-1",
-                                        }}
-                                    />
+                                    {canEdit && (
+                                        <Drawer
+                                            triggerLabel={
+                                                <IconPencilDollar className="w-4 h-4 text-muted" />
+                                            }
+                                            title={t("expense")}
+                                            children={({ close }) => (
+                                                <ExpenseForm
+                                                    onSubmitSuccess={close}
+                                                    expense={expense}
+                                                />
+                                            )}
+                                            buttonProps={{
+                                                intent: "neutral",
+                                                variant: "ghost",
+                                                className: "h-8 w-8 p-1",
+                                            }}
+                                        />
+                                    )}
                                     <CopyButton
                                         data={generateExpenseReport(expense)}
                                         className="h-8 w-8 p-1"

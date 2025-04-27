@@ -1,2 +1,2 @@
-export * from "./auth";
-export * from "./member";
+export * from "./schemas/permissions";
+export * from "./schemas/members";

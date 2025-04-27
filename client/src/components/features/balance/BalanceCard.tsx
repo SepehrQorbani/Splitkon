@@ -12,6 +12,7 @@ import { RepaysForm } from "@/components/features/repays/RepayForm";
 import { PendingBalance } from "@/types/schemas/summary";
 import { useTranslations } from "@/hooks/useTranslations";
 import Amount from "@/components/common/Amount";
+import { usePermissions } from "@/hooks/usePermissions";
 
 type BalanceCardProps = {
     transaction: BalanceTransaction | PendingBalance;
@@ -19,6 +20,7 @@ type BalanceCardProps = {
 };
 
 function BalanceCard({ transaction, member }: BalanceCardProps) {
+    const { canEdit } = usePermissions();
     const { direction, t } = useTranslations();
     const getMember = useMemberStore((state) => state.getMember);
     let fromMember = member;
@@ -61,34 +63,36 @@ function BalanceCard({ transaction, member }: BalanceCardProps) {
                     <div>
                         <Amount amount={Math.abs(transaction.amount)} />
                     </div>
-                    <Drawer
-                        triggerLabel={<IconTransform className="size-3" />}
-                        title={t("repay")}
-                        children={({ close }) => (
-                            <RepaysForm
-                                defaultValue={{
-                                    from_id:
-                                        transaction.amount < 0
-                                            ? transaction.to
-                                            : fromMember?.id,
-                                    to_id:
-                                        transaction.amount < 0
-                                            ? fromMember?.id
-                                            : transaction.to,
-                                    amount: Math.abs(transaction.amount),
-                                }}
-                                onSubmitSuccess={(data) => {
-                                    console.log(data);
-                                    close();
-                                }}
-                            />
-                        )}
-                        buttonProps={{
-                            intent: "neutral",
-                            variant: "ghost",
-                            className: "h-8 w-8 p-1",
-                        }}
-                    />
+                    {canEdit && (
+                        <Drawer
+                            triggerLabel={<IconTransform className="size-3" />}
+                            title={t("repay")}
+                            children={({ close }) => (
+                                <RepaysForm
+                                    defaultValue={{
+                                        from_id:
+                                            transaction.amount < 0
+                                                ? transaction.to
+                                                : fromMember?.id,
+                                        to_id:
+                                            transaction.amount < 0
+                                                ? fromMember?.id
+                                                : transaction.to,
+                                        amount: Math.abs(transaction.amount),
+                                    }}
+                                    onSubmitSuccess={(data) => {
+                                        console.log(data);
+                                        close();
+                                    }}
+                                />
+                            )}
+                            buttonProps={{
+                                intent: "neutral",
+                                variant: "ghost",
+                                className: "h-8 w-8 p-1",
+                            }}
+                        />
+                    )}
                 </div>
             </div>
         )
