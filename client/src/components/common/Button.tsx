@@ -7,26 +7,38 @@ import {
 import { cn } from "@/utils/cn";
 import { defaultInputClass } from "@/utils/style";
 
+type ButtonVariant = "solid" | "outline" | "ghost" | "input";
+type ButtonIntent = "primary" | "brand" | "danger" | "neutral";
+type ButtonSize = "sm" | "md" | "lg" | "icon";
+
 interface ButtonProps extends AriaButtonProps {
-    variant?: "solid" | "outline" | "ghost" | "input";
-    intent?: "primary" | "brand" | "danger" | "neutral";
+    variant?: ButtonVariant;
+    intent?: ButtonIntent;
     className?: string;
-    size?: "sm" | "md" | "lg" | "icon";
+    size?: ButtonSize;
     type?: "button" | "submit" | "reset";
 }
 
-export const Button: React.FC<ButtonProps> = ({
+interface GetButtonStylesProps {
+    variant?: ButtonVariant;
+    intent?: ButtonIntent;
+    size?: ButtonSize;
+    className?: string;
+}
+
+export function getButtonStyles({
     variant = "solid",
     intent = "primary",
     size = "md",
     className,
-    type = "button",
-    ...props
-}) => {
+}: GetButtonStylesProps) {
     const baseStyles =
-        "inline-flex items-center justify-center px-4 py-2 rounded-input font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-surface/100 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed";
+        "inline-flex items-center justify-center px-4 py-2 rounded-input font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-offset-surface/100 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed";
 
-    const variantStyles = {
+    const variantStyles: Record<
+        ButtonVariant,
+        Partial<Record<ButtonIntent, string>>
+    > = {
         solid: {
             primary:
                 "bg-action text-action-fg hover:bg-action-strong focus:ring-action disabled:bg-action-subtle",
@@ -41,32 +53,42 @@ export const Button: React.FC<ButtonProps> = ({
         },
         ghost: {
             primary:
-                "text-action hover:bg-action-subtle hover:text-action-strong focus:ring-action disabled:text-action-subtle",
+                "text-action hover:bg-action-subtle hover:text-action-strong focus:ring-action disabled:text-action-subtle focus:ring-inset focus:ring-offset-0",
             danger: "text-error hover:bg-error-subtle hover:text-error-strong focus:ring-error disabled:text-error-subtle",
         },
         input: {
             primary: defaultInputClass + "focus:ring-3 focus:ring-offset-0",
         },
     };
-    const sizeStyles = {
+
+    const sizeStyles: Record<ButtonSize, string> = {
         sm: "px-2 py-1 text-sm",
         md: "px-4 py-2 text-base",
         lg: "px-6 py-3 text-lg",
         icon: "p-2",
     };
 
+    return cn(
+        baseStyles,
+        variantStyles[variant][intent] || "",
+        sizeStyles[size],
+        className
+    );
+}
+
+export const Button: React.FC<ButtonProps> = ({
+    variant = "solid",
+    intent = "primary",
+    size = "md",
+    className,
+    type = "button",
+    ...props
+}) => {
     return (
         <AriaButton
             type={type}
             {...props}
-            className={cn(
-                baseStyles,
-                variantStyles[variant][
-                    intent as keyof (typeof variantStyles)[typeof variant]
-                ],
-                sizeStyles[size],
-                className
-            )}
+            className={getButtonStyles({ variant, intent, size, className })}
         />
     );
 };

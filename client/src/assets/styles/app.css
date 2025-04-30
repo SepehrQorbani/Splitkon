@@ -109,14 +109,18 @@
     --shadow-input: 0 1px 1px var(--color-input-shadow);
 
     /* Animations remain unchanged */
-    --animate-slide-down-in: slide-down-in 0.15s ease-out;
-    --animate-slide-down-out: slide-down-out 0.15s ease-out;
-    --animate-slide-up-in: slide-up-in 0.15s ease-out;
-    --animate-slide-up-out: slide-up-out 0.15s ease-out;
+    --animate-slide-down-in: slide-down 0.15s ease-out;
+    --animate-slide-down-out: slide-down 0.15s reverse ease-out;
+    --animate-slide-up-in: slide-up 0.15s ease-out;
+    --animate-slide-up-out: slide-up 0.15s reverse ease-out;
     --animate-modal-blur-entering: modal-blur 300ms;
-    --animate-modal-blur-exiting: modal-blur 200ms reverse ease-in;
+    --animate-modal-blur-exiting: modal-blur 300ms reverse ease-in;
+    --animate-slide-left-in: slide-left 400ms ease-in-out;
+    --animate-slide-left-out: slide-left 300ms reverse ease-in;
+    --animate-slide-right-in: slide-right 400ms ease-in-out;
+    --animate-slide-right-out: slide-right 300ms reverse ease-in;
 
-    @keyframes slide-up-in {
+    @keyframes slide-up {
         0% {
             opacity: 0;
             transform: translateY(0.5rem);
@@ -126,17 +130,8 @@
             transform: translateY(0);
         }
     }
-    @keyframes slide-up-out {
-        0% {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        100% {
-            opacity: 0;
-            transform: translateY(-0.5rem);
-        }
-    }
-    @keyframes slide-down-in {
+
+    @keyframes slide-down {
         0% {
             opacity: 0;
             transform: translateY(-0.5rem);
@@ -146,22 +141,33 @@
             transform: translateY(0);
         }
     }
-    @keyframes slide-down-out {
-        0% {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        100% {
-            opacity: 0;
-            transform: translateY(0.5rem);
-        }
-    }
+
     @keyframes modal-blur {
         from {
             backdrop-filter: blur(0);
         }
         to {
             backdrop-filter: blur(2px);
+        }
+    }
+
+    @keyframes slide-left {
+        from {
+            transform: translateX(-100%);
+        }
+
+        to {
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes slide-right {
+        from {
+            transform: translateX(100%);
+        }
+
+        to {
+            transform: translateX(0);
         }
     }
 }
@@ -209,7 +215,7 @@
 
         --color-action: var(--color-gray-100);
         --color-action-faint: var(--color-gray-600);
-        --color-action-subtle: var(--color-gray-300);
+        --color-action-subtle: var(--color-gray-400);
         --color-action-soft: var(--color-gray-200);
         --color-action-bold: var(--color-gray-100);
         --color-action-strong: var(--color-gray-50);

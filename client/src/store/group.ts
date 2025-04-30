@@ -6,6 +6,7 @@ interface GroupStore {
     group: Group | null;
     currency: Group["currency"] | null;
     setGroup: (group: Group) => void;
+    clearGroup: () => void;
 }
 export const useGroupStore = create<GroupStore>((set, get) => ({
     group: null,
@@ -14,5 +15,10 @@ export const useGroupStore = create<GroupStore>((set, get) => ({
         set({ group });
         set({ currency: group.currency });
         usePermissionStore.getState().setPermissions(group);
+    },
+    clearGroup: () => {
+        set({ group: null });
+        set({ currency: null });
+        usePermissionStore.getState().setPermissions(null);
     },
 }));

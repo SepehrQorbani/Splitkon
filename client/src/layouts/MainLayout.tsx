@@ -1,10 +1,17 @@
 import { Navbar } from "@/components/features/navigation/Navbar";
-import { useTranslations } from "@/hooks/useTranslations";
-import React from "react";
-import { Outlet } from "react-router";
+import { useGroupStore } from "@/store";
+import React, { useEffect } from "react";
+import { Outlet, useParams } from "react-router";
 
 const MainLayout: React.FC = () => {
-    useTranslations();
+    const { token } = useParams<{ token: string }>();
+    const clearGroup = useGroupStore((state) => state.clearGroup);
+
+    useEffect(() => {
+        if (!token) {
+            clearGroup();
+        }
+    }, [token]);
 
     return (
         <div className="min-h-screen">

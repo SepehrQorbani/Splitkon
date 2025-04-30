@@ -1,8 +1,7 @@
 import { useTranslations } from "@/hooks/useTranslations";
-import { useUIStore } from "@/store";
 import { motion } from "motion/react";
 import { Card } from "@/components/common/Card";
-import { Button } from "@/components/common/Button";
+import { Button, getButtonStyles } from "@/components/common/Button";
 import { Link } from "react-router";
 import {
     IconArrowLeft,
@@ -55,15 +54,19 @@ const Home: React.FC = () => {
                     transition={{ delay: 0.4, duration: 0.5 }}
                     className="flex flex-col md:flex-row gap-4"
                 >
-                    <Link to="/new">
-                        <Button className="text-lg" size="lg">
-                            {t("pages.home.hero.createGroup")}
-                            {direction === "rtl" ? (
-                                <IconArrowLeft className="size-6 ms-4" />
-                            ) : (
-                                <IconArrowRight className="size-6 ms-4" />
-                            )}
-                        </Button>
+                    <Link
+                        to="/new"
+                        prefetch="render"
+                        className={getButtonStyles({ size: "lg" })}
+                    >
+                        {/* <Button className="text-lg" size="lg"> */}
+                        {t("pages.home.hero.createGroup")}
+                        {direction === "rtl" ? (
+                            <IconArrowLeft className="size-6 ms-4" />
+                        ) : (
+                            <IconArrowRight className="size-6 ms-4" />
+                        )}
+                        {/* </Button> */}
                     </Link>
                     <Button variant="outline" className="text-lg" size="lg">
                         {t("pages.home.hero.howItWorks")}

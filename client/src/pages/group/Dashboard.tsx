@@ -99,7 +99,7 @@ function Dashboard() {
             skeleton={<DashboardSkeleton />}
         >
             {summary && (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-4">
                     <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
                         <Card>
                             <div className="flex items-center justify-between">
@@ -367,7 +367,7 @@ function Dashboard() {
                     </div>
 
                     {/* activity */}
-                    <Card className="col-span-2 lg:col-span-1">
+                    <Card className="col-span-2 lg:col-span-1 mt-4 md:mt-0">
                         <div className="flex items-center gap-2">
                             <IconActivity className="w-12 h-12 p-3 rounded text-muted-fg bg-action" />
                             <div className="flex flex-col justify-between">

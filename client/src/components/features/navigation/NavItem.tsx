@@ -7,45 +7,31 @@ interface NavItemProps {
     to: string;
     label: string;
     icon: React.ComponentType<{ className?: string }>;
+    activeIcon?: React.ComponentType<{ className?: string }>;
+    className?: string;
     layoutId: string;
-    iconSize?: string;
 }
 
 export const NavItem: React.FC<NavItemProps> = ({
     to,
     label,
     icon: Icon,
+    activeIcon: ActiveIcon,
+    className,
     layoutId,
-    iconSize = "w-4 h-4",
 }) => {
     return (
-        <NavLink className="relative" to={to}>
+        <NavLink to={to} className={cn("block", className)} end>
             {({ isActive }) => (
-                <>
-                    <div
-                        className={cn(
-                            "text-text-subtle hover:text-action flex items-center gap-1 p-2 relative text-sm z-10 transition-all duration-200",
-                            layoutId.includes("desktop")
-                                ? "px-2 py-1 hover:scale-[98%]"
-                                : "p-2 hover:scale-95",
-                            isActive && "hover:scale-100",
-                            isActive &&
-                                (layoutId.includes("desktop")
-                                    ? "text-action"
-                                    : "text-action-fg hover:text-action-fg")
-                        )}
-                    >
-                        <Icon className={iconSize} />
-                        {label}
-                    </div>
+                <div
+                    className={cn(
+                        "relative px-2",
+                        isActive && "text-action-fg"
+                    )}
+                >
                     {isActive && (
                         <motion.div
-                            className={cn(
-                                "absolute bg-action",
-                                layoutId.includes("desktop")
-                                    ? "rounded-md h-1 -bottom-4.5 left-0 right-0"
-                                    : "rounded-full inset-0"
-                            )}
+                            className={cn("absolute bg-action rounded inset-0")}
                             layoutId={layoutId}
                             initial={false}
                             transition={{
@@ -55,7 +41,15 @@ export const NavItem: React.FC<NavItemProps> = ({
                             }}
                         />
                     )}
-                </>
+                    <div className="flex gap-1 items-center p-2 rounded relative">
+                        {isActive && ActiveIcon ? (
+                            <ActiveIcon className="size-4" />
+                        ) : (
+                            <Icon className="size-4" />
+                        )}
+                        <span>{label}</span>
+                    </div>
+                </div>
             )}
         </NavLink>
     );

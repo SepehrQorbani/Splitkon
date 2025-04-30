@@ -13,7 +13,7 @@ import { cn } from "@/utils/cn";
 
 type DrawerProps = {
     triggerLabel: ReactNode;
-    title: string;
+    title: ReactNode;
     children: (props: { close: () => void }) => ReactNode;
     className?: string;
     modalProps?: Omit<ModalOverlayProps, "isOpen" | "onOpenChange">;
@@ -45,19 +45,20 @@ export const Drawer = ({
             <Button
                 intent={buttonProps.intent}
                 variant={buttonProps.variant}
-                className={cn(buttonProps.className)}
+                className={cn(buttonProps.className, isOpen && "group")}
                 onPress={() => setIsOpen(true)}
+                data-is-open={isOpen}
             >
                 {triggerLabel}
             </Button>
             <ModalOverlay
                 isOpen={isOpen}
                 onOpenChange={setIsOpen}
-                className="fixed inset-0 h-full px-4 pt-16 pb-12 md:pb-4 z-10 flex min-h-full w-full items-center justify-center bg-background/50 backdrop-blur-xs data-[entering]:animate-modal-blur-entering data-[exiting]:animate-modal-blur-exiting"
+                className="fixed inset-0 h-full px-4 pt-32 pb-16 md:pb-4 z-10 flex min-h-full w-full items-center justify-center bg-background/50 backdrop-blur-[2px] data-[entering]:animate-modal-blur-entering data-[exiting]:animate-modal-blur-exiting"
                 {...modalProps}
                 isDismissable
             >
-                <Modal className="fixed z-50 bottom-0 left-0 right-0 h-full pt-20 pb-14 md:pb-0">
+                <Modal className="fixed z-50 bottom-0 left-0 right-0 h-full pt-40 pb-14 md:pb-0">
                     <Dialog className="w-full h-full flex justify-center items-end outline-none">
                         <AnimatePresence>
                             {isOpen && (
@@ -84,7 +85,7 @@ export const Drawer = ({
                                             ease: "easeInOut",
                                         }}
                                         className={cn(
-                                            "w-full relative max-w-md mx-auto max-h-min h-full overflow-y-auto px-2 bg-surface border border-border shadow rounded-t",
+                                            "w-full relative max-w-md mx-auto max-h-min h-full overflow-y-auto px-2 pb-2 bg-surface border border-border shadow rounded-t",
                                             className
                                         )}
                                         onClick={(e) => {
