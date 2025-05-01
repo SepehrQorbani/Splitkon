@@ -1,20 +1,19 @@
-import { Form } from "react-aria-components";
-import { useTranslations } from "@/hooks/useTranslations";
-import { useGroupStore } from "@/store/group";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
+import { createRepay, updateRepay } from "@/api/endpoints/repays";
+import AmountField from "@/components/common/AmountField";
 import { Button } from "@/components/common/Button";
 import DatePicker from "@/components/common/DatePicker";
 import InputField from "@/components/common/InputField";
 import MemberSelect from "@/components/common/MemberSelect";
-import NumberField from "@/components/common/NumberField";
-import { createRepay, updateRepay } from "@/api/endpoints/repays";
-import { RepayInput, RepayInputSchema } from "@/types/schemas/repays";
-import { Repay } from "@/types/schemas/repays";
-import { IconChecks } from "@tabler/icons-react";
-import { RepayRequest, RepayResponse } from "@/types/api/repays";
-import { useRepayStore } from "@/store/repays";
+import { useTranslations } from "@/hooks/useTranslations";
+import { useGroupStore } from "@/store/group";
 import { useMemberStore } from "@/store/members";
+import { useRepayStore } from "@/store/repays";
+import { RepayRequest, RepayResponse } from "@/types/api/repays";
+import { Repay, RepayInput, RepayInputSchema } from "@/types/schemas/repays";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { IconChecks } from "@tabler/icons-react";
+import { Form } from "react-aria-components";
+import { Controller, useForm } from "react-hook-form";
 
 type RepaysFormProps = {
     onSubmitSuccess?: (response?: RepayResponse) => void;
@@ -151,13 +150,12 @@ export const RepaysForm = ({
                 control={control}
                 name="amount"
                 render={({ field }) => (
-                    <NumberField
+                    <AmountField
                         label={t("attributes.amount")}
                         {...field}
                         isInvalid={!!errors.amount}
                         error={errors?.amount}
                         minValue={1}
-                        formatOptions={{}}
                         disabled={disabled || isSubmitting}
                     />
                 )}

@@ -1,22 +1,25 @@
-import { Form } from "react-aria-components";
-import { useTranslations } from "@/hooks/useTranslations";
-import { useGroupStore } from "@/store/group";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
+import { createExpense, updateExpense } from "@/api/endpoints/expenses";
+import AmountField from "@/components/common/AmountField";
 import { Button } from "@/components/common/Button";
 import DatePicker from "@/components/common/DatePicker";
 import InputField from "@/components/common/InputField";
-import MembersSelect from "@/components/common/MembersSelect";
-import NumberField from "@/components/common/NumberField";
 import MemberSelect from "@/components/common/MemberSelect";
-import { createExpense, updateExpense } from "@/api/endpoints/expenses";
-import { ExpenseInput, ExpenseInputSchema } from "@/types/schemas/expenses";
-import { ExpenseRequest, ExpenseResponse } from "@/types/api/expenses";
-import { Expense } from "@/types/schemas/expenses";
-import { IconChecks } from "@tabler/icons-react";
+import MembersSelect from "@/components/common/MembersSelect";
+import { useTranslations } from "@/hooks/useTranslations";
 import { useExpenseStore } from "@/store/expenses";
-import { Member } from "@/types/schemas/members";
+import { useGroupStore } from "@/store/group";
 import { useMemberStore } from "@/store/members";
+import { ExpenseRequest, ExpenseResponse } from "@/types/api/expenses";
+import {
+    Expense,
+    ExpenseInput,
+    ExpenseInputSchema,
+} from "@/types/schemas/expenses";
+import { Member } from "@/types/schemas/members";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { IconChecks } from "@tabler/icons-react";
+import { Form } from "react-aria-components";
+import { Controller, useForm } from "react-hook-form";
 
 type ExpenseFormProps = {
     onSubmitSuccess?: (response?: ExpenseResponse) => void;
@@ -122,13 +125,12 @@ export const ExpenseForm = ({
                 control={control}
                 name="amount"
                 render={({ field }) => (
-                    <NumberField
+                    <AmountField
                         label={t("attributes.amount")}
                         {...field}
                         isInvalid={!!errors.amount}
                         error={errors?.amount}
                         minValue={1}
-                        formatOptions={{}}
                         disabled={disabled || isSubmitting}
                     />
                 )}

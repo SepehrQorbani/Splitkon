@@ -37,6 +37,9 @@ export const ExpenseInputSchema = (
                 required_error: t("validation.required", {
                     attribute: t("attributes.amount"),
                 }),
+                invalid_type_error: t("validation.required", {
+                    attribute: t("attributes.amount"),
+                }),
             })
             .min(
                 1,

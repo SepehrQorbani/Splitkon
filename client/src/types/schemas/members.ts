@@ -37,7 +37,14 @@ export const MemberInputSchema = (
                 t("validation.required", { attribute: t("attributes.avatar") })
             ),
         ratio: z
-            .number()
+            .number({
+                required_error: t("validation.required", {
+                    attribute: t("attributes.ratio"),
+                }),
+                invalid_type_error: t("validation.required", {
+                    attribute: t("attributes.ratio"),
+                }),
+            })
             .min(
                 1,
                 t("validation.min", {
