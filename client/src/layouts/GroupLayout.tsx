@@ -6,7 +6,7 @@ import { Navbar } from "@/components/features/navigation/Navbar";
 import { useTranslations } from "@/hooks/useTranslations";
 import ActionMenu from "@/pages/group/ActionMenu";
 import { useGroupStore, useMemberStore } from "@/store";
-import { IconCalendar } from "@tabler/icons-react";
+import { IconCalendar, IconNote } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect } from "react";
 import { Outlet, useParams } from "react-router";
@@ -40,7 +40,7 @@ const GroupLayout: React.FC = () => {
         <div className="min-h-screen">
             <Navbar />
             <GroupNavbar />
-            <main className="pt-4 pb-16 px-2 sm:px-4 md:p-4 container mx-auto">
+            <main className="pt-4 pb-20 px-2 sm:px-4 md:p-4 container mx-auto">
                 <AsyncContent
                     isLoading={isLoading}
                     error={error}
@@ -48,22 +48,30 @@ const GroupLayout: React.FC = () => {
                     errorMessage={t("ui.errorFetchingData")}
                     skeleton={groupSkeleton}
                 >
-                    <div className="flex items-start justify-between h-12">
-                        {group && (
-                            <div className="flex gap-2">
-                                <h1 className="text-2xl font-bold">
-                                    {group.title}
-                                </h1>
-                                <div className="flex items-center gap-1">
+                    {group && (
+                        <>
+                            <div className="flex items-start justify-between gap-4">
+                                <div className="">
+                                    <h1 className="text-2xl font-bold">
+                                        {group.title}
+                                    </h1>
+                                </div>
+                                <ActionMenu />
+                            </div>
+                            <div>
+                                <div className="flex items-center gap-1 my-2">
                                     <IconCalendar className="w-4 h-4 text-muted" />
                                     <span className="text-xs text-muted">
                                         {formatDate(new Date(group.date))}
                                     </span>
                                 </div>
+                                <div className="flex items-center gap-1 my-2 text-sm">
+                                    <IconNote className="w-4 h-4 text-muted" />
+                                    <p>{group.description}</p>
+                                </div>
                             </div>
-                        )}
-                        <ActionMenu />
-                    </div>
+                        </>
+                    )}
                 </AsyncContent>
                 <Outlet />
             </main>

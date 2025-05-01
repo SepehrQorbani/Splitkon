@@ -13,60 +13,109 @@ import {
     IconUsersPlus,
 } from "@tabler/icons-react";
 import { MobileActionMenu } from "./MobileActionMenu";
+import { ReactNode } from "react";
 
-type Props = {};
+interface ActionDrawerProps {
+    icon: ReactNode;
+    title: string;
+    children: (props: { close: () => void }) => ReactNode;
+    showLabel?: boolean;
+}
 
-function ActionMenu({}: Props) {
+const ActionDrawer: React.FC<ActionDrawerProps> = ({
+    icon,
+    title,
+    children,
+    showLabel = false,
+}) => {
+    const { t } = useTranslations();
+
+    return (
+        <Drawer
+            triggerLabel={
+                <>
+                    {icon}
+                    {showLabel && (
+                        <span className="hidden md:inline text-sm ms-1">
+                            {t(title)}
+                        </span>
+                    )}
+                </>
+            }
+            title={
+                <div className="flex items-center gap-2">
+                    {icon}
+                    <span className="text-sm">{t(title)}</span>
+                </div>
+            }
+            children={children}
+            buttonProps={{ intent: "neutral", className: "p-2" }}
+        />
+    );
+};
+
+const ActionMenu: React.FC = () => {
     const { t } = useTranslations();
     const { canEdit } = usePermissions();
     const isDesktop = useMediaQuery("(min-width: 768px)");
 
-    return isDesktop ? (
-        <div className="gap-2 flex">
-            <Drawer
-                triggerLabel={<IconShare className="w-4 h-4" />}
-                title="اشتراک گذاری"
-                children={({ close }) => <ShareForm />}
-                buttonProps={{ intent: "neutral" }}
-            />
-            {canEdit && (
-                <>
-                    <Drawer
-                        triggerLabel={<IconUsersPlus className="w-4 h-4" />}
-                        title="افزودن اعضا"
-                        children={({ close }) => (
-                            <MemberForm onSubmitSuccess={close} />
-                        )}
-                        buttonProps={{ intent: "neutral" }}
-                    />
-                    <Drawer
-                        triggerLabel={<IconTransform className="w-4 h-4" />}
-                        title="بازپرداخت"
-                        children={({ close }) => (
-                            <RepaysForm onSubmitSuccess={close} />
-                        )}
-                        buttonProps={{ intent: "neutral" }}
-                    />
-                    <Drawer
-                        triggerLabel={
-                            <>
-                                <IconCashPlus className="w-4 h-4" />
-                                <span className="hidden md:inline">
-                                    {t("ui.newExpense")}
-                                </span>
-                            </>
-                        }
-                        title="هزینه جدید"
-                        children={({ close }) => (
-                            <ExpenseForm onSubmitSuccess={close} />
-                        )}
-                    />
-                </>
+    const actionButtons = [
+        {
+            id: "share",
+            icon: <IconShare className="size-4 mx-0.5" />,
+            title: "ui.share",
+            component: ShareForm,
+            show: true,
+            showLabel: false,
+        },
+        // {
+        //     id: "addMember",
+        //     icon: <IconUsersPlus className="size-4 mx-0.5" />,
+        //     title: "ui.addMember",
+        //     component: MemberForm,
+        //     show: canEdit,
+        //     showLabel: false,
+        // },
+        {
+            id: "addPayment",
+            icon: <IconTransform className="size-4 mx-0.5" />,
+            title: "ui.addPayment",
+            component: RepaysForm,
+            show: canEdit,
+            showLabel: true,
+        },
+        {
+            id: "newExpense",
+            icon: <IconCashPlus className="size-4 mx-0.5" />,
+            title: "ui.newExpense",
+            component: ExpenseForm,
+            show: canEdit,
+            showLabel: true,
+        },
+    ];
+
+    if (!isDesktop) {
+        return <MobileActionMenu />;
+    }
+
+    return (
+        <div className="gap-2 flex shrink-0">
+            {actionButtons.map(
+                ({ id, icon, title, component: Component, show, showLabel }) =>
+                    show && (
+                        <ActionDrawer
+                            key={id}
+                            icon={icon}
+                            title={title}
+                            showLabel={showLabel}
+                            children={({ close }) => (
+                                <Component onSubmitSuccess={close} />
+                            )}
+                        />
+                    )
             )}
         </div>
-    ) : (
-        <MobileActionMenu />
     );
-}
+};
 
 export default ActionMenu;

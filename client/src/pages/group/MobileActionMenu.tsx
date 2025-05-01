@@ -11,97 +11,98 @@ import {
     IconTransform,
     IconUsersPlus,
 } from "@tabler/icons-react";
+import { ReactNode } from "react";
+
+interface MobileActionDrawerProps {
+    icon: ReactNode;
+    title: string;
+    children: (props: { close: () => void }) => ReactNode;
+}
+
+const MobileActionDrawer: React.FC<MobileActionDrawerProps> = ({
+    icon,
+    title,
+    children,
+}) => {
+    const { t } = useTranslations();
+
+    return (
+        <Drawer
+            triggerLabel={
+                <div className="flex flex-col items-center gap-1">
+                    <div className="size-7 flex items-center justify-center transition-all rounded group-data-[is-open=true]:bg-action group-data-[is-open=true]:text-action-fg">
+                        {icon}
+                    </div>
+                    <span className="text-xs font-light group-data-[is-open=true]:font-medium">
+                        {t(title)}
+                    </span>
+                </div>
+            }
+            title={
+                <div className="flex items-center gap-2">
+                    {icon}
+                    <span className="text-sm">{t(title)}</span>
+                </div>
+            }
+            children={children}
+            buttonProps={{
+                intent: "neutral",
+                variant: "ghost",
+                className: "focus:ring-0 focus:ring-offset-0",
+            }}
+        />
+    );
+};
 
 export const MobileActionMenu: React.FC = () => {
     const { canEdit } = usePermissions();
     const { t } = useTranslations();
 
+    const actionButtons = [
+        // {
+        //     id: "addMember",
+        //     icon: <IconUsersPlus className="size-4" />,
+        //     title: "ui.addMember",
+        //     component: MemberForm,
+        //     show: canEdit,
+        // },
+        {
+            id: "addPayment",
+            icon: <IconTransform className="size-4" />,
+            title: "ui.addPayment",
+            component: RepaysForm,
+            show: canEdit,
+        },
+        {
+            id: "newExpense",
+            icon: <IconCashPlus className="size-4" />,
+            title: "ui.newExpense",
+            component: ExpenseForm,
+            show: canEdit,
+        },
+        {
+            id: "share",
+            icon: <IconShare className="size-4" />,
+            title: "ui.share",
+            component: ShareForm,
+            show: true,
+        },
+    ];
+
     return (
-        <div className="flex fixed bottom-0 left-0 right-0 bg-surface border-t border-border py-0.5 px-2 justify-around md:hidden z-99999">
-            <Drawer
-                triggerLabel={
-                    <div className="flex flex-col items-center">
-                        <IconShare className="size-6 p-1 transition-all rounded-full group-data-[is-open=true]:bg-action group-data-[is-open=true]:text-action-fg" />
-                        <span className="text-xs font-light group-data-[is-open=true]:font-medium">
-                            {t("ui.share")}
-                        </span>
-                    </div>
-                }
-                title={t("ui.share")}
-                children={({ close }) => <ShareForm />}
-                buttonProps={{ intent: "neutral", variant: "ghost" }}
-            />
-            {canEdit && (
-                <>
-                    <Drawer
-                        triggerLabel={
-                            <div className="flex flex-col items-center">
-                                <IconUsersPlus className="size-6 p-1 transition-all rounded-full group-data-[is-open=true]:bg-action group-data-[is-open=true]:text-action-fg" />
-                                <span className="text-xs font-light group-data-[is-open=true]:font-medium">
-                                    {t("ui.addMember")}
-                                </span>
-                            </div>
-                        }
-                        title={t("ui.addMember")}
-                        children={({ close }) => (
-                            <MemberForm onSubmitSuccess={close} />
-                        )}
-                        buttonProps={{
-                            intent: "neutral",
-                            variant: "ghost",
-                        }}
-                    />
-                    <Drawer
-                        triggerLabel={
-                            <div className="flex flex-col items-center">
-                                <IconTransform className="size-6 p-1 transition-all rounded-full group-data-[is-open=true]:bg-action group-data-[is-open=true]:text-action-fg" />
-                                <span className="text-xs font-light group-data-[is-open=true]:font-medium">
-                                    {t("ui.addPayment")}
-                                </span>
-                            </div>
-                        }
-                        title={
-                            <div className="flex items-center gap-2">
-                                <IconTransform className="size-4" />
-                                <span className="text-sm">
-                                    {t("ui.addPayment")}
-                                </span>
-                            </div>
-                        }
-                        children={({ close }) => (
-                            <RepaysForm onSubmitSuccess={close} />
-                        )}
-                        buttonProps={{
-                            intent: "neutral",
-                            variant: "ghost",
-                        }}
-                    />
-                    <Drawer
-                        triggerLabel={
-                            <div className="flex flex-col items-center">
-                                <IconCashPlus className="size-6 p-1 transition-all rounded-full group-data-[is-open=true]:bg-action group-data-[is-open=true]:text-action-fg" />
-                                <span className="text-xs font-light group-data-[is-open=true]:font-medium">
-                                    {t("ui.newExpense")}
-                                </span>
-                            </div>
-                        }
-                        title={
-                            <div className="flex items-center gap-2">
-                                <IconCashPlus className="size-4" />
-                                <span className="text-sm">
-                                    {t("ui.newExpense")}
-                                </span>
-                            </div>
-                        }
-                        children={({ close }) => (
-                            <ExpenseForm onSubmitSuccess={close} />
-                        )}
-                        buttonProps={{
-                            intent: "neutral",
-                            variant: "ghost",
-                        }}
-                    />
-                </>
+        <div className="flex fixed bottom-0 left-0 right-0 bg-surface border-t border-border px-2 justify-around md:hidden z-99999">
+            {actionButtons.map(
+                ({ id, icon, title, component: Component, show }) =>
+                    show && (
+                        <MobileActionDrawer
+                            key={id}
+                            icon={icon}
+                            title={title}
+                            children={({ close }) => (
+                                <Component onSubmitSuccess={close} />
+                            )}
+                        />
+                    )
             )}
         </div>
     );
