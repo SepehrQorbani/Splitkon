@@ -2,8 +2,15 @@ import { useCopyToClipboard } from "@/hooks/useCopyToClipboard";
 import { useShare } from "@/hooks/useShare";
 import { useTranslations } from "@/hooks/useTranslations";
 import { useGroupStore } from "@/store/group";
-import { IconCopy, IconCopyCheck, IconShare } from "@tabler/icons-react";
+import {
+    IconChecks,
+    IconCopy,
+    IconCopyCheck,
+    IconShare,
+} from "@tabler/icons-react";
 import { Button } from "@/components/common/Button";
+import { cn } from "@/utils/cn";
+import { CopyIcons } from "@/components/common/CopyButton";
 
 function ShareForm() {
     const { t } = useTranslations();
@@ -53,11 +60,7 @@ function ShareForm() {
                                 aria-label={t("ui.editLinkCopy")}
                                 onPress={() => copyToClipboard(editUrl)}
                             >
-                                {isCopied(editUrl) ? (
-                                    <IconCopyCheck className="size-4" />
-                                ) : (
-                                    <IconCopy className="size-4" />
-                                )}
+                                <CopyIcons isCopied={isCopied(editUrl)} />
                             </Button>
                         </div>
                         <div
@@ -97,11 +100,7 @@ function ShareForm() {
                             aria-label={t("ui.viewLinkCopy")}
                             onPress={() => copyToClipboard(viewUrl)}
                         >
-                            {isCopied(viewUrl) ? (
-                                <IconCopyCheck className="size-4" />
-                            ) : (
-                                <IconCopy className="size-4" />
-                            )}
+                            <CopyIcons isCopied={isCopied(viewUrl)} />
                         </Button>
                     </div>
                     <div

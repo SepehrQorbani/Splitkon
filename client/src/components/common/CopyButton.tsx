@@ -1,11 +1,31 @@
 import { useCopyToClipboard } from "@/hooks/useCopyToClipboard";
 import { Button } from "./Button";
-import { IconCopy, IconCopyCheck } from "@tabler/icons-react";
+import { IconChecks, IconCopy, IconCopyCheck } from "@tabler/icons-react";
 import { useTranslations } from "@/hooks/useTranslations";
+import { cn } from "@/utils/cn";
 
-type Props = { data: string; className?: string };
+type CopyButtonProps = { data: string; className?: string };
 
-function CopyButton({ data, className }: Props) {
+export function CopyIcons({ isCopied }: { isCopied: boolean }) {
+    return (
+        <>
+            <IconCopy
+                className={cn(
+                    "size-4 transition-all duration-300",
+                    isCopied ? "scale-0" : "scale-100"
+                )}
+            />
+            <IconChecks
+                className={cn(
+                    "absolute size-4 transition-all duration-300",
+                    isCopied ? "scale-100" : "scale-0"
+                )}
+            />
+        </>
+    );
+}
+
+function CopyButton({ data, className }: CopyButtonProps) {
     const { t } = useTranslations();
     const { isCopied, error, copyToClipboard } = useCopyToClipboard({
         timeout: 2000,
@@ -16,13 +36,9 @@ function CopyButton({ data, className }: Props) {
             size="icon"
             aria-label={t("ui.copy")}
             className={className}
-            onPress={() => copyToClipboard(data)}
+            onPress={() => !isCopied(data) && copyToClipboard(data)}
         >
-            {isCopied(data) ? (
-                <IconCopyCheck className="size-4" />
-            ) : (
-                <IconCopy className="size-4" />
-            )}
+            <CopyIcons isCopied={isCopied(data)} />
         </Button>
     );
 }
