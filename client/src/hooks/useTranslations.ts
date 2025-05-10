@@ -80,6 +80,33 @@ export const useTranslations = () => {
         return [amount.toLocaleString(locale), t(currency?.display_unit)];
     }
 
+    //TODO: refactor
+    function formatDaysToWords(days: number, suffix: boolean = true): string {
+        if (days <= 0) return t("ui.time.zeroDays");
+
+        const years = Math.floor(days / 365);
+        const remainingDaysAfterYears = days % 365;
+        const months = Math.floor(remainingDaysAfterYears / 30);
+        const remainingDays = remainingDaysAfterYears % 30;
+
+        const parts: string[] = [];
+
+        if (years > 0) {
+            parts.push(t("ui.time.year", { count: years.toString() }));
+        }
+
+        if (months > 0) {
+            parts.push(t("ui.time.month", { count: months.toString() }));
+        }
+
+        if (remainingDays > 0) {
+            parts.push(t("ui.time.day", { count: remainingDays.toString() }));
+        }
+
+        const timeString = parts.join(t("ui.time.and"));
+        return suffix ? `${timeString} ${t("ui.time.ago")}` : timeString;
+    }
+
     return {
         locale,
         language,
@@ -92,5 +119,6 @@ export const useTranslations = () => {
         ) => formatDate(locale.toString(), date, options),
         formatNumber,
         formatCurrency,
+        formatDaysToWords,
     };
 };

@@ -1,0 +1,121 @@
+import { Card } from "@/components/common/Card";
+import Amount from "@/components/common/Amount";
+import Avatar from "@/components/common/Avatar";
+import MembersStatusChart from "@/components/features/dashboard/MembersStatusChart";
+import { IconUsers, IconPercentage } from "@tabler/icons-react";
+import { Summary } from "@/types/schemas/summary";
+import { cn } from "@/utils/cn";
+import { useTranslations } from "@/hooks/useTranslations";
+import { FC } from "react";
+
+interface Member {
+    id: number;
+    name: string;
+    avatar?: string;
+}
+
+interface MemberBalanceDistribution {
+    creditors: number;
+    debtors: number;
+    balanced: number;
+}
+
+interface MembersOverviewCardProps {
+    summary: Summary;
+    members: Member[];
+    memberBalanceDistribution: MemberBalanceDistribution;
+    className?: string;
+}
+
+export const MembersOverviewCard: FC<MembersOverviewCardProps> = ({
+    summary,
+    members,
+    memberBalanceDistribution,
+    className,
+}) => {
+    const { t } = useTranslations();
+    return (
+        <Card className={cn(className)}>
+            <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                    <IconUsers className="w-12 h-12 p-3 rounded text-muted-fg bg-action" />
+                    <div className="flex flex-col justify-between">
+                        <h4 className="text-sm font-medium ">{t("members")}</h4>
+                        <div>
+                            <span className="text-sm">
+                                {summary.members_count}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div className="flex flex-col justify-between">
+                    <h4 className="text-sm font-medium ">{t("ratio")}</h4>
+                    <div className="flex gap-1 items-center">
+                        <IconPercentage className="size-4 text-muted-soft" />
+                        <span className="text-sm">
+                            {summary.total_ratio.toLocaleString()}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <MembersStatusChart
+                membersCount={summary.members_count}
+                memberBalanceDistribution={memberBalanceDistribution}
+            />
+            <div className="max-h-48 overflow-y-auto border border-border rounded">
+                {members.map((member) => (
+                    <div
+                        key={member.id}
+                        className="flex justify-between items-center relative px-4 py-4 last:border-none border-b border-border overflow-clip"
+                    >
+                        <span
+                            className={cn(
+                                "w-1 absolute inset-0 my-3 ms-1 rounded",
+                                (() => {
+                                    const st =
+                                        summary.net_balances.find(
+                                            (balance) =>
+                                                balance.id === member.id
+                                        )?.net || 0;
+                                    if (st === 0) return "bg-action";
+                                    return st > 0 ? "bg-success" : "bg-error";
+                                })()
+                            )}
+                        ></span>
+                        <div className="flex items-center gap-2">
+                            <Avatar
+                                alt={member.name}
+                                size="sm"
+                                src={member.avatar}
+                            />
+                            <span className="text-xs">{member.name}</span>
+                        </div>
+                        <div>
+                            <Amount
+                                amount={
+                                    summary.net_balances.find(
+                                        (balance) => balance.id === member.id
+                                    )?.net || 0
+                                }
+                            />
+                        </div>
+                        <span
+                            className={cn(
+                                "w-1 absolute end-0 top-0 bottom-0 my-3 me-1 rounded",
+                                (() => {
+                                    const st =
+                                        summary.net_balances.find(
+                                            (balance) =>
+                                                balance.id === member.id
+                                        )?.net || 0;
+                                    if (st === 0) return "bg-action";
+                                    return st > 0 ? "bg-success" : "bg-error";
+                                })()
+                            )}
+                        ></span>
+                    </div>
+                ))}
+            </div>
+        </Card>
+    );
+};

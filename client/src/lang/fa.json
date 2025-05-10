@@ -16,7 +16,8 @@
         "ratio_unit": "سهم",
         "spender": "هزینه کننده",
         "title": "عنوان",
-        "to": "به شخص"
+        "to": "به شخص",
+        "currency": "واحد پول"
     },
     "messages": {
         "dataResponse": "داده‌ها پس از :delay ثانیه دریافت شد",
@@ -27,8 +28,19 @@
         "about": {
             "title": "درباره ما"
         },
+        "notFound": {
+            "lost": "به نظر میاد گم شدی...",
+            "title": "اوه! صفحه پیدا نشد.",
+            "description": "صفحه‌ای که دنبالش هستی وجود نداره!",
+            "goToDashboard": "رفتن به داشبورد",
+            "goToHome": "رفتن به خانه"
+        },
+        "error": {
+            "somethingWentWrong": "مشکلی پیش اومد",
+            "tryAgain": "تلاش مجدد"
+        },
         "home": {
-            "title": "صفحه اصلی",
+            "title": "خانه",
             "hero": {
                 "title": "هزینه‌های گروهی رو ساده‌تر مدیریت کن!",
                 "subtitle": "بدون نیاز به ثبت‌نام، هزینه‌ها رو ثبت کن، تقسیم کن و تسویه کن.",
@@ -227,14 +239,27 @@
         "submit": "ذخیره",
         "to": "به شخص",
         "toman": "تومان",
-        "theme": "تم",
         "rial": "ریال",
+        "hezartoman": "هزار تومان",
+        "dollar": "دلار",
+        "theme": "تم",
         "tokenRequired": "توکن الزامی است",
         "total": "مجموع",
         "totalAmount": "مجموع مبلغ",
         "totalExpenses": "مجموع هزینه ها",
         "update": "ذخیره تغییرات",
-        "yes": "بله"
+        "yes": "بله",
+        "time": {
+            "zeroDays": "امروز",
+            "year": ":count سال",
+            "year_plural": ":count سال",
+            "month": ":count ماه",
+            "month_plural": ":count ماه",
+            "day": ":count روز",
+            "day_plural": ":count روز",
+            "and": " و ",
+            "ago": "پیش"
+        }
     },
     "validation": {
         "bankAccount": ":attribute باید یک شماره حساب معتبر باشد",

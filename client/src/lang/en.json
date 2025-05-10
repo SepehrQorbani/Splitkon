@@ -16,7 +16,8 @@
         "ratio_unit": "Person",
         "spender": "Spender",
         "title": "Title",
-        "to": "To"
+        "to": "To",
+        "currency": "Currency"
     },
     "messages": {
         "dataResponse": "Data received after :delay seconds",
@@ -26,6 +27,17 @@
     "pages": {
         "about": {
             "title": "About Us"
+        },
+        "notFound": {
+            "lost": "You look a little lost...",
+            "title": "Ooops! Page not found.",
+            "description": "The page you're looking for doesn't exist!",
+            "goToDashboard": "Go to Dashboard",
+            "goToHome": "Go to Home"
+        },
+        "error": {
+            "somethingWentWrong": "Something went wrong",
+            "tryAgain": "Try Again"
         },
         "home": {
             "title": "Home Page",
@@ -228,13 +240,26 @@
         "to": "To",
         "toman": "Toman",
         "rial": "Rial",
+        "hezarToman": "Thousand Toman",
+        "dollar": "Dollar",
         "theme": "Theme",
         "tokenRequired": "Token is required",
         "total": "Total",
         "totalAmount": "Total Amount",
         "totalExpenses": "Total Expenses",
         "update": "Update",
-        "yes": "Yes"
+        "yes": "Yes",
+        "time": {
+            "zeroDays": "Today",
+            "year": ":count year",
+            "year_plural": ":count years",
+            "month": ":count month",
+            "month_plural": ":count months",
+            "day": ":count day",
+            "day_plural": ":count days",
+            "and": " and ",
+            "ago": "ago"
+        }
     },
     "validation": {
         "bankAccount": "The :attribute must be a valid bank account number",

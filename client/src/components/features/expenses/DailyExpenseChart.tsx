@@ -1,7 +1,7 @@
 import { getDailyExpenseTotals } from "@/api/endpoints/expenses";
 import { useTranslations } from "@/hooks/useTranslations";
 import { useQuery } from "@tanstack/react-query";
-import { AsyncContent } from "@/components/common/AsyncContent";
+import AsyncContent from "@/components/common/AsyncContent";
 import { motion } from "framer-motion";
 import {
     Area,
@@ -41,6 +41,7 @@ export const DailyExpenseChart: React.FC<DailyExpenseChartProps> = ({
         data: dailyExpenses,
         isLoading,
         error,
+        refetch,
     } = useQuery({
         queryKey: ["dailyExpenses", groupToken],
         queryFn: () => getDailyExpenseTotals(groupToken),
@@ -59,8 +60,7 @@ export const DailyExpenseChart: React.FC<DailyExpenseChartProps> = ({
         <AsyncContent
             isLoading={isLoading}
             error={error}
-            loadingMessage={t("ui.loading")}
-            errorMessage={t("ui.errorFetchingData")}
+            refetch={refetch}
             skeleton={<Skeleton className="w-full h-40" aria-hidden="true" />}
         >
             {dailyExpenses && dailyExpenses.data.length > 0 ? (

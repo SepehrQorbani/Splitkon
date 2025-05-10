@@ -1,3 +1,4 @@
+import { MainNavbar } from "@/components/features/navigation/MainNavbar";
 import { Navbar } from "@/components/features/navigation/Navbar";
 import { useGroupStore } from "@/store";
 import React, { useEffect } from "react";
