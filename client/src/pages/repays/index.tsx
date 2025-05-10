@@ -1,5 +1,5 @@
 import { getRepays } from "@/api/endpoints/repays";
-import { AsyncContent } from "@/components/common/AsyncContent";
+import AsyncContent from "@/components/common/AsyncContent";
 import RepayCard from "@/components/features/repays/RepayCard";
 import { RepayCardSkeleton } from "@/components/features/repays/RepayCardSkeleton";
 import { useRepayStore } from "@/store/repays";
@@ -14,7 +14,7 @@ function RepaysIndex({}: Props) {
     const { token } = useParams();
     const { repays, setRepays } = useRepayStore();
 
-    const { data, isLoading, error } = useQuery({
+    const { data, isLoading, error, refetch } = useQuery({
         queryKey: ["repays", token],
         queryFn: () => getRepays(token as string),
     });
@@ -29,6 +29,7 @@ function RepaysIndex({}: Props) {
         <AsyncContent
             isLoading={isLoading}
             error={error}
+            refetch={refetch}
             skeleton={
                 <div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -40,8 +41,6 @@ function RepaysIndex({}: Props) {
                     </div>
                 </div>
             }
-            loadingMessage="در حال بارگذاری بازپرداخت‌ها..."
-            errorMessage="خطا در دریافت بازپرداخت‌ها"
         >
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {repays && repays.length > 0 && (

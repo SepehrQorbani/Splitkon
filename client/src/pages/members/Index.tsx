@@ -1,6 +1,6 @@
 import { getBalance } from "@/api/endpoints/balance";
 import { getMembers } from "@/api/endpoints/members";
-import { AsyncContent } from "@/components/common/AsyncContent";
+import AsyncContent from "@/components/common/AsyncContent";
 import MemberCard from "@/components/features/members/MemberCard";
 import { MemberCardSkeleton } from "@/components/features/members/MemberCardSkeleton";
 import { useBalanceStore } from "@/store/balance";
@@ -22,6 +22,7 @@ function MembersIndex({}: Props) {
         data: membersData,
         isLoading: isMembersLoading,
         error: membersError,
+        refetch,
     } = useQuery({
         queryKey: ["members", token],
         queryFn: () => getMembers(token as string),
@@ -53,6 +54,7 @@ function MembersIndex({}: Props) {
         <AsyncContent
             isLoading={isMembersLoading}
             error={membersError || balanceError}
+            refetch={refetch}
             skeleton={
                 <div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -64,7 +66,6 @@ function MembersIndex({}: Props) {
                     </div>
                 </div>
             }
-            errorMessage="خطای دریافت اطلاعات..."
         >
             <div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

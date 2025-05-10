@@ -1,28 +1,20 @@
 import React, { Suspense, lazy } from "react";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router";
 import { RouterProvider } from "react-aria-components";
-import MainLayout from "./layouts/MainLayout";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router";
 import { ErrorBoundary } from "./components/common/ErrorBoundary";
 import { LoadingIndicator } from "./components/common/LoadingIndicator";
 import GroupLayout from "./layouts/GroupLayout";
-import MembersIndex from "./pages/members/Index";
-import Dashboard from "./pages/group/Dashboard";
+import MainLayout from "./layouts/MainLayout";
 import ExpensesIndex from "./pages/expenses/Index";
+import Dashboard from "./pages/group/Dashboard";
+import MembersIndex from "./pages/members/Index";
+import NotFound from "./pages/NotFound";
 import RepaysIndex from "./pages/repays";
 
 // Lazy-loaded components
 const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
 const NewGroup = lazy(() => import("./pages/group/New"));
-
-const NotFound = () => (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-        <h1 className="text-4xl font-bold text-gray-800">404 - Not Found</h1>
-        <p className="mt-2 text-gray-600">
-            The page you're looking for doesn't exist.
-        </p>
-    </div>
-);
 
 // Loading fallback component
 const LoadingFallback = () => (

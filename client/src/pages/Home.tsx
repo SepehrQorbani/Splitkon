@@ -12,7 +12,12 @@ import {
     IconBuildingBank,
     IconCalculator,
     IconChartBar,
+    IconChevronLeft,
+    IconChevronRight,
     IconCreditCard,
+    IconHome,
+    IconSquarePlus,
+    IconSquareRoundedPlus,
     IconUsers,
     IconWorld,
 } from "@tabler/icons-react";
@@ -52,23 +57,33 @@ const Home: React.FC = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4, duration: 0.5 }}
-                    className="flex flex-col md:flex-row gap-4"
+                    className="flex flex-col md:flex-row gap-4 z-10"
                 >
                     <Link
                         to="/new"
                         prefetch="render"
-                        className={getButtonStyles({ size: "lg" })}
+                        className={getButtonStyles({
+                            size: "lg",
+                            intent: "neutral",
+                            className:
+                                "rounded-xl py-6 bg-surface/20 hover:bg-surface/60 border-surface text-sm",
+                        })}
                     >
-                        {/* <Button className="text-lg" size="lg"> */}
+                        <span className="rounded-full p-2 bg-action me-2">
+                            <IconSquareRoundedPlus className="size-4 text-action-fg" />
+                        </span>
                         {t("pages.home.hero.createGroup")}
                         {direction === "rtl" ? (
-                            <IconArrowLeft className="size-6 ms-4" />
+                            <IconChevronLeft className="size-4 ms-8" />
                         ) : (
-                            <IconArrowRight className="size-6 ms-4" />
+                            <IconChevronRight className="size-4 ms-8" />
                         )}
-                        {/* </Button> */}
                     </Link>
-                    <Button variant="outline" className="text-lg" size="lg">
+                    <Button
+                        variant="outline"
+                        className="text-lg rounded-xl border-surface"
+                        size="lg"
+                    >
                         {t("pages.home.hero.howItWorks")}
                     </Button>
                 </motion.div>
@@ -109,7 +124,7 @@ const Home: React.FC = () => {
                         />
                     </div>
                     {/* Decorative elements */}
-                    <div className="absolute -z-10 inset-0 bg-gradient-to-r from-action/25 to-brand/50 blur-3xl scale-105" />
+                    <div className="absolute -z-10 bottom-0 -top-12 right-0 left-0 bg-gradient-to-r from-blue-500/25 to-brand/50 blur-3xl scale-105" />
                 </motion.div>
             </motion.section>
 

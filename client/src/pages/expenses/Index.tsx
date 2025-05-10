@@ -1,5 +1,5 @@
 import { getExpenses } from "@/api/endpoints/expenses";
-import { AsyncContent } from "@/components/common/AsyncContent";
+import AsyncContent from "@/components/common/AsyncContent";
 import ExpenseCard from "@/components/features/expenses/ExpenseCard";
 import { ExpenseCardSkeleton } from "@/components/features/expenses/ExpenseCardSkeleton";
 import { useExpenseStore } from "@/store/expenses";
@@ -14,7 +14,7 @@ function ExpensesIndex({}: Props) {
     const { token } = useParams();
     const { expenses, setExpenses } = useExpenseStore();
 
-    const { data, isLoading, error } = useQuery({
+    const { data, isLoading, error, refetch } = useQuery({
         queryKey: ["expenses", token],
         queryFn: () => getExpenses(token as string),
     });
@@ -29,6 +29,7 @@ function ExpensesIndex({}: Props) {
         <AsyncContent
             isLoading={isLoading}
             error={error}
+            refetch={refetch}
             skeleton={
                 <div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -40,7 +41,6 @@ function ExpensesIndex({}: Props) {
                     </div>
                 </div>
             }
-            errorMessage="خطا در دریافت اطلاعات"
         >
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {expenses && expenses.length > 0 && (

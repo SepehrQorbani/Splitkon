@@ -1,32 +1,37 @@
+import { useTranslations } from "@/hooks/useTranslations";
+import Error from "@/pages/Error";
+import NotFound from "@/pages/NotFound";
 import { ReactNode } from "react";
 
 interface AsyncContentProps {
     isLoading: boolean;
-    error: unknown;
+    error: any;
     loadingMessage?: string;
     errorMessage?: string;
     skeleton?: ReactNode;
     children: ReactNode;
+    refetch: () => void;
 }
 
-export function AsyncContent({
+export default function AsyncContent({
     isLoading,
     error,
-    loadingMessage = "در حال بارگذاری...",
-    errorMessage = "خطا در دریافت داده‌ها",
+    loadingMessage = "loading",
+    errorMessage = "errorFetchingData",
     skeleton,
     children,
+    refetch,
 }: AsyncContentProps) {
+    const { t } = useTranslations();
     if (isLoading) {
-        return skeleton ? <>{skeleton}</> : <div>{loadingMessage}</div>;
+        return skeleton || <div>{t(loadingMessage)}</div>;
     }
 
     if (error) {
-        return (
-            <div>
-                {errorMessage}: {(error as Error).message}
-            </div>
-        );
+        if (error.status === 404) {
+            return <NotFound />;
+        }
+        return <Error message={t(errorMessage)} refetch={refetch} />;
     }
 
     return <>{children}</>;
