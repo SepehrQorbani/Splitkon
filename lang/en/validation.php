@@ -178,6 +178,13 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'closing_date' => [
+            'after_last_expense' => 'The closing date cannot be before the last expense date.',
+            'after_date' => 'The closing date cannot be before the group date.',
+        ],
+        'date' => [
+            'before_closing_date' => 'The group date cannot be after the closing date.',
+        ],
     ],
 
     /*

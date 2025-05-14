@@ -5,4 +5,6 @@ return [
     'pageNotFound' => 'Page not found',
     'groupNotFound' => 'Page not found',
     'editAccessRequired' => 'You are not authorized',
+    'groupClosed' => 'Group is closed',
+
 ];
