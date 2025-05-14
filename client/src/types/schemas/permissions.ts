@@ -1,8 +1,18 @@
-import { z } from "zod";
+import { Group } from "./group";
 
-export const PermissionsSchema = z.object({
-    isAdmin: z.boolean(),
-    canEdit: z.boolean(),
-});
+export type PermissionKey =
+    | "edit"
+    | "addExpenses"
+    | "editExpenses"
+    | "deleteExpenses"
+    | "addRepays"
+    | "editRepays"
+    | "deleteRepays"
+    | "addMembers"
+    | "editMembers"
+    | "deleteMembers";
 
-export type Permissions = z.infer<typeof PermissionsSchema>;
+export interface PermissionDefinition {
+    fn: (group: Group | null) => boolean;
+    dependsOn?: PermissionKey[];
+}

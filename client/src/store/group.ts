@@ -7,6 +7,7 @@ interface GroupStore {
     currency: Group["currency"] | null;
     setGroup: (group: Group) => void;
     clearGroup: () => void;
+    updateGroup: (updates: Partial<Group>) => void;
 }
 export const useGroupStore = create<GroupStore>((set, get) => ({
     group: null,
@@ -19,6 +20,21 @@ export const useGroupStore = create<GroupStore>((set, get) => ({
     clearGroup: () => {
         set({ group: null });
         set({ currency: null });
+
         usePermissionStore.getState().setPermissions(null);
+    },
+    updateGroup: (updates: Partial<Group>) => {
+        const currentGroup = get().group;
+        if (!currentGroup) return;
+
+        const updatedGroup = { ...currentGroup, ...updates };
+
+        set({ group: updatedGroup });
+
+        if (updates.currency) {
+            set({ currency: updates.currency });
+        }
+
+        usePermissionStore.getState().setPermissions(updatedGroup);
     },
 }));

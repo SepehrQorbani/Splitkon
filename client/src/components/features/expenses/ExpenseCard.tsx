@@ -25,7 +25,7 @@ type ExpenseCardProps = {
 };
 
 function ExpenseCard({ expense }: ExpenseCardProps) {
-    const { canEdit } = usePermissions();
+    const { can } = usePermissions();
     const { t, formatDate } = useTranslations();
     const id = `expense-${expense.id}`;
     const { generateExpenseReport } = useReportGenerator();
@@ -56,7 +56,7 @@ function ExpenseCard({ expense }: ExpenseCardProps) {
                             <div className="flex items-center justify-between border-b border-border">
                                 <div className="flex items-center text-sm font-medium px-1 gap-1">
                                     {expense.title}
-                                    {canEdit && (
+                                    {can("editExpenses") && (
                                         <Drawer
                                             triggerLabel={
                                                 <IconPencilDollar className="w-4 h-4 text-muted" />

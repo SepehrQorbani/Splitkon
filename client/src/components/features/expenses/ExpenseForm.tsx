@@ -48,7 +48,7 @@ export const ExpenseForm = ({
     } = useForm<ExpenseInput>({
         defaultValues: {
             title: expense?.title || "",
-            date: expense?.date ? expense.date.replace(/T.*/, "") : undefined,
+            date: expense?.date || new Date().toISOString(),
             amount: expense?.amount || undefined,
             spender_id: expense?.spender.id || undefined,
             members: expense?.members || members || [],

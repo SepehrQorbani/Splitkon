@@ -29,7 +29,7 @@ type MemberCardProps = {
 };
 
 function MemberCard({ member }: MemberCardProps) {
-    const { canEdit } = usePermissions();
+    const { can } = usePermissions();
     const { t } = useTranslations();
     const balance = useBalanceStore((state) => state.balance);
 
@@ -76,7 +76,7 @@ function MemberCard({ member }: MemberCardProps) {
                             <Heading slot="title">
                                 <div className="text-sm font-medium flex items-center gap-1">
                                     {member.name}
-                                    {canEdit && (
+                                    {can("editMembers") && (
                                         <Drawer
                                             triggerLabel={
                                                 <IconUserEdit className="w-4 h-4" />
@@ -156,7 +156,7 @@ function MemberCard({ member }: MemberCardProps) {
                                     {t("details")}
                                 </h3>
                                 <div>
-                                    {canEdit && (
+                                    {can("addRepays") && (
                                         <Drawer
                                             triggerLabel={
                                                 <IconTransform className="w-4 h-4" />

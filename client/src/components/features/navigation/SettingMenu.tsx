@@ -19,6 +19,7 @@ function SettingMenu({}) {
         <MenuTrigger>
             <Button
                 variant="input"
+                intent="neutral"
                 size="icon"
                 aria-label="Menu"
                 className={cn(
@@ -29,7 +30,7 @@ function SettingMenu({}) {
                     setIsOpen((prevVal) => !prevVal);
                 }}
             >
-                <IconAdjustments className="size-5" />
+                <IconAdjustments className="size-4" />
             </Button>
             <Popover
                 isOpen={isOpen}

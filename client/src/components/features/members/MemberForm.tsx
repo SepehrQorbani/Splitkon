@@ -17,12 +17,14 @@ import { Controller, useForm } from "react-hook-form";
 import AvatarSelect from "../../common/AvatarSelect";
 import BankAccountInputField from "../../common/BankAccountInputField";
 import { Button } from "../../common/Button";
+import { cn } from "@/utils/cn";
 
 type Props = {
     disabled?: boolean;
     onSubmitSuccess?: (data?: MemberResponse["data"] | MemberInput) => void;
     member?: Member | MemberInput;
     useServer?: boolean;
+    className?: string;
 };
 
 const MemberForm = ({
@@ -30,6 +32,7 @@ const MemberForm = ({
     onSubmitSuccess,
     member,
     useServer = true,
+    className,
 }: Props) => {
     const { t } = useTranslations();
     const group = useGroupStore((state) => state.group);
@@ -46,7 +49,7 @@ const MemberForm = ({
             name: member?.name || "",
             avatar: member?.avatar || "",
             ratio: member?.ratio || 1,
-            bank_info: member?.bank_info || undefined,
+            bank_info: member?.bank_info || "",
         },
         resolver: zodResolver(MemberInputSchema(t)),
         mode: "onChange",
@@ -57,7 +60,7 @@ const MemberForm = ({
             name: member?.name || "",
             avatar: member?.avatar || "",
             ratio: member?.ratio || 1,
-            bank_info: member?.bank_info || undefined,
+            bank_info: member?.bank_info || "",
         });
     }, [member, reset]);
 
@@ -75,6 +78,12 @@ const MemberForm = ({
                 } else {
                     response = await createMember(group.edit_token, data);
                 }
+                reset({
+                    name: member?.name || "",
+                    avatar: member?.avatar || "",
+                    ratio: member?.ratio || 1,
+                    bank_info: member?.bank_info || undefined,
+                });
                 onSubmitSuccess?.(response.data);
             } catch (error: any) {
                 if (error.message.startsWith("Failed to fetch")) {
@@ -107,7 +116,10 @@ const MemberForm = ({
     };
 
     return (
-        <Form onSubmit={handleSubmit(submit)} className="space-y-4">
+        <Form
+            onSubmit={handleSubmit(submit)}
+            className={cn("space-y-4", className)}
+        >
             <div className="flex items-center gap-2">
                 <Controller
                     control={control}

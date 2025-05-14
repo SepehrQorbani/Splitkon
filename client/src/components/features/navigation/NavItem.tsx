@@ -38,10 +38,11 @@ export const NavItem: React.FC<NavItemProps> = ({
                                 type: "spring",
                                 stiffness: 300,
                                 damping: 30,
+                                // duration: 1000,
                             }}
                         />
                     )}
-                    <div className="flex gap-1 items-center p-2 rounded relative">
+                    <div className="flex gap-1 items-center p-2 rounded relative text-sm">
                         {isActive && ActiveIcon ? (
                             <ActiveIcon className="size-4" />
                         ) : (

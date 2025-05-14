@@ -1,19 +1,13 @@
 import { Drawer } from "@/components/common/Drawer";
 import { ExpenseForm } from "@/components/features/expenses/ExpenseForm";
-import MemberForm from "@/components/features/members/MemberForm";
 import { RepaysForm } from "@/components/features/repays/RepayForm";
 import ShareForm from "@/components/features/share/ShareForm";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { usePermissions } from "@/hooks/usePermissions";
 import { useTranslations } from "@/hooks/useTranslations";
-import {
-    IconCashPlus,
-    IconShare,
-    IconTransform,
-    IconUsersPlus,
-} from "@tabler/icons-react";
+import { IconCashPlus, IconShare, IconTransform } from "@tabler/icons-react";
+import React, { ReactNode } from "react";
 import { MobileActionMenu } from "./MobileActionMenu";
-import { ReactNode } from "react";
 
 interface ActionDrawerProps {
     icon: ReactNode;
@@ -54,55 +48,60 @@ const ActionDrawer: React.FC<ActionDrawerProps> = ({
     );
 };
 
+const actionButtons = [
+    {
+        id: "share",
+        icon: <IconShare className="size-4 mx-0.5" />,
+        title: "ui.share",
+        component: ShareForm,
+        showLabel: false,
+    },
+    // {
+    //     id: "addMember",
+    //     icon: <IconUsersPlus className="size-4 mx-0.5" />,
+    //     title: "ui.addMember",
+    //     component: MemberForm,
+    //     show: canEdit,
+    //     showLabel: false,
+    // },
+    {
+        id: "addPayment",
+        icon: <IconTransform className="size-4 mx-0.5" />,
+        title: "ui.addPayment",
+        component: RepaysForm,
+        permission: "addRepays",
+        showLabel: true,
+    },
+    {
+        id: "newExpense",
+        icon: <IconCashPlus className="size-4 mx-0.5" />,
+        title: "ui.newExpense",
+        component: ExpenseForm,
+        permission: "addExpenses",
+        showLabel: true,
+    },
+];
+
 const ActionMenu: React.FC = () => {
-    const { t } = useTranslations();
-    const { canEdit } = usePermissions();
+    const { can } = usePermissions();
     const isDesktop = useMediaQuery("(min-width: 768px)");
 
-    const actionButtons = [
-        {
-            id: "share",
-            icon: <IconShare className="size-4 mx-0.5" />,
-            title: "ui.share",
-            component: ShareForm,
-            show: true,
-            showLabel: false,
-        },
-        // {
-        //     id: "addMember",
-        //     icon: <IconUsersPlus className="size-4 mx-0.5" />,
-        //     title: "ui.addMember",
-        //     component: MemberForm,
-        //     show: canEdit,
-        //     showLabel: false,
-        // },
-        {
-            id: "addPayment",
-            icon: <IconTransform className="size-4 mx-0.5" />,
-            title: "ui.addPayment",
-            component: RepaysForm,
-            show: canEdit,
-            showLabel: true,
-        },
-        {
-            id: "newExpense",
-            icon: <IconCashPlus className="size-4 mx-0.5" />,
-            title: "ui.newExpense",
-            component: ExpenseForm,
-            show: canEdit,
-            showLabel: true,
-        },
-    ];
-
     if (!isDesktop) {
-        return <MobileActionMenu />;
+        return <MobileActionMenu actionButtons={actionButtons} />;
     }
 
     return (
         <div className="gap-2 flex shrink-0">
             {actionButtons.map(
-                ({ id, icon, title, component: Component, show, showLabel }) =>
-                    show && (
+                ({
+                    id,
+                    icon,
+                    title,
+                    component: Component,
+                    permission,
+                    showLabel,
+                }) =>
+                    (can(permission) || permission === undefined) && (
                         <ActionDrawer
                             key={id}
                             icon={icon}

@@ -1,16 +1,6 @@
 import { Drawer } from "@/components/common/Drawer";
-import { ExpenseForm } from "@/components/features/expenses/ExpenseForm";
-import MemberForm from "@/components/features/members/MemberForm";
-import { RepaysForm } from "@/components/features/repays/RepayForm";
-import ShareForm from "@/components/features/share/ShareForm";
 import { usePermissions } from "@/hooks/usePermissions";
 import { useTranslations } from "@/hooks/useTranslations";
-import {
-    IconCashPlus,
-    IconShare,
-    IconTransform,
-    IconUsersPlus,
-} from "@tabler/icons-react";
 import { ReactNode } from "react";
 
 interface MobileActionDrawerProps {
@@ -54,46 +44,26 @@ const MobileActionDrawer: React.FC<MobileActionDrawerProps> = ({
     );
 };
 
-export const MobileActionMenu: React.FC = () => {
-    const { canEdit } = usePermissions();
-    const { t } = useTranslations();
-
-    const actionButtons = [
-        // {
-        //     id: "addMember",
-        //     icon: <IconUsersPlus className="size-4" />,
-        //     title: "ui.addMember",
-        //     component: MemberForm,
-        //     show: canEdit,
-        // },
-        {
-            id: "addPayment",
-            icon: <IconTransform className="size-4" />,
-            title: "ui.addPayment",
-            component: RepaysForm,
-            show: canEdit,
-        },
-        {
-            id: "newExpense",
-            icon: <IconCashPlus className="size-4" />,
-            title: "ui.newExpense",
-            component: ExpenseForm,
-            show: canEdit,
-        },
-        {
-            id: "share",
-            icon: <IconShare className="size-4" />,
-            title: "ui.share",
-            component: ShareForm,
-            show: true,
-        },
-    ];
+type MobileActionMenuProps = {
+    actionButtons: {
+        id: string;
+        icon: ReactNode;
+        title: string;
+        component: React.ComponentType<{
+            onSubmitSuccess?: () => void;
+        }>;
+        showLabel: boolean;
+        permission?: string;
+    }[];
+};
+export const MobileActionMenu = ({ actionButtons }: MobileActionMenuProps) => {
+    const { can } = usePermissions();
 
     return (
         <div className="flex fixed bottom-0 left-0 right-0 bg-surface border-t border-border px-2 justify-around md:hidden z-99999">
             {actionButtons.map(
-                ({ id, icon, title, component: Component, show }) =>
-                    show && (
+                ({ id, icon, title, component: Component, permission }) =>
+                    (can(permission) || permission === undefined) && (
                         <MobileActionDrawer
                             key={id}
                             icon={icon}

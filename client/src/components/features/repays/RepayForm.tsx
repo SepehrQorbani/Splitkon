@@ -47,7 +47,7 @@ export const RepaysForm = ({
             from_id: repay?.from_id || defaultValue?.from_id || undefined,
             to_id: repay?.to_id || defaultValue?.to_id || undefined,
             amount: repay?.amount || defaultValue?.amount || undefined,
-            date: repay?.date || undefined,
+            date: repay?.date || new Date().toISOString(),
             description: repay?.description || "",
         },
         resolver: zodResolver(RepayInputSchema(t)),

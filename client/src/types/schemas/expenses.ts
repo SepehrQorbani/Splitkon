@@ -54,7 +54,22 @@ export const ExpenseInputSchema = (
                     attribute: t("attributes.date"),
                 }),
             })
-            .date(), // Validates ISO date string (e.g., "2025-04-02")
+            .refine(
+                (value) => {
+                    try {
+                        new Date(value);
+                        return true;
+                    } catch {
+                        return false;
+                    }
+                },
+                {
+                    message: t("validation.date", {
+                        attribute: t("attributes.date"),
+                    }),
+                    path: ["date"],
+                }
+            ),
         spender_id: z.number({
             required_error: t("validation.required", {
                 attribute: t("attributes.spender"),

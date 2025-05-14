@@ -20,7 +20,7 @@ type BalanceCardProps = {
 };
 
 function BalanceCard({ transaction, member }: BalanceCardProps) {
-    const { canEdit } = usePermissions();
+    const { can } = usePermissions();
     const { direction, t } = useTranslations();
     const getMember = useMemberStore((state) => state.getMember);
     let fromMember = member;
@@ -63,7 +63,7 @@ function BalanceCard({ transaction, member }: BalanceCardProps) {
                     <div>
                         <Amount amount={Math.abs(transaction.amount)} />
                     </div>
-                    {canEdit && (
+                    {can("addRepays") && (
                         <Drawer
                             triggerLabel={<IconTransform className="size-3" />}
                             title={t("repay")}

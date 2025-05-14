@@ -41,12 +41,12 @@ const getNavItems = (
 ): NavItem[] =>
     type === "main"
         ? [
-              {
-                  path: "/",
-                  label: t("pages.home.title"),
-                  icon: IconHome,
-                  activeIcon: IconHomeFilled,
-              },
+              //   {
+              //       path: "/",
+              //       label: t("pages.home.title"),
+              //       icon: IconHome,
+              //       activeIcon: IconHomeFilled,
+              //   },
               {
                   path: "/about",
                   label: t("pages.about.title"),

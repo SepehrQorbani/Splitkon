@@ -81,9 +81,10 @@ export const useTranslations = () => {
     }
 
     //TODO: refactor
-    function formatDaysToWords(days: number, suffix: boolean = true): string {
-        if (days <= 0) return t("ui.time.zeroDays");
+    function formatDaysToWords(diff: number, suffix: boolean = true): string {
+        if (diff === 0) return t("ui.time.zeroDays");
 
+        const days = Math.abs(diff);
         const years = Math.floor(days / 365);
         const remainingDaysAfterYears = days % 365;
         const months = Math.floor(remainingDaysAfterYears / 30);
@@ -104,7 +105,11 @@ export const useTranslations = () => {
         }
 
         const timeString = parts.join(t("ui.time.and"));
-        return suffix ? `${timeString} ${t("ui.time.ago")}` : timeString;
+        return suffix
+            ? `${timeString} ${
+                  diff > 0 ? t("ui.time.ago") : t("ui.time.fromNow")
+              }`
+            : timeString;
     }
 
     return {

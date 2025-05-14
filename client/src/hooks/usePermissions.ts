@@ -1,9 +1,13 @@
-import { usePermissionStore } from "@/store/permissions";
+import { PermissionKey, usePermissionStore } from "@/store/permissions";
 
-export const usePermissions = () => {
-    const canEdit = usePermissionStore((state) => state.canEdit);
+interface PermissionResult {
+    can: (key: PermissionKey) => boolean;
+}
 
-    return {
-        canEdit,
-    };
+export const usePermissions = (): PermissionResult => {
+    const permissions = usePermissionStore((state) => state.permissions);
+
+    const can = (key: PermissionKey): boolean => permissions[key] || false;
+
+    return { can };
 };

@@ -17,7 +17,8 @@
         "spender": "هزینه کننده",
         "title": "عنوان",
         "to": "به شخص",
-        "currency": "واحد پول"
+        "currency": "واحد پول",
+        "closing_date": "تاریخ پایان"
     },
     "messages": {
         "dataResponse": "داده‌ها پس از :delay ثانیه دریافت شد",
@@ -172,6 +173,8 @@
         "delete": "حذف",
         "details": "جزئیات",
         "edit": "ویرایش",
+        "editGroup": "ویرایش گروه",
+        "editMembers": "ویرایش اعضا",
         "editAccessDenied": "شما دسترسی ویرایش ندارید",
         "editLink": "لینک ویرایش",
         "editLinkShare": "اشتراک لینک ویرایش",
@@ -258,7 +261,8 @@
             "day": ":count روز",
             "day_plural": ":count روز",
             "and": " و ",
-            "ago": "پیش"
+            "ago": "پیش",
+            "fromNow": "آینده"
         }
     },
     "validation": {
@@ -270,7 +274,10 @@
         "minLength": ":attribute باید حداقل :min کاراکتر باشد",
         "required": ":attribute الزامی است",
         "url": ":attribute باید یک آدرس معتبر باشد",
-        "from_to_different": "اشخاص باید متفاوت باشند"
+        "from_to_different": "اشخاص باید متفاوت باشند",
+        "before_closing_date": "باید قبل از تاریخ پایان گروه باشد!",
+        "after_last_expense": "باید بعد از تاریخ آخرین هزینه باشد!(:min)",
+        "after_date": "باید بعد از تاریخ شروع گروه باشد!"
     },
     "banks": {
         "ansar": "بانک انصار",

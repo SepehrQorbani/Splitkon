@@ -1,5 +1,9 @@
 import { apiFetch } from "@/api/fetch";
-import { GroupRequest, GroupResponse } from "@/types/api/group";
+import {
+    GroupRequest,
+    GroupResponse,
+    GroupUpdateRequest,
+} from "@/types/api/group";
 
 export const createGroup = async (
     data: GroupRequest
@@ -13,5 +17,15 @@ export const createGroup = async (
 export const getGroup = async (token: string): Promise<GroupResponse> => {
     return apiFetch<GroupResponse>(`/api/groups/${token}`, {
         method: "GET",
+    });
+};
+
+export const updateGroup = async (
+    token: string,
+    data: GroupUpdateRequest
+): Promise<GroupResponse> => {
+    return apiFetch<GroupResponse>(`/api/groups/${token}`, {
+        method: "PUT",
+        body: JSON.stringify(data),
     });
 };

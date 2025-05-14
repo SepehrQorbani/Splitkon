@@ -93,28 +93,32 @@ export function MemberList({
                                     ease: "easeInOut",
                                 }}
                                 className={cn(
-                                    "flex justify-between items-center p-2 rounded"
+                                    "flex justify-between items-center p-2 rounded gap-2"
                                 )}
                             >
-                                <div>
+                                <div className="w-full overflow-x-auto overflow-y-hidden">
                                     <div className="flex items-center gap-2">
                                         <img
                                             src={item.avatar}
                                             alt={item.name}
                                             className="w-10 h-10 rounded-xl bg-gray-200 object-cover"
                                         />
-                                        <span>{item.name}</span>
-                                        <span className="text-sm text-gray-500 ps-2">
+                                        <span className="text-xs">
+                                            {item.name}
+                                        </span>
+                                        <span className="text-xs text-gray-500">
                                             ({item.ratio} نفر)
                                         </span>
                                     </div>
                                     {item.bank_info && (
-                                        <div className="flex items-center gap-2 text-sm text-gray-500 ps-12">
-                                            <span className="flex items-center gap-1 text-gray-500 text-xs">
+                                        <div className="flex items-center gap-2 text-sm text-gray-500 ms-12">
+                                            <span className="flex items-center gap-1 text-gray-500 text-xs shrink-0">
                                                 <IconCashBanknote className="w-4 h-4" />
                                                 {t("attributes.bank_info")}
                                             </span>
-                                            <span>({item.bank_info})</span>
+                                            <span className="shrink-0">
+                                                ({item.bank_info})
+                                            </span>
                                         </div>
                                     )}
                                 </div>

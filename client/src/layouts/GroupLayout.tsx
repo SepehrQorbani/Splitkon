@@ -13,6 +13,7 @@ const GroupLayout: React.FC = () => {
     const { token } = useParams<{ token: string }>();
     const { t } = useTranslations();
 
+    const group = useGroupStore((state) => state.group);
     const setGroup = useGroupStore((state) => state.setGroup);
     const setMembers = useMemberStore((state) => state.setMembers);
     const { data, isLoading, error, refetch } = useQuery({
@@ -26,8 +27,6 @@ const GroupLayout: React.FC = () => {
             members && setMembers(members);
         }
     }, [data, setGroup, setMembers, token]);
-
-    const group = data?.data;
 
     const groupSkeleton = (
         <>
@@ -51,7 +50,7 @@ const GroupLayout: React.FC = () => {
                 skeleton={groupSkeleton}
             >
                 <GroupNavbar />
-                <main className="pt-4 pb-20 px-2 sm:px-4 md:p-4 container mx-auto">
+                <main className="pt-4 pb-20 px-2 sm:px-4 md:p-4 w-full max-w-7xl mx-auto">
                     {group && (
                         <div className="flex items-start justify-between gap-4 mb-4">
                             <div className="">

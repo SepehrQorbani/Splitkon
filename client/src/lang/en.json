@@ -17,7 +17,8 @@
         "spender": "Spender",
         "title": "Title",
         "to": "To",
-        "currency": "Currency"
+        "currency": "Currency",
+        "closing_date": "Closing Date"
     },
     "messages": {
         "dataResponse": "Data received after :delay seconds",
@@ -172,6 +173,8 @@
         "delete": "Delete",
         "details": "Details",
         "edit": "Edit",
+        "editGroup": "Group Edit",
+        "editMembers": "Members Edit",
         "editAccessDenied": "You do not have edit access",
         "editLink": "Edit Link",
         "editLinkShare": "Share Edit Link",
@@ -258,7 +261,8 @@
             "day": ":count day",
             "day_plural": ":count days",
             "and": " and ",
-            "ago": "ago"
+            "ago": "ago",
+            "fromNow": "from now"
         }
     },
     "validation": {
