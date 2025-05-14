@@ -3,18 +3,26 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Http\Exceptions\HttpResponseException;
+
 
 class ExpenseUpdateRequest extends FormRequest
 {
+    protected $group;
+
+    public function __construct()
+    {
+        $this->group = request()->attributes->get('group');
+    }
+
     public function authorize()
     {
-        return $this->attributes->get('access') === 'edit';
+        return request()->attributes->get('access') === 'edit' && !$this->group->closing_date;
     }
 
     public function rules()
     {
-        $group = $this->attributes->get('group');
-        $membersId = $group->members->pluck('id')->all();
+        $membersId = $this->group->members->pluck('id')->all();
 
         return [
             'title' => 'nullable|string',
@@ -27,5 +35,16 @@ class ExpenseUpdateRequest extends FormRequest
             'members.*.ratio' => 'required_with:members|numeric|min:1',
             'file' => 'nullable|file|mimes:jpeg,jpg,pdf,png,doc,docx,txt|max:10240',
         ];
+    }
+
+    protected function failedAuthorization(): void
+    {
+        $message = $this->group->closing_date
+            ? __('messages.groupClosed')
+            : __('messages.editAccessRequired');
+
+        throw new HttpResponseException(response()->json([
+            'message' => $message,
+        ], 403));
     }
 }

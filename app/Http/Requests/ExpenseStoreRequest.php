@@ -16,7 +16,7 @@ class ExpenseStoreRequest extends FormRequest
 
     public function authorize()
     {
-        return request()->attributes->get('access') === 'edit';
+        return request()->attributes->get('access') === 'edit' && !$this->group->closing_date;
     }
 
     public function rules()
@@ -34,5 +34,16 @@ class ExpenseStoreRequest extends FormRequest
             'members.*.ratio' => 'required_with:members|numeric|min:1',
             'file' => 'nullable|file|mimes:jpeg,jpg,pdf,png,doc,docx,txt|max:10240',
         ];
+    }
+
+    protected function failedAuthorization(): void
+    {
+        $message = $this->group->closing_date
+            ? __('messages.groupClosed')
+            : __('messages.editAccessRequired');
+
+        throw new HttpResponseException(response()->json([
+            'message' => $message,
+        ], 403));
     }
 }
