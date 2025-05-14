@@ -35,7 +35,7 @@ import { AnimatePresence, motion } from "motion/react";
 interface DatePickerProps {
     name: string;
     label?: string;
-    value: string;
+    value: string | null | undefined;
     onChange: (value: string) => void;
     error?: any;
     isInvalid?: boolean;
@@ -54,9 +54,9 @@ export default function DatePicker({
     const isInvalid = externalInvalid || !!error;
     const errorMessage = error?.message ? error.message : undefined;
 
-    let calendarValue: CalendarDate;
+    let calendarValue: CalendarDate | null;
     try {
-        calendarValue = parseDate(value);
+        calendarValue = value ? parseDate(value.replace(/T.*/, "")) : null;
     } catch (e) {
         calendarValue = today(getLocalTimeZone());
         onChange(calendarValue.toString());
