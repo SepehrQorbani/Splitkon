@@ -32,7 +32,7 @@ function ExpandableCard({
                 {children({ isOpen: false })}
             </motion.div>
             <ModalOverlay
-                className="fixed inset-0 h-full px-4 pt-16 pb-12 md:pb-4 z-10 overflow-y-auto flex min-h-full w-full items-center justify-center bg-background/50 backdrop-blur-xs data-[entering]:animate-modal-blur-entering data-[exiting]:animate-modal-blur-exiting"
+                className="fixed inset-0 h-full px-4 pt-32 pb-16 md:pb-4 z-10 overflow-y-auto flex min-h-full w-full items-center justify-center bg-background/50 backdrop-blur-xs data-[entering]:animate-modal-blur-entering data-[exiting]:animate-modal-blur-exiting"
                 isOpen={isOpen}
                 onOpenChange={setIsOpen}
             >
