@@ -76,7 +76,7 @@ class SummaryService
         return [
             'members_count' => $group->members->count(),
             'expenses_count' => $group->expenses_count,
-            'days_count' => ceil($group->date->diffInDays()),
+            'days_count' => ceil($group->date->diffInDays($group->closing_date?->addDay())),
             'repays_count' => $group->repays_count,
             'total_ratio' => $totalRatio,
             'total_expenses' => $this->currencyCast->get(null, null, $totalExpenses, []),
