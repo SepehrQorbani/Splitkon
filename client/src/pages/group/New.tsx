@@ -1,4 +1,4 @@
-import { createGroup } from "@/api/endpoints/groups";
+import { useCreateGroup } from "@/api/queries/groups";
 import { Button } from "@/components/common/Button";
 import { Card, CardTitle } from "@/components/common/Card";
 import DatePicker from "@/components/common/DatePicker";
@@ -6,16 +6,18 @@ import InputField from "@/components/common/InputField";
 import Select from "@/components/common/Select";
 import MemberListWithForm from "@/components/features/members/MemberListWithForm";
 import { useTranslations } from "@/hooks/useTranslations";
+import { ApiError } from "@/types/api/errors";
 import { GroupRequest } from "@/types/api/group";
 import { GroupInput, GroupInputSchema } from "@/types/schemas/group";
+import { handleApiError } from "@/utils/apiErrorHandler";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { IconSettings, IconUser } from "@tabler/icons-react";
 import { Form } from "react-aria-components";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 
 function New() {
     const { t } = useTranslations();
+    const createGroup = useCreateGroup();
     const navigate = useNavigate();
     const {
         control,
@@ -52,30 +54,10 @@ function New() {
     const onSubmit = async (data: GroupRequest) => {
         clearErrors();
         try {
-            const result = await createGroup(data);
+            const result = await createGroup.mutateAsync({ data });
             navigate(`/${result.data.edit_token}`);
-        } catch (err: any) {
-            // Handle API errors (e.g., validation errors)
-            if (err.message.startsWith("Failed to fetch")) {
-                const errorData = err.cause || {};
-                if (errorData.errors) {
-                    Object.entries(errorData.errors).forEach(
-                        ([field, messages]) => {
-                            setError(field as any, {
-                                type: "server",
-                                message: Array.isArray(messages)
-                                    ? messages[0]
-                                    : messages,
-                            });
-                        }
-                    );
-                } else {
-                    setError("root", {
-                        type: "server",
-                        message: t("ui.submissionError"),
-                    });
-                }
-            }
+        } catch (error: any) {
+            handleApiError(error as ApiError, setError);
         }
     };
 

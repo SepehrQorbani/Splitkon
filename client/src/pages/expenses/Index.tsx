@@ -1,9 +1,8 @@
-import { getExpenses } from "@/api/endpoints/expenses";
+import { useGetExpenses } from "@/api/queries/expenses";
 import AsyncContent from "@/components/common/AsyncContent";
 import ExpenseCard from "@/components/features/expenses/ExpenseCard";
 import { ExpenseCardSkeleton } from "@/components/features/expenses/ExpenseCardSkeleton";
 import { useExpenseStore } from "@/store/expenses";
-import { useQuery } from "@tanstack/react-query";
 import { LayoutGroup } from "motion/react";
 import { useEffect } from "react";
 import { useParams } from "react-router";
@@ -14,10 +13,7 @@ function ExpensesIndex({}: Props) {
     const { token } = useParams();
     const { expenses, setExpenses } = useExpenseStore();
 
-    const { data, isLoading, error, refetch } = useQuery({
-        queryKey: ["expenses", token],
-        queryFn: () => getExpenses(token as string),
-    });
+    const { data, isLoading, error, refetch } = useGetExpenses(token as string);
 
     useEffect(() => {
         if (data) {

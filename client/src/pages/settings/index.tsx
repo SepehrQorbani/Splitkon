@@ -1,4 +1,4 @@
-import { updateGroup } from "@/api/endpoints/groups";
+import { useUpdateGroup } from "@/api/queries/groups";
 import { Button } from "@/components/common/Button";
 import { Card, CardTitle } from "@/components/common/Card";
 import DatePicker from "@/components/common/DatePicker";
@@ -9,10 +9,12 @@ import MemberList from "@/components/features/members/MemberList";
 import { useTranslations } from "@/hooks/useTranslations";
 import { useGroupStore } from "@/store/group";
 import { useMemberStore } from "@/store/members";
+import { ApiError } from "@/types/api/errors";
 import { GroupEditInput, GroupEditInputSchema } from "@/types/schemas/group";
 import { MemberInput } from "@/types/schemas/members";
+import { handleApiError } from "@/utils/apiErrorHandler";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { IconCircleX, IconClearAll, IconSettings } from "@tabler/icons-react";
+import { IconCircleX, IconSettings } from "@tabler/icons-react";
 import { useState } from "react";
 import { Form } from "react-aria-components";
 import { Controller, useForm } from "react-hook-form";
@@ -22,7 +24,7 @@ const SettingsPage = () => {
     const { t, formatDate } = useTranslations();
     const { token } = useParams();
     const group = useGroupStore((state) => state.group);
-    const updateGroupStore = useGroupStore((state) => state.updateGroup);
+    const updateGroup = useUpdateGroup();
     const members = useMemberStore((state) => state.members);
     const [selectedMember, setSelectedMember] = useState<
         MemberInput["id"] | null
@@ -113,9 +115,11 @@ const SettingsPage = () => {
         if (token) {
             clearErrors();
             try {
-                const updatedData = await updateGroup(token, changedFields);
+                const updatedData = await updateGroup.mutateAsync({
+                    token,
+                    data: changedFields,
+                });
 
-                updateGroupStore(updatedData.data);
                 reset({
                     title: updatedData.data.title,
                     date: updatedData.data.date,
@@ -123,28 +127,8 @@ const SettingsPage = () => {
                     currency: updatedData.data.currency,
                     closing_date: updatedData.data.closing_date,
                 });
-            } catch (err: any) {
-                // Handle API errors (e.g., validation errors)
-                if (err.message.startsWith("Failed to fetch")) {
-                    const errorData = err.cause || {};
-                    if (errorData.errors) {
-                        Object.entries(errorData.errors).forEach(
-                            ([field, messages]) => {
-                                setError(field as any, {
-                                    type: "server",
-                                    message: Array.isArray(messages)
-                                        ? messages[0]
-                                        : messages,
-                                });
-                            }
-                        );
-                    } else {
-                        setError("root", {
-                            type: "server",
-                            message: t("ui.submissionError"),
-                        });
-                    }
-                }
+            } catch (error: any) {
+                handleApiError(error as ApiError, setError);
             }
         }
     };

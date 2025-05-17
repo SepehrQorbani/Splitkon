@@ -1,4 +1,4 @@
-import { createRepay, updateRepay } from "@/api/endpoints/repays";
+import { useCreateRepay, useUpdateRepay } from "@/api/queries/repays";
 import AmountField from "@/components/common/AmountField";
 import { Button } from "@/components/common/Button";
 import DatePicker from "@/components/common/DatePicker";
@@ -7,9 +7,10 @@ import MemberSelect from "@/components/common/MemberSelect";
 import { useTranslations } from "@/hooks/useTranslations";
 import { useGroupStore } from "@/store/group";
 import { useMemberStore } from "@/store/members";
-import { useRepayStore } from "@/store/repays";
+import { ApiError } from "@/types/api/errors";
 import { RepayRequest, RepayResponse } from "@/types/api/repays";
 import { Repay, RepayInput, RepayInputSchema } from "@/types/schemas/repays";
+import { handleApiError } from "@/utils/apiErrorHandler";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconChecks } from "@tabler/icons-react";
 import { Form } from "react-aria-components";
@@ -31,9 +32,8 @@ export const RepaysForm = ({
     const { t } = useTranslations();
     const group = useGroupStore((state) => state.group);
     const members = useMemberStore((state) => state.members);
-    const updateMembers = useMemberStore((state) => state.updateMembers);
-    const addRepayStore = useRepayStore((state) => state.addRepay);
-    const updateRepayStore = useRepayStore((state) => state.updateRepay);
+    const createRepay = useCreateRepay();
+    const updateRepay = useUpdateRepay();
     const isEditMode = !!repay && repay.hasOwnProperty("id");
 
     const {
@@ -63,52 +63,20 @@ export const RepaysForm = ({
         try {
             let response;
             if (isEditMode) {
-                response = await updateRepay(group.edit_token, repay.id, {
-                    ...data,
+                response = await updateRepay.mutateAsync({
+                    token: group.edit_token,
+                    repayId: repay.id,
+                    data,
                 });
-                updateRepayStore(response.data);
             } else {
-                response = await createRepay(group.edit_token, { ...data });
-                addRepayStore(response.data);
+                response = await createRepay.mutateAsync({
+                    token: group.edit_token,
+                    data,
+                });
             }
-
-            const updatedMembers = [
-                {
-                    id: response.data.from.id,
-                    payment_balance: response.data.from.payment_balance,
-                    total_expenses: response.data.from.total_expenses,
-                },
-                {
-                    id: response.data.to.id,
-                    payment_balance: response.data.to.payment_balance,
-                    total_expenses: response.data.to.total_expenses,
-                },
-            ];
-            updateMembers(updatedMembers);
             onSubmitSuccess?.(response);
         } catch (error: any) {
-            if (error.message.startsWith("Failed to fetch")) {
-                const errorData = error.cause || {};
-                if (errorData.errors) {
-                    Object.entries(errorData.errors).forEach(
-                        ([field, messages]) => {
-                            setError(field as any, {
-                                type: "server",
-                                message: Array.isArray(messages)
-                                    ? messages[0]
-                                    : messages,
-                            });
-                        }
-                    );
-                } else {
-                    setError("root", {
-                        type: "server",
-                        message: t("ui.submissionError"),
-                    });
-                }
-            } else {
-                console.error("Failed to submit repayment:", error);
-            }
+            handleApiError(error as ApiError, setError);
         }
     };
 

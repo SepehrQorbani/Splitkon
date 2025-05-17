@@ -1,11 +1,10 @@
-import { getBalance } from "@/api/endpoints/balance";
-import { getMembers } from "@/api/endpoints/members";
+import { useGetBalance } from "@/api/queries/balance";
+import { useGetMembers } from "@/api/queries/members";
 import AsyncContent from "@/components/common/AsyncContent";
 import MemberCard from "@/components/features/members/MemberCard";
 import { MemberCardSkeleton } from "@/components/features/members/MemberCardSkeleton";
 import { useBalanceStore } from "@/store/balance";
 import { useMemberStore } from "@/store/members";
-import { useQuery } from "@tanstack/react-query";
 import { LayoutGroup } from "motion/react";
 import { useEffect } from "react";
 import { useParams } from "react-router";
@@ -23,20 +22,13 @@ function MembersIndex({}: Props) {
         isLoading: isMembersLoading,
         error: membersError,
         refetch,
-    } = useQuery({
-        queryKey: ["members", token],
-        queryFn: () => getMembers(token as string),
-    });
+    } = useGetMembers(token as string);
 
     const {
         data: balanceData,
         isLoading: isBalanceLoading,
         error: balanceError,
-    } = useQuery({
-        queryKey: ["balance", token],
-        queryFn: () => getBalance(token as string),
-        enabled: !!membersData,
-    });
+    } = useGetBalance(token as string);
 
     useEffect(() => {
         if (membersData) {

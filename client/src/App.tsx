@@ -10,6 +10,7 @@ import Dashboard from "./pages/group/Dashboard";
 import MembersIndex from "./pages/members/Index";
 import NotFound from "./pages/NotFound";
 import RepaysIndex from "./pages/repays";
+import SettingsIndex from "./pages/settings";
 
 // Lazy-loaded components
 const Home = lazy(() => import("./pages/Home"));
@@ -47,8 +48,8 @@ const AppContent = () => {
                         />
                         <Route path=":token/repays" element={<RepaysIndex />} />
                         <Route
-                            path=":token/settings"
-                            element={<RepaysIndex />}
+                            path=":token/setting"
+                            element={<SettingsIndex />}
                         />
                         <Route path=":token/*" element={<NotFound />} />
                     </Route>

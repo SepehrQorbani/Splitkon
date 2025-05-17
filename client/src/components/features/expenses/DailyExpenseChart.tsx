@@ -1,7 +1,7 @@
-import { getDailyExpenseTotals } from "@/api/endpoints/expenses";
-import { useTranslations } from "@/hooks/useTranslations";
-import { useQuery } from "@tanstack/react-query";
+import { useGetDailyExpenseTotals } from "@/api/queries/expenses";
+import Amount from "@/components/common/Amount";
 import AsyncContent from "@/components/common/AsyncContent";
+import { useTranslations } from "@/hooks/useTranslations";
 import { motion } from "framer-motion";
 import {
     Area,
@@ -15,14 +15,12 @@ import {
     Tooltip,
     TooltipProps,
     XAxis,
-    YAxis,
 } from "recharts";
-import { Skeleton } from "../../common/Skeleton";
-import Amount from "@/components/common/Amount";
 import {
     NameType,
     ValueType,
 } from "recharts/types/component/DefaultTooltipContent";
+import { Skeleton } from "../../common/Skeleton";
 
 interface DailyExpenseChartProps {
     groupToken: string;
@@ -33,7 +31,6 @@ interface DailyExpenseChartProps {
 export const DailyExpenseChart: React.FC<DailyExpenseChartProps> = ({
     groupToken,
     chartType,
-    onChartTypeChange,
 }) => {
     const { t, formatDate } = useTranslations();
 
@@ -42,19 +39,7 @@ export const DailyExpenseChart: React.FC<DailyExpenseChartProps> = ({
         isLoading,
         error,
         refetch,
-    } = useQuery({
-        queryKey: ["dailyExpenses", groupToken],
-        queryFn: () => getDailyExpenseTotals(groupToken),
-        enabled: !!groupToken,
-    });
-
-    // const handleChartTypeChange = () => {
-    //     // Cycle through chart types: bar -> area -> line -> bar
-    //     const types: ("area" | "line" | "bar")[] = ["bar", "area", "line"];
-    //     const currentIndex = types.indexOf(chartType);
-    //     const nextIndex = (currentIndex + 1) % types.length;
-    //     onChartTypeChange(types[nextIndex]);
-    // };
+    } = useGetDailyExpenseTotals(groupToken);
 
     return (
         <AsyncContent
@@ -77,7 +62,7 @@ export const DailyExpenseChart: React.FC<DailyExpenseChartProps> = ({
                                 data={dailyExpenses.data}
                                 margin={{
                                     top: 0,
-                                    right: 5,
+                                    right: 0,
                                     left: 0,
                                     bottom: 0,
                                 }}
@@ -94,7 +79,7 @@ export const DailyExpenseChart: React.FC<DailyExpenseChartProps> = ({
                                     tickLine={false}
                                     interval="preserveStartEnd"
                                 />
-                                <YAxis
+                                {/* <YAxis
                                     className="[&_text]:fill-action/60 text-xs"
                                     allowDataOverflow
                                     type="number"
@@ -108,7 +93,7 @@ export const DailyExpenseChart: React.FC<DailyExpenseChartProps> = ({
                                     tickFormatter={(value) =>
                                         `${(value / 1000).toLocaleString()}`
                                     }
-                                />
+                                /> */}
                                 <Tooltip content={<ChartTooltip />} />
                                 <defs>
                                     <linearGradient
@@ -119,14 +104,14 @@ export const DailyExpenseChart: React.FC<DailyExpenseChartProps> = ({
                                         y2="1"
                                     >
                                         <stop
-                                            offset="5%"
+                                            offset="10%"
                                             stopColor="var(--color-action)"
-                                            stopOpacity={0.5}
+                                            stopOpacity={0.7}
                                         />
                                         <stop
-                                            offset="95%"
+                                            offset="100%"
                                             stopColor="var(--color-action)"
-                                            stopOpacity={1}
+                                            stopOpacity={0}
                                         />
                                     </linearGradient>
                                 </defs>
@@ -161,7 +146,7 @@ export const DailyExpenseChart: React.FC<DailyExpenseChartProps> = ({
                                     tickLine={false}
                                     interval="equidistantPreserveStart"
                                 />
-                                <YAxis
+                                {/* <YAxis
                                     className="[&_text]:fill-action/60 text-xs"
                                     allowDataOverflow
                                     interval="preserveStartEnd"
@@ -171,7 +156,7 @@ export const DailyExpenseChart: React.FC<DailyExpenseChartProps> = ({
                                     tickFormatter={(value) =>
                                         `${(value / 1000).toLocaleString()}`
                                     }
-                                />
+                                /> */}
                                 <Tooltip content={<ChartTooltip />} />
                                 <Line
                                     type="monotone"
@@ -201,7 +186,7 @@ export const DailyExpenseChart: React.FC<DailyExpenseChartProps> = ({
                                     tickFormatter={(date) => formatDate(date)}
                                     tickLine={false}
                                 />
-                                <YAxis
+                                {/* <YAxis
                                     className="[&_text]:fill-action/60 text-xs"
                                     allowDataOverflow
                                     interval="preserveStartEnd"
@@ -211,7 +196,7 @@ export const DailyExpenseChart: React.FC<DailyExpenseChartProps> = ({
                                     tickFormatter={(value) =>
                                         `${(value / 1000).toLocaleString()}`
                                     }
-                                />
+                                /> */}
                                 <Tooltip content={<ChartTooltip />} />
                                 <Bar
                                     dataKey="total"

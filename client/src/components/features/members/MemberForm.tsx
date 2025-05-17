@@ -1,4 +1,3 @@
-import { createMember, updateMember } from "@/api/endpoints/members";
 import InputField from "@/components/common/InputField";
 import NumberField from "@/components/common/NumberField";
 import { useTranslations } from "@/hooks/useTranslations";
@@ -18,6 +17,9 @@ import AvatarSelect from "../../common/AvatarSelect";
 import BankAccountInputField from "../../common/BankAccountInputField";
 import { Button } from "../../common/Button";
 import { cn } from "@/utils/cn";
+import { useCreateMember, useUpdateMember } from "@/api/queries/members";
+import { ApiError } from "@/types/api/errors";
+import { handleApiError } from "@/utils/apiErrorHandler";
 
 type Props = {
     disabled?: boolean;
@@ -36,6 +38,8 @@ const MemberForm = ({
 }: Props) => {
     const { t } = useTranslations();
     const group = useGroupStore((state) => state.group);
+    const createMember = useCreateMember();
+    const updateMember = useUpdateMember();
     const isEditMode = !!member;
 
     const {
@@ -70,13 +74,16 @@ const MemberForm = ({
             try {
                 let response;
                 if (isEditMode && member?.id) {
-                    response = await updateMember(
-                        group.edit_token,
-                        member.id as number,
-                        data
-                    );
+                    response = await updateMember.mutateAsync({
+                        token: group.edit_token,
+                        memberId: member.id as number,
+                        data,
+                    });
                 } else {
-                    response = await createMember(group.edit_token, data);
+                    response = await createMember.mutateAsync({
+                        token: group.edit_token,
+                        data,
+                    });
                 }
                 reset({
                     name: member?.name || "",
@@ -86,28 +93,7 @@ const MemberForm = ({
                 });
                 onSubmitSuccess?.(response.data);
             } catch (error: any) {
-                if (error.message.startsWith("Failed to fetch")) {
-                    const errorData = error.cause || {};
-                    if (errorData.errors) {
-                        Object.entries(errorData.errors).forEach(
-                            ([field, messages]) => {
-                                setError(field as any, {
-                                    type: "server",
-                                    message: Array.isArray(messages)
-                                        ? messages[0]
-                                        : messages,
-                                });
-                            }
-                        );
-                    } else {
-                        setError("root", {
-                            type: "server",
-                            message: t("ui.submissionError"),
-                        });
-                    }
-                } else {
-                    console.error("Failed to submit member:", error);
-                }
+                handleApiError(error as ApiError, setError);
             }
         } else {
             onSubmitSuccess?.(data);

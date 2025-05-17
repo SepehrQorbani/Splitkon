@@ -1,4 +1,4 @@
-import { createExpense, updateExpense } from "@/api/endpoints/expenses";
+import { useCreateExpense, useUpdateExpense } from "@/api/queries/expenses";
 import AmountField from "@/components/common/AmountField";
 import { Button } from "@/components/common/Button";
 import DatePicker from "@/components/common/DatePicker";
@@ -6,16 +6,16 @@ import InputField from "@/components/common/InputField";
 import MemberSelect from "@/components/common/MemberSelect";
 import MembersSelect from "@/components/common/MembersSelect";
 import { useTranslations } from "@/hooks/useTranslations";
-import { useExpenseStore } from "@/store/expenses";
 import { useGroupStore } from "@/store/group";
 import { useMemberStore } from "@/store/members";
+import { ApiError } from "@/types/api/errors";
 import { ExpenseRequest, ExpenseResponse } from "@/types/api/expenses";
 import {
     Expense,
     ExpenseInput,
     ExpenseInputSchema,
 } from "@/types/schemas/expenses";
-import { Member } from "@/types/schemas/members";
+import { handleApiError } from "@/utils/apiErrorHandler";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconChecks } from "@tabler/icons-react";
 import { Form } from "react-aria-components";
@@ -35,9 +35,6 @@ export const ExpenseForm = ({
     const { t } = useTranslations();
     const group = useGroupStore((state) => state.group);
     const members = useMemberStore((state) => state.members);
-    const updateMembers = useMemberStore((state) => state.updateMembers);
-    const addExpenseStore = useExpenseStore((state) => state.addExpense);
-    const updateExpenseStore = useExpenseStore((state) => state.updateExpense);
     const isEditMode = !!expense;
 
     const {
@@ -57,51 +54,28 @@ export const ExpenseForm = ({
         resolver: zodResolver(ExpenseInputSchema(t)),
         mode: "all",
     });
-
+    const createExpense = useCreateExpense();
+    const updateExpense = useUpdateExpense();
     const submit = async (data: ExpenseRequest) => {
         if (!group?.edit_token) return;
 
         try {
             let response;
             if (isEditMode && expense?.id) {
-                response = await updateExpense(group.edit_token, expense.id, {
-                    ...data,
+                response = await updateExpense.mutateAsync({
+                    token: group.edit_token,
+                    expenseId: expense.id,
+                    data,
                 });
-                updateExpenseStore(response.data);
             } else {
-                response = await createExpense(group.edit_token, { ...data });
-                addExpenseStore(response.data);
+                response = await createExpense.mutateAsync({
+                    token: group.edit_token,
+                    data,
+                });
             }
-            const members = response.data.members.map((member: Member) => ({
-                id: member.id,
-                total_expenses: member.total_expenses,
-                payment_balance: member.payment_balance,
-            }));
-            updateMembers(members);
             onSubmitSuccess?.(response);
         } catch (error: any) {
-            if (error.message.startsWith("Failed to fetch")) {
-                const errorData = error.cause || {};
-                if (errorData.errors) {
-                    Object.entries(errorData.errors).forEach(
-                        ([field, messages]) => {
-                            setError(field as any, {
-                                type: "server",
-                                message: Array.isArray(messages)
-                                    ? messages[0]
-                                    : messages,
-                            });
-                        }
-                    );
-                } else {
-                    setError("root", {
-                        type: "server",
-                        message: t("ui.submissionError"),
-                    });
-                }
-            } else {
-                console.error("Failed to submit expense:", error);
-            }
+            handleApiError(error as ApiError, setError);
         }
     };
 

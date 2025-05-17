@@ -23,11 +23,8 @@ export const apiFetch = async <T>(
     const data = await response.json();
 
     if (!response.ok) {
-        if (response.status === 404) {
-            throw response;
-        }
         const error = new Error(`Failed to fetch ${fullUrl}`);
-        (error as any).cause = data;
+        (error as any).cause = { status: response.status, data };
         throw error;
     }
 

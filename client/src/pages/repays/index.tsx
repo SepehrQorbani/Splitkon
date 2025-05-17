@@ -1,9 +1,8 @@
-import { getRepays } from "@/api/endpoints/repays";
+import { useGetRepays } from "@/api/queries/repays";
 import AsyncContent from "@/components/common/AsyncContent";
 import RepayCard from "@/components/features/repays/RepayCard";
 import { RepayCardSkeleton } from "@/components/features/repays/RepayCardSkeleton";
 import { useRepayStore } from "@/store/repays";
-import { useQuery } from "@tanstack/react-query";
 import { LayoutGroup } from "motion/react";
 import { useEffect } from "react";
 import { useParams } from "react-router";
@@ -14,10 +13,7 @@ function RepaysIndex({}: Props) {
     const { token } = useParams();
     const { repays, setRepays } = useRepayStore();
 
-    const { data, isLoading, error, refetch } = useQuery({
-        queryKey: ["repays", token],
-        queryFn: () => getRepays(token as string),
-    });
+    const { data, isLoading, error, refetch } = useGetRepays(token as string);
 
     useEffect(() => {
         if (data) {

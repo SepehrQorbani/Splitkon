@@ -28,7 +28,7 @@ export default function AsyncContent({
     }
 
     if (error) {
-        if (error.status === 404) {
+        if (error?.status === 404 || error?.cause?.status === 404) {
             return <NotFound />;
         }
         return <Error message={t(errorMessage)} refetch={refetch} />;
