@@ -274,7 +274,8 @@
         "minLength": "The :attribute must be at least :min characters",
         "required": "The :attribute field is required",
         "url": "The :attribute must be a valid URL",
-        "from_to_different": "The from and to persons must be different"
+        "from_to_different": "The from and to persons must be different",
+        "date": "The :attribute field must be a valid date."
     },
     "banks": {
         "ansar": "Bank Ansar",
