@@ -12,7 +12,7 @@ class RepayController extends Controller
     public function index()
     {
         $repays = request()->attributes->get("group")
-            ->repays()->with(['from', 'to', 'attachments'])->get();
+            ->repays()->with(['from', 'to', 'attachments'])->orderBy('date')->get();
         return response()->json(['data' => $repays]);
     }
 

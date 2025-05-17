@@ -15,7 +15,7 @@ class ExpenseController extends Controller
     public function index()
     {
         $expenses = request()->attributes->get("group")
-            ->expenses()->with(['spender', 'members', 'attachments'])->get();
+            ->expenses()->with(['spender', 'members', 'attachments'])->orderBy('date')->get();
         return ExpenseResource::collection($expenses);
     }
 
@@ -47,7 +47,7 @@ class ExpenseController extends Controller
     public function dailyTotals($token)
     {
         $group = request()->attributes->get('group');
-        $cacheKey = "group:{$group->id}:daily_expenses";
+        // $cacheKey = "group:{$group->id}:daily_expenses";
 
         // $dailyExpenses = Cache::remember($cacheKey, now()->addHours(1), function () use ($group) {
         // return $group->expenses()
