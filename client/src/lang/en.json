@@ -41,104 +41,94 @@
             "tryAgain": "Try Again"
         },
         "home": {
-            "title": "Home Page",
+            "title": "Home",
             "hero": {
-                "title": "Manage Group Expenses Easily!",
-                "subtitle": "Add expenses, split costs, and settle up without registration.",
+                "title": "Simplify Your Group Expenses with One Click!",
+                "subtitle": "Manage your expenses by ",
+                "flipWords": "recording,splitting,sharing,settling",
                 "createGroup": "Create Your Group Now",
-                "howItWorks": "See How It Works"
+                "howItWorks": "See How It Works",
+                "sample": {
+                    "travel": "Nowruz Trip",
+                    "home": "University Dorm",
+                    "party": "Hangout",
+                    "building": "Building Management"
+                }
             },
             "features": {
                 "title": "Key Features",
-                "subtitle": "Everything you need to manage group expenses",
+                "subtitle": "SplitKon has everything you need for shared expense management",
                 "cards": {
-                    "createGroup": {
-                        "title": "Create Groups Easily",
-                        "description": "Create your group in seconds, add members, and start tracking expenses."
+                    "startEasy": {
+                        "title": "Hassle-Free Start, No Sign-Up",
+                        "description": "In just seconds, create your group without an account, specify members, and get started!"
                     },
-                    "trackExpenses": {
-                        "title": "Track & Split Expenses",
-                        "description": "Add expenses, split them equally or custom, and see who owes whom."
+                    "splitFairly": {
+                        "title": "Fair Expense Splitting",
+                        "description": "Divide expenses with flexible ratios like equal, percentage, or usage-based splits."
                     },
-                    "realtime": {
-                        "title": "Real-time Dashboard",
-                        "description": "See total expenses and member statuses at a glance."
+                    "monitorSmart": {
+                        "title": "Smart Monitoring of Group Finances",
+                        "description": "Track your group’s financial status in real-time with high accuracy by logging repayments."
                     },
-                    "multilingual": {
-                        "title": "Multi-language Support",
-                        "description": "Use the app in Persian or English, with more languages coming soon!"
-                    },
-                    "noLogin": {
-                        "title": "No Login Required",
-                        "description": "Access your group with a unique link—no registration needed."
-                    },
-                    "bankInfo": {
-                        "title": "Bank Information",
-                        "description": "Store member card numbers for easier settlements."
+                    "shareEasy": {
+                        "title": "Easy and Quick Sharing",
+                        "description": "Share your group’s data with one click via links, files, or messaging apps with others."
                     }
                 }
             },
             "howItWorks": {
                 "title": "How It Works?",
-                "subtitle": "Manage group expenses in three easy steps",
+                "subtitle": "Using SplitKon is simple yet advanced",
                 "steps": {
                     "create": {
                         "title": "Create Your Group",
-                        "description": "Enter your group name and add members."
+                        "description": "No sign-up needed—just pick a name for your group, add members, and start with a unique link."
                     },
                     "track": {
-                        "title": "Add Expenses",
-                        "description": "Enter expenses, select who paid, and split the cost."
+                        "title": "Record Expenses",
+                        "description": "Enter expenses, specify the payer, and split them with custom ratios (e.g., equal or percentage) among members."
                     },
                     "settle": {
-                        "title": "Track & Settle Up",
-                        "description": "See who owes whom and settle up easily."
+                        "title": "Track and Settle",
+                        "description": "Log repayments, view your group’s financial status instantly, and settle easily."
                     }
                 }
             },
             "useCases": {
                 "title": "Who Can Use It?",
-                "subtitle": "A solution for any group, any size",
+                "subtitle": "SplitKon helps wherever you have shared expenses",
                 "cards": {
                     "travelers": {
-                        "title": "Group Travelers",
-                        "description": "Planning a group trip? Split food, accommodation, and other costs."
+                        "title": "Group Travel",
+                        "description": "Going on a trip with friends? Split food, accommodation, and transport costs easily with SplitKon and enjoy your journey!"
                     },
                     "roommates": {
-                        "title": "Roommates",
-                        "description": "Living together? Manage rent, bills, and groceries easily."
+                        "title": "Live Together, No Financial Fights!",
+                        "description": "Living with roommates? Manage rent, bills, and shared costs with SplitKon and avoid disputes!"
                     },
-                    "events": {
-                        "title": "Event Organizers",
-                        "description": "Having an event? Handle catering, decor, and ticket expenses."
+                    "building": {
+                        "title": "Building Management",
+                        "description": "Effortlessly manage shared building expenses among neighbors with no hassle!"
                     }
                 }
             },
-            "testimonials": {
-                "title": "What Our Users Say?",
-                "quotes": {
-                    "traveler": {
-                        "text": "This app made our group trip so much easier!",
-                        "author": "Sarah",
-                        "role": "Traveler"
-                    },
-                    "roommate": {
-                        "text": "We don't argue about bills anymore!",
-                        "author": "Ali",
-                        "role": "Roommate"
-                    },
-                    "organizer": {
-                        "text": "Perfect for managing gathering expenses!",
-                        "author": "Mary",
-                        "role": "Event Organizer"
-                    }
-                }
+            "contribution": {
+                "title": "Join Us and Improve SplitKon!",
+                "description": "SplitKon is an open-source project, and we need your help! If you're a developer, check our GitHub for code, report bugs, or suggest features. If you're a user, your feedback and ideas are invaluable to us.",
+                "github": "Visit Our GitHub",
+                "feedback": "Share Your Feedback"
+            },
+            "callToAction": {
+                "title": "Make Your Group Expenses Clear Now!",
+                "description": "With SplitKon, create your group in seconds, manage expenses transparently, and settle hassle-free. Try it now!",
+                "button": "Create Your Group Now"
             },
             "footer": {
-                "description": "Manage group expenses with ease",
+                "description": "Simple group expense management",
                 "usefulLinks": "Useful Links",
                 "contact": "Contact Us",
-                "privacy": "Privacy",
+                "privacy": "Privacy Policy",
                 "socialMedia": "Social Media",
                 "copyright": "All rights reserved"
             }
@@ -161,6 +151,7 @@
         "close": "Close",
         "copy": "Copy",
         "count": "Count",
+        "totalCount": "Total Count",
         "create": "Create",
         "creating": "Creating",
         "credits": "Credits",
@@ -220,6 +211,7 @@
         "outstanding": "Outstanding Balance",
         "pageNotFound": "Page Not Found",
         "person": "Person",
+        "statistics": "Statistics",
         "recentActivity": "Recent Activity",
         "repay": "Repay",
         "repayment": "Repayment",

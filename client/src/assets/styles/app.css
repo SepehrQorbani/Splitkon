@@ -108,6 +108,10 @@
     --radius-input: var(--radius-sm);
     --shadow-input: 0 1px 1px var(--color-input-shadow);
 
+    --shadow-center: 0 0 6px -2px var(--tw-shadow-color, rgb(0 0 0 / 0.1)),
+        0 0 6px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1)),
+        0 0 0 1px var(--tw-shadow-color, rgb(0 0 0 / 0.05));
+
     /* Animations remain unchanged */
     --animate-slide-down-in: slide-down 0.15s ease-out;
     --animate-slide-down-out: slide-down 0.15s reverse ease-out;
