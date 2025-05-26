@@ -31,7 +31,7 @@ const MemberListWithForm = ({
     const [selectedMember, setSelectedMember] = useState<MemberInput | null>(
         null
     );
-    const [showForm, setShowForm] = useState(false);
+    const [showForm, setShowForm] = useState(true);
 
     const handleFormSubmit = (data?: MemberInput | MemberResponse["data"]) => {
         if (disabled || !data) return;
