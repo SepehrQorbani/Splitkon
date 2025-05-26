@@ -19,7 +19,7 @@ type RepayCardProps = {
 };
 
 function RepayCard({ repay }: RepayCardProps) {
-    const { canEdit } = usePermissions();
+    const { can } = usePermissions();
     const { t, direction, formatDate } = useTranslations();
     const id = `repay-${repay.id}`;
 
@@ -49,7 +49,7 @@ function RepayCard({ repay }: RepayCardProps) {
                         <div className="flex flex-col gap-1">
                             <div className="flex items-center text-sm font-medium">
                                 {t("repayment")}
-                                {canEdit && (
+                                {can("editRepays") && (
                                     <Drawer
                                         triggerLabel={
                                             <IconPencilDollar className="w-4 h-4 text-muted" />
