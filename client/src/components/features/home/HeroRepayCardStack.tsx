@@ -7,6 +7,7 @@ import {
 } from "@tabler/icons-react";
 import { FC } from "react";
 import { CardStack } from "./CardStack";
+import { cn } from "@/utils/cn";
 
 interface CardStackItem {
     id: number;
@@ -214,7 +215,7 @@ const HeroExpenseCard: FC = () => {
     );
 };
 
-const HeroRepayCardStack: FC = () => {
+const HeroRepayCardStack = ({ className }: { className?: string }) => {
     const cardStackItems: CardStackItem[] = [
         {
             id: 1,
@@ -236,7 +237,7 @@ const HeroRepayCardStack: FC = () => {
             duration={5000}
             offset={4}
             direction="top"
-            className="h-[72px] -mt-6"
+            className={cn("h-[72px] -mt-6", className)}
         />
     );
 };
