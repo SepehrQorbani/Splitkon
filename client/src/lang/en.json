@@ -27,7 +27,8 @@
     },
     "pages": {
         "about": {
-            "title": "About Us"
+            "title": "About Us",
+            "description": "SplitKon is an open-source and free tool and software for managing and splitting shared and group expenses."
         },
         "notFound": {
             "lost": "You look a little lost...",
@@ -118,11 +119,6 @@
                 "description": "SplitKon is an open-source project, and we need your help! If you're a developer, check our GitHub for code, report bugs, or suggest features. If you're a user, your feedback and ideas are invaluable to us.",
                 "github": "Visit Our GitHub",
                 "feedback": "Share Your Feedback"
-            },
-            "callToAction": {
-                "title": "Make Your Group Expenses Clear Now!",
-                "description": "With SplitKon, create your group in seconds, manage expenses transparently, and settle hassle-free. Try it now!",
-                "button": "Create Your Group Now"
             },
             "footer": {
                 "description": "Simple group expense management",
