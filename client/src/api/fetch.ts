@@ -6,8 +6,7 @@ export const apiFetch = async <T>(
     options: RequestInit = {}
 ): Promise<T> => {
     const language = useUIStore.getState().language;
-    const baseUrl =
-        import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+    const baseUrl = import.meta.env.VITE_API_BASE_URL || "";
     const fullUrl = `${baseUrl}${url}`;
 
     const response = await fetch(fullUrl, {
