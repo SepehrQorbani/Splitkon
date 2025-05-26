@@ -27,7 +27,6 @@ function ToggleButtonGroup({ buttons, value, onChange }: Props) {
                 "flex items-center gap-2 p-1 rounded-input border border-border"
             )}
             onSelectionChange={(e) => {
-                console.log("first");
                 onChange([...e][0] as string);
             }}
         >

@@ -57,7 +57,7 @@ const AmountField = ({
     // const resolvedLabel = label ?? t(`attributes.${name}`);
     const errorMessage = error?.message ? error.message : undefined;
     const [_formatOptions, setFormatOptions] = useState(formatOptions);
-    console.log(_formatOptions);
+
     return (
         <NumberFieldAria
             name={name}
