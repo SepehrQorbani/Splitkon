@@ -199,6 +199,7 @@ return [
     */
 
     'attributes' => [
+        'amount' => 'amount',
         'name' => 'name',
         'ratio' => 'ratio',
         'email' => 'email',
