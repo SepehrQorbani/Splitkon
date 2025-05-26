@@ -24,7 +24,7 @@ export const UseCaseCard: React.FC<UseCaseCardProps> = ({
                     <img
                         src={`./images/${imageSrc}`}
                         alt=""
-                        className="rounded-xl"
+                        className="rounded-xl w-full"
                     />
                 </div>
                 <div className="px-4 py-4 h-full">
