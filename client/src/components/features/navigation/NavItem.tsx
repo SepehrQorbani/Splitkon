@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router";
 import { cn } from "@/utils/cn";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 
 interface NavItemProps {
     to: string;
@@ -9,7 +9,7 @@ interface NavItemProps {
     icon: React.ComponentType<{ className?: string }>;
     activeIcon?: React.ComponentType<{ className?: string }>;
     className?: string;
-    layoutId: string;
+    navType: "main" | "group";
 }
 
 export const NavItem: React.FC<NavItemProps> = ({
@@ -18,30 +18,54 @@ export const NavItem: React.FC<NavItemProps> = ({
     icon: Icon,
     activeIcon: ActiveIcon,
     className,
-    layoutId,
+    navType = "main",
 }) => {
     return (
         <NavLink to={to} className={cn("block", className)} end>
             {({ isActive }) => (
                 <div
                     className={cn(
-                        "relative px-2",
-                        isActive && "text-action-fg"
+                        "relative px-2 text-action/75",
+                        isActive && "text-action"
                     )}
                 >
-                    {isActive && (
+                    {isActive && navType === "group" ? (
                         <motion.div
-                            className={cn("absolute bg-action rounded inset-0")}
-                            layoutId={layoutId}
+                            className={cn(
+                                "absolute bg-action rounded bottom-0 left-0 right-0 h-1"
+                            )}
+                            layoutId={`${navType}-nav-highlight`}
                             initial={false}
                             transition={{
                                 type: "spring",
                                 stiffness: 300,
                                 damping: 30,
-                                // duration: 1000,
                             }}
                         />
+                    ) : (
+                        <AnimatePresence>
+                            {isActive && (
+                                <motion.div
+                                    className={cn(
+                                        "absolute bg-action rounded bottom-0 left-0 right-0 h-1"
+                                    )}
+                                    initial={{
+                                        opacity: 0,
+                                        y: 4,
+                                    }}
+                                    animate={{
+                                        opacity: 1,
+                                        y: 0,
+                                    }}
+                                    exit={{
+                                        y: 4,
+                                        opacity: 0,
+                                    }}
+                                />
+                            )}
+                        </AnimatePresence>
                     )}
+
                     <div className="flex gap-1 items-center p-2 rounded relative text-sm">
                         {isActive && ActiveIcon ? (
                             <ActiveIcon className="size-4" />

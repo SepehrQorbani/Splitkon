@@ -1,4 +1,3 @@
-import { MainNavbar } from "@/components/features/navigation/MainNavbar";
 import { Navbar } from "@/components/features/navigation/Navbar";
 import { useGroupStore } from "@/store";
 import React, { useEffect } from "react";
@@ -16,7 +15,7 @@ const MainLayout: React.FC = () => {
 
     return (
         <div className="min-h-screen">
-            <Navbar />
+            <Navbar layout="main" />
             <main className="p-4 pb-16 md:pb-0">
                 <Outlet />
             </main>

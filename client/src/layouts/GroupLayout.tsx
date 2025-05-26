@@ -6,13 +6,14 @@ import { useTranslations } from "@/hooks/useTranslations";
 import ActionMenu from "@/pages/group/ActionMenu";
 import { useGroupStore, useMemberStore } from "@/store";
 import { useQuery } from "@tanstack/react-query";
+import { AnimatePresence, motion } from "motion/react";
 import React, { useEffect } from "react";
-import { Outlet, useParams } from "react-router";
+import { Outlet, useLocation, useOutlet, useParams } from "react-router";
 
 const GroupLayout: React.FC = () => {
     const { token } = useParams<{ token: string }>();
-    const { t } = useTranslations();
-
+    const location = useLocation();
+    const outlet = useOutlet();
     const group = useGroupStore((state) => state.group);
     const setGroup = useGroupStore((state) => state.setGroup);
     const setMembers = useMemberStore((state) => state.setMembers);
@@ -42,7 +43,7 @@ const GroupLayout: React.FC = () => {
 
     return (
         <div className="min-h-screen flex flex-col">
-            <Navbar />
+            <Navbar layout="group" />
             <AsyncContent
                 isLoading={isLoading}
                 error={error}
@@ -61,7 +62,26 @@ const GroupLayout: React.FC = () => {
                             <ActionMenu />
                         </div>
                     )}
-                    <Outlet />
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            initial={{
+                                opacity: 0,
+                                scale: 0.95,
+                            }}
+                            animate={{
+                                opacity: 1,
+                                scale: 1,
+                            }}
+                            transition={{ duration: 0.2 }}
+                            exit={{
+                                opacity: 0,
+                                scale: 1.02,
+                            }}
+                            key={location.pathname}
+                        >
+                            {outlet}
+                        </motion.div>
+                    </AnimatePresence>
                 </main>
             </AsyncContent>
         </div>

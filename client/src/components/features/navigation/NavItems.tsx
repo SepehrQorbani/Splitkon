@@ -105,7 +105,7 @@ export const NavItems: React.FC<NavItemsProps> = ({ navType = "main" }) => {
                     icon={item.icon}
                     activeIcon={item.activeIcon}
                     className={item.className}
-                    layoutId={`${navType}-nav-highlight`}
+                    navType={navType}
                 />
             ))}
         </>

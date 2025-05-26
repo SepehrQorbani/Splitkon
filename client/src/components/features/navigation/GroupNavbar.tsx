@@ -1,24 +1,25 @@
-//TODO: Fix active animation when scroll
-import { NavLink } from "react-router";
+import { motion, useMotionValueEvent, useScroll } from "motion/react";
+import { useState } from "react";
 import { NavItems } from "./NavItems";
-import { AnimatePresence, LayoutGroup, motion } from "motion/react";
 import { cn } from "@/utils/cn";
 
 function GroupNavbar() {
+    const { scrollY } = useScroll();
+    const [isScroll, setIsScroll] = useState(false);
+
+    useMotionValueEvent(scrollY, "change", (current) => {
+        setIsScroll(current > 0);
+    });
     return (
         <nav
-            className="sticky overflow-x-auto text-nowrap top-16 left-0 right-0 flex items-center justify-between px-4 py-2 min-h-12 bg-surface border-b border-border text-xs md:text-base z-99999"
+            className={cn(
+                "sticky transition-all duration-200 overflow-x-auto text-nowrap top-16 left-0 right-0 flex items-center justify-between px-4 py-2 min-h-12 bg-surface border-b border-border text-xs md:text-base z-99999",
+                isScroll && "top-12 shadow-input"
+            )}
             role="navigation"
             aria-label="Main navigation"
-            // layoutRoot
-            // layout
         >
-            <motion.div
-                className="sticky flex"
-                layout
-                layoutRoot
-                // layoutId="group-nav-highlight"
-            >
+            <motion.div className="sticky flex" layout layoutRoot>
                 <NavItems navType="group" />
             </motion.div>
         </nav>
