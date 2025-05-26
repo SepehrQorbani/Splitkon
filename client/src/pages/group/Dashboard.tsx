@@ -6,6 +6,7 @@ import { GroupInfoCard } from "@/components/features/dashboard/GroupInfoCard";
 import { MembersOverviewCard } from "@/components/features/dashboard/MembersOverviewCard";
 import { OutstandingStatusCard } from "@/components/features/dashboard/OutstandingStatusCard";
 import { RecentActivityCard } from "@/components/features/dashboard/RecentActivityCard";
+import StatOverviewCard from "@/components/features/dashboard/StatOverviewCard";
 import { useGroupStore } from "@/store";
 import { useMemberStore } from "@/store/members";
 import { Summary } from "@/types/schemas/summary";
@@ -52,15 +53,18 @@ function Dashboard() {
                         members={members}
                         className=""
                     />
-
+                    <StatOverviewCard
+                        className="col-span-1"
+                        summary={summary}
+                    />
                     <ExpensesOverviewCard
-                        className="col-span-1 md:col-span-2"
+                        className="col-span-1"
                         summary={summary}
                         groupToken={token!}
                     />
                     <RecentActivityCard
                         summary={summary}
-                        className="md:col-span-2 lg:col-span-1"
+                        className="col-span-1 md:col-span-2 lg:col-span-1"
                     />
                 </div>
             )}

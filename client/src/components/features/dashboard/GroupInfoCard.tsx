@@ -27,7 +27,7 @@ export const GroupInfoCard: FC<GroupInfoCardProps> = ({ group, className }) => {
                     <div className="w-full border-t mt-3 border-action-soft border-dashed"></div>
                     <div className="shrink-0 text-[10px] flex items-center">
                         {formatDaysToWords(
-                            diffInDays(group?.date, group?.closing_date),
+                            diffInDays(group?.date, group?.closing_date) + 1,
                             false
                         )}
                     </div>

@@ -23,17 +23,41 @@ interface MemberBalanceDistribution {
 interface MembersOverviewCardProps {
     summary: Summary;
     members: Member[];
-    memberBalanceDistribution: MemberBalanceDistribution;
     className?: string;
 }
 
 export const MembersOverviewCard: FC<MembersOverviewCardProps> = ({
     summary,
     members,
-    memberBalanceDistribution,
     className,
 }) => {
     const { t } = useTranslations();
+    const memberBalanceDistribution = summary?.net_balances.reduce(
+        (prev, curr) => {
+            if (curr.net > 0)
+                return {
+                    ...prev,
+                    creditors: prev.creditors + 1,
+                    balanced: prev.balanced - 1,
+                };
+            else if (curr.net < 0)
+                return {
+                    ...prev,
+                    debtors: prev.debtors + 1,
+                    balanced: prev.balanced - 1,
+                };
+            else return prev;
+        },
+        {
+            creditors: 0,
+            debtors: 0,
+            balanced: summary.members_count,
+        }
+    ) || {
+        creditors: 0,
+        debtors: 0,
+        balanced: summary?.members_count || 0,
+    };
     return (
         <Card className={cn(className)}>
             <div className="flex items-center justify-between">

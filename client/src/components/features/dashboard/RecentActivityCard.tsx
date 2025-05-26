@@ -35,7 +35,7 @@ export function RecentActivityCard({
                     </h4>
                 </div>
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 max-h-48 overflow-y-auto">
                 {summary.recent_activity?.map((activity) => (
                     <div key={activity.date} className="py-1">
                         <div className="flex items-center">
