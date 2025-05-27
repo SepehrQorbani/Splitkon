@@ -282,19 +282,19 @@ const Mobile = () => (
                         <div className="absolute -z-11 inset-0  bg-radial from-brand to-brand/30 blur-2xl" />
                     </div>
                     <AnimatedLine
-                        height={80}
+                        height={40}
                         width={2}
                         direction="vertical"
                         transition={{ delay: 2.5, duration: 1 }}
                     />
                     <IconMathSymbols className="size-10 p-2 rounded bg-surface text-action border border-border shadow-md mx-auto" />
                     <AnimatedLine
-                        height={80}
+                        height={100}
                         width={2}
                         direction="vertical"
                         transition={{ delay: 3.5, duration: 1 }}
                     />
-                    <div className="relative flex items-center">
+                    <div className="relative flex items-center -top-16">
                         <IconUser className="size-8 p-1 bg-action-subtle text-action shadow-md border-2 border-surface rounded-full" />
                         <IconUser className="size-8 p-1 bg-action-subtle text-action shadow-md border-2 border-surface rounded-full -ms-4" />
                         <IconUser className="size-8 p-1 bg-action-subtle text-action shadow-md border-2 border-surface rounded-full -ms-4" />
