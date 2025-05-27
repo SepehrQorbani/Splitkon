@@ -264,14 +264,14 @@ const Home: React.FC = () => {
                     <div className="flex flex-col md:flex-row gap-4 justify-center">
                         <Button
                             intent="neutral"
-                            className="rounded-xl py-3 bg-surface/20 border-surface text-sm hover:bg-surface/60"
+                            className="rounded-xl py-3 bg-surface/50 border-surface text-sm hover:bg-surface/80"
                         >
                             <IconBrandGithub className="size-8 rounded-full p-2 bg-action me-2 shadow text-action-fg" />
                             {t("pages.home.contribution.github")}
                         </Button>
                         <Button
                             intent="neutral"
-                            className="rounded-xl py-3 bg-surface/20 border-surface text-sm hover:bg-surface/60"
+                            className="rounded-xl py-3 bg-surface/50 border-surface text-sm hover:bg-surface/80"
                         >
                             <IconMessages className="size-8 rounded-full p-2 bg-action me-2 shadow text-action-fg" />
                             {t("pages.home.contribution.feedback")}
