@@ -33,7 +33,7 @@ export function getButtonStyles({
     className,
 }: GetButtonStylesProps) {
     const baseStyles =
-        "inline-flex items-center justify-center px-4 py-2 rounded-input font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-offset-surface/100 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed";
+        "inline-flex items-center justify-center px-4 py-2 rounded-input font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-offset-surface/100 disabled:opacity-75 cursor-pointer disabled:cursor-not-allowed";
 
     const variantStyles: Record<
         ButtonVariant,
@@ -44,7 +44,7 @@ export function getButtonStyles({
                 "bg-action text-action-fg hover:bg-action-strong focus:ring-action disabled:bg-action-subtle",
             danger: "bg-error text-error-fg hover:bg-error-strong focus:ring-error disabled:bg-error-subtle",
             neutral:
-                "bg-surface text-surface-fg hover:bg-surface-strong focus:ring-action disabled:text-surface-subtle border border-border shadow-sm",
+                "bg-surface text-surface-fg hover:bg-surface-strong focus:ring-action disabled:text-surface-subtle border border-border shadow-sm disabled:text-muted",
         },
         outline: {
             primary:
@@ -53,7 +53,7 @@ export function getButtonStyles({
         },
         ghost: {
             primary:
-                "text-action hover:bg-action-subtle hover:text-action-strong focus:ring-action disabled:text-action-subtle focus:ring-inset focus:ring-offset-0",
+                "text-action hover:bg-action-subtle hover:text-action-strong focus:ring-action focus:ring-inset focus:ring-offset-0",
             danger: "text-error hover:bg-error-subtle hover:text-error-strong focus:ring-error disabled:text-error-subtle",
         },
         input: {

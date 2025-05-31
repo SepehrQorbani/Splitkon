@@ -17,6 +17,7 @@ type DrawerProps = {
     children: (props: { close: () => void }) => ReactNode;
     className?: string;
     modalProps?: Omit<ModalOverlayProps, "isOpen" | "onOpenChange">;
+    isDisabled?: boolean;
     buttonProps?: {
         intent?: "primary" | "brand" | "danger" | "neutral";
         variant?: "solid" | "outline" | "ghost" | "input";
@@ -30,6 +31,7 @@ export const Drawer = ({
     children,
     className,
     modalProps,
+    isDisabled = false,
     buttonProps = {
         intent: "primary",
         variant: "solid",
@@ -48,6 +50,7 @@ export const Drawer = ({
                 className={cn(buttonProps.className, isOpen && "group")}
                 onPress={() => setIsOpen(true)}
                 data-is-open={isOpen}
+                isDisabled={isDisabled}
             >
                 {triggerLabel}
             </Button>

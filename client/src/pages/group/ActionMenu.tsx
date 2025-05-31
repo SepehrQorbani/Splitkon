@@ -8,18 +8,21 @@ import { useTranslations } from "@/hooks/useTranslations";
 import { IconCashPlus, IconShare, IconTransform } from "@tabler/icons-react";
 import React, { ReactNode } from "react";
 import { MobileActionMenu } from "./MobileActionMenu";
+import { useMemberStore } from "@/store";
 
 interface ActionDrawerProps {
     icon: ReactNode;
     title: string;
     children: (props: { close: () => void }) => ReactNode;
     showLabel?: boolean;
+    isDisabled?: boolean;
 }
 
 const ActionDrawer: React.FC<ActionDrawerProps> = ({
     icon,
     title,
     children,
+    isDisabled = false,
     showLabel = false,
 }) => {
     const { t } = useTranslations();
@@ -42,6 +45,7 @@ const ActionDrawer: React.FC<ActionDrawerProps> = ({
                     <span className="text-sm">{t(title)}</span>
                 </div>
             }
+            isDisabled={isDisabled}
             children={children}
             buttonProps={{ intent: "neutral", className: "p-2" }}
         />
@@ -71,6 +75,7 @@ const actionButtons = [
         component: RepaysForm,
         permission: "addRepays",
         showLabel: true,
+        canDisabled: true,
     },
     {
         id: "newExpense",
@@ -79,11 +84,13 @@ const actionButtons = [
         component: ExpenseForm,
         permission: "addExpenses",
         showLabel: true,
+        canDisabled: true,
     },
 ];
 
 const ActionMenu: React.FC = () => {
     const { can } = usePermissions();
+    const members = useMemberStore((state) => state.members);
     const isDesktop = useMediaQuery("(min-width: 768px)");
 
     if (!isDesktop) {
@@ -95,21 +102,19 @@ const ActionMenu: React.FC = () => {
             {actionButtons.map(
                 ({
                     id,
-                    icon,
-                    title,
                     component: Component,
                     permission,
-                    showLabel,
+                    canDisabled,
+                    ...props
                 }) =>
                     (can(permission) || permission === undefined) && (
                         <ActionDrawer
                             key={id}
-                            icon={icon}
-                            title={title}
-                            showLabel={showLabel}
                             children={({ close }) => (
                                 <Component onSubmitSuccess={close} />
                             )}
+                            isDisabled={canDisabled && members?.length === 0}
+                            {...props}
                         />
                     )
             )}
