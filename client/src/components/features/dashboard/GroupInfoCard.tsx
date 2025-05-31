@@ -57,11 +57,15 @@ export const GroupInfoCard: FC<GroupInfoCardProps> = ({ group, className }) => {
                     </div>
                 </div>
             </div>
-            <div className="text-xs bg-muted-faint/40 border border-border rounded p-1 overflow-y-auto flex-1">
-                <p>
-                    <IconScript className="size-4 inline me-1" />
-                    {group?.description}
-                </p>
+            <div className="overflow-y-auto flex-1 flex text-muted-soft text-xs bg-linear-0 from-muted-fg\0 to-muted-fg rounded h-full w-full p-4">
+                {group?.description ? (
+                    <p className="text-muted">
+                        <IconScript className="size-4 inline me-1" />
+                        {group?.description}
+                    </p>
+                ) : (
+                    <IconScript className="size-6 shrink-0 p-0.5 m-auto" />
+                )}
             </div>
         </Card>
     );

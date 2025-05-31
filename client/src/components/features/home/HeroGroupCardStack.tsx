@@ -16,7 +16,7 @@ import {
     Icon as TablerIconComponent,
 } from "@tabler/icons-react";
 import { FC } from "react";
-import { CardStack } from "./CardStack";
+import { CardStack } from "../../common/CardStack";
 
 interface CardStackItem {
     id: number;

@@ -209,8 +209,20 @@ export const DailyExpenseChart: React.FC<DailyExpenseChartProps> = ({
                     </ResponsiveContainer>
                 </motion.div>
             ) : (
-                <div className="flex items-center justify-center text-muted text-xs bg-muted-fg rounded h-40 w-full mt-2">
-                    {t("ui.noExpenses")}
+                <div className="flex flex-col gap-4 items-center justify-center text-muted-soft text-xs rounded h-40 w-full bg-linear-0 from-muted-fg\0 to-muted-fg">
+                    <div className="flex gap-2 items-end relative p-2 pb-1 bg-surface border border-border rounded-lg">
+                        {/* <span className="absolute inset-0 bg-linear-0 from-surface\0 to-surface rounded-full aspect-square -z-10"></span> */}
+                        <span className="w-2 bg-muted-subtle h-4 rounded-xs"></span>
+                        <span className="w-2 bg-muted-subtle h-2 rounded-xs"></span>
+                        <span className="w-2 bg-muted-subtle h-8 rounded-xs"></span>
+                        <span className="w-2 bg-muted-subtle h-6 rounded-xs"></span>
+                        <span className="w-2 bg-muted-subtle h-4 rounded-xs"></span>
+                        <span className="w-2 bg-muted-subtle h-8 rounded-xs"></span>
+                        <span className="w-2 bg-muted-subtle h-2 rounded-xs"></span>
+                    </div>
+                    <p className="text-muted-soft text-center">
+                        {t("ui.noExpenses")}
+                    </p>
                 </div>
             )}
         </AsyncContent>
