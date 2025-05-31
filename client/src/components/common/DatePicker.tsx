@@ -1,7 +1,7 @@
 import {
     getLocalTimeZone,
     parseDate,
-    today,
+    today as getToday,
     CalendarDate,
 } from "@internationalized/date";
 import {
@@ -55,11 +55,13 @@ export default function DatePicker({
     const errorMessage = error?.message ? error.message : undefined;
 
     let calendarValue: CalendarDate | null;
+    const today = getToday(getLocalTimeZone());
+
     try {
         calendarValue = value ? parseDate(value.replace(/T.*/, "")) : null;
     } catch (e) {
-        calendarValue = today(getLocalTimeZone());
-        onChange(calendarValue.toString());
+        calendarValue = today;
+        onChange(today.toString());
     }
     const handleChange = (date: CalendarDate | null) => {
         if (date) {
@@ -86,7 +88,11 @@ export default function DatePicker({
             )}
             <I18nProvider locale={locale}>
                 <DateField />
-                <DatePopover direction={direction} locale={locale} />
+                <DatePopover
+                    direction={direction}
+                    locale={locale}
+                    today={today}
+                />
             </I18nProvider>
 
             <AnimatePresence>
@@ -134,9 +140,10 @@ function DateField() {
 interface DatePopoverProps {
     direction: "ltr" | "rtl";
     locale: string;
+    today: CalendarDate;
 }
 
-function DatePopover({ direction, locale }: DatePopoverProps) {
+function DatePopover({ direction, locale, today }: DatePopoverProps) {
     return (
         <Popover
             className={cn(
@@ -164,12 +171,18 @@ function DatePopover({ direction, locale }: DatePopoverProps) {
                                 )}
                             </CalendarGridHeader>
                             <CalendarGridBody>
-                                {(date) => (
-                                    <CalendarCell
-                                        date={date}
-                                        className="text-center rounded m-1 cursor-pointer data-[disabled]:text-muted-subtle data-[hovered]:bg-gray-100 data-[selected]:font-medium data-[selected]:bg-action data-[selected]:text-action-fg"
-                                    />
-                                )}
+                                {(date) => {
+                                    return (
+                                        <CalendarCell
+                                            date={date}
+                                            className={cn(
+                                                "text-center rounded m-1 cursor-pointer data-[disabled]:text-muted-subtle data-[hovered]:bg-gray-100 data-[selected]:font-medium data-[selected]:bg-action data-[selected]:text-action-fg",
+                                                today.compare(date) === 0 &&
+                                                    "border-border border"
+                                            )}
+                                        />
+                                    );
+                                }}
                             </CalendarGridBody>
                         </CalendarGrid>
                     </Calendar>
