@@ -41,7 +41,7 @@ export function getButtonStyles({
     > = {
         solid: {
             primary:
-                "bg-action text-action-fg hover:bg-action-strong focus:ring-action disabled:bg-action-subtle",
+                "bg-action text-action-fg hover:bg-action-strong focus:ring-action disabled:bg-action-soft",
             danger: "bg-error text-error-fg hover:bg-error-strong focus:ring-error disabled:bg-error-subtle",
             neutral:
                 "bg-surface text-surface-fg hover:bg-surface-strong focus:ring-action disabled:text-surface-subtle border border-border shadow-sm disabled:text-muted",

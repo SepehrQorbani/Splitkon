@@ -113,7 +113,7 @@ const ActionMenu: React.FC = () => {
                             children={({ close }) => (
                                 <Component onSubmitSuccess={close} />
                             )}
-                            isDisabled={canDisabled && members?.length === 0}
+                            isDisabled={canDisabled && members?.length < 2}
                             {...props}
                         />
                     )

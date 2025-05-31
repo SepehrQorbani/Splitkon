@@ -1,27 +1,26 @@
 import { useGetRepays } from "@/api/queries/repays";
 import AsyncContent from "@/components/common/AsyncContent";
-import { CardStack } from "@/components/common/CardStack";
 import { Drawer } from "@/components/common/Drawer";
+import { EmptyState } from "@/components/common/EmptyState";
 import RepayCardStackItem from "@/components/common/RepayCardStackItem";
-import HeroRepayCardStack from "@/components/features/home/HeroRepayCardStack";
 import RepayCard from "@/components/features/repays/RepayCard";
 import { RepayCardSkeleton } from "@/components/features/repays/RepayCardSkeleton";
 import { RepaysForm } from "@/components/features/repays/RepayForm";
 import { usePermissions } from "@/hooks/usePermissions";
 import { useTranslations } from "@/hooks/useTranslations";
+import { useMemberStore } from "@/store";
 import { useRepayStore } from "@/store/repays";
-import { cn } from "@/utils/cn";
 import { IconTransfer } from "@tabler/icons-react";
 import { LayoutGroup } from "motion/react";
 import { useEffect } from "react";
 import { useParams } from "react-router";
-import { EmptyState } from "@/components/common/EmptyState";
 
 type Props = {};
 
 function RepaysIndex({}: Props) {
     const { token } = useParams();
     const { repays, setRepays } = useRepayStore();
+    const members = useMemberStore((state) => state.members);
     const { t } = useTranslations();
     const { can } = usePermissions();
 
@@ -89,6 +88,7 @@ function RepaysIndex({}: Props) {
                                 children={({ close }) => (
                                     <RepaysForm onSubmitSuccess={close} />
                                 )}
+                                isDisabled={members.length < 2}
                             />
                         )
                     }

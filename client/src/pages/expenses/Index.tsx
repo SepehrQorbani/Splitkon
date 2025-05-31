@@ -17,12 +17,14 @@ import { motion } from "motion/react";
 import { CardStack } from "@/components/common/CardStack";
 import ExpenseCardStackItem from "@/components/common/ExpenseCardStackItem";
 import { EmptyState } from "@/components/common/EmptyState";
+import { useMemberStore } from "@/store";
 
 type Props = {};
 
 function ExpensesIndex({}: Props) {
     const { token } = useParams();
     const { expenses, setExpenses } = useExpenseStore();
+    const members = useMemberStore((state) => state.members);
     const { t } = useTranslations();
     const { can } = usePermissions();
 
@@ -90,6 +92,7 @@ function ExpensesIndex({}: Props) {
                                 children={({ close }) => (
                                     <ExpenseForm onSubmitSuccess={close} />
                                 )}
+                                isDisabled={members.length < 2}
                             />
                         )
                     }
