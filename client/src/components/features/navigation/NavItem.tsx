@@ -32,7 +32,7 @@ export const NavItem: React.FC<NavItemProps> = ({
                     {isActive && navType === "group" ? (
                         <motion.div
                             className={cn(
-                                "absolute bg-action rounded bottom-0 left-0 right-0 h-1"
+                                "absolute bg-action rounded -bottom-2 left-0 right-0 h-0.5"
                             )}
                             layoutId={`${navType}-nav-highlight`}
                             initial={false}
@@ -47,26 +47,34 @@ export const NavItem: React.FC<NavItemProps> = ({
                             {isActive && (
                                 <motion.div
                                     className={cn(
-                                        "absolute bg-action rounded bottom-0 left-0 right-0 h-1"
+                                        "absolute bg-action rounded inset-0"
                                     )}
                                     initial={{
                                         opacity: 0,
+                                        scale: 0.5,
                                         y: 4,
                                     }}
                                     animate={{
                                         opacity: 1,
+                                        scale: 1,
                                         y: 0,
                                     }}
                                     exit={{
                                         y: 4,
                                         opacity: 0,
+                                        scale: 0.5,
                                     }}
                                 />
                             )}
                         </AnimatePresence>
                     )}
 
-                    <div className="flex gap-1 items-center p-2 rounded relative text-sm">
+                    <div
+                        className={cn(
+                            "flex gap-1 items-center p-2 rounded relative text-sm",
+                            isActive && navType !== "group" && "text-action-fg"
+                        )}
+                    >
                         {isActive && ActiveIcon ? (
                             <ActiveIcon className="size-4" />
                         ) : (
