@@ -8,7 +8,7 @@ function GroupNavbar() {
     const [isScroll, setIsScroll] = useState(false);
 
     useMotionValueEvent(scrollY, "change", (current) => {
-        setIsScroll(current > 0);
+        setIsScroll(current > 20 ? true : current === 0 ? false : isScroll);
     });
     return (
         <nav

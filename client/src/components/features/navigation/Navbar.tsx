@@ -13,7 +13,7 @@ export const Navbar = ({ layout }: { layout: "main" | "group" }) => {
     const [isScroll, setIsScroll] = useState(false);
 
     useMotionValueEvent(scrollY, "change", (current) => {
-        setIsScroll(current > 16);
+        setIsScroll(current > 20 ? true : current === 0 ? false : isScroll);
     });
 
     return (
