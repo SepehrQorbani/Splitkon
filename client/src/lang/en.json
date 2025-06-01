@@ -134,6 +134,7 @@
         }
     },
     "ui": {
+        "appName": "SplitKon",
         "add": "Add",
         "addExpense": "Add Expense",
         "addMember": "Add Member",

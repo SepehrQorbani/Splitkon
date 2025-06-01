@@ -2,15 +2,17 @@ import { getGroup } from "@/api/endpoints/groups";
 import AsyncContent from "@/components/common/AsyncContent";
 import GroupNavbar from "@/components/features/navigation/GroupNavbar";
 import { Navbar } from "@/components/features/navigation/Navbar";
+import useDocumentTitle from "@/hooks/useDocumentTitle";
 import { useTranslations } from "@/hooks/useTranslations";
 import ActionMenu from "@/pages/group/ActionMenu";
 import { useGroupStore, useMemberStore } from "@/store";
 import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "motion/react";
 import React, { useEffect } from "react";
-import { Outlet, useLocation, useOutlet, useParams } from "react-router";
+import { useLocation, useOutlet, useParams } from "react-router";
 
 const GroupLayout: React.FC = () => {
+    const { t } = useTranslations();
     const { token } = useParams<{ token: string }>();
     const location = useLocation();
     const outlet = useOutlet();
@@ -21,6 +23,10 @@ const GroupLayout: React.FC = () => {
         queryKey: ["group", token],
         queryFn: () => getGroup(token as string),
     });
+
+    useDocumentTitle(
+        isLoading ? `${t("ui.loading")}...` : data ? data.data.title : ""
+    );
     useEffect(() => {
         if (data) {
             const { members, ...group } = data.data;
