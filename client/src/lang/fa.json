@@ -12,7 +12,7 @@
         "members": "اعضا",
         "name": "نام",
         "phone": "شماره تلفن",
-        "ratio": "تعداد نفرات",
+        "ratio": "میزان سهم",
         "ratio_unit": "سهم",
         "spender": "هزینه کننده",
         "title": "عنوان",
@@ -183,6 +183,7 @@
         "from": "از طرف",
         "finances": "مالی",
         "financesStats": "آمار وضعیت مالی",
+        "goToDashboard": "برو به داشبورد",
         "group": {
             "description": "توضیحات گروه",
             "notFound": "گروه یافت نشد",
@@ -203,6 +204,7 @@
         "members": "اعضا",
         "membersCount": "تعداد اعضا",
         "newExpense": "هزینه جدید",
+        "next": "بعدی",
         "no": "خیر",
         "noActivity": "هنوز هیچ فعالیتی ثبت نشده!",
         "noExpenses": "هنوز هیچ هزینه ای ثبت نشده!",
@@ -241,6 +243,7 @@
         "total": "مجموع",
         "totalAmount": "مجموع مبلغ",
         "totalExpenses": "مجموع هزینه ها",
+        "totalRatio": "مجموع سهم ها",
         "update": "ذخیره تغییرات",
         "yes": "بله",
         "time": {
@@ -254,7 +257,12 @@
             "and": " و ",
             "ago": "پیش",
             "fromNow": "آینده"
-        }
+        },
+        "groupCreateSuccess": "گروه :name با موفقیت ایجاد شد.",
+        "groupAccessInfo": "تنها راه دسترسی شما به این گروه، از طریق لینکهای زیر می باشد، لطفا آنها را ذخیره کنید.",
+        "groupInfo": "مشخصات گروه",
+        "addMembers": "افزودن اعضا",
+        "saveLinks": "ذخیره لینکها"
     },
     "validation": {
         "bankAccount": ":attribute باید یک شماره حساب معتبر باشد",

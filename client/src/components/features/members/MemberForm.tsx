@@ -104,7 +104,7 @@ const MemberForm = ({
     return (
         <Form
             onSubmit={handleSubmit(submit)}
-            className={cn("space-y-4", className)}
+            className={cn("space-y-6", className)}
         >
             <div className="flex items-center gap-2">
                 <Controller
@@ -168,24 +168,27 @@ const MemberForm = ({
                     )}
                 />
             </div>
-            <Button
-                type="submit"
-                size="md"
-                variant="outline"
-                isDisabled={disabled || isSubmitting}
-            >
-                {useServer ? (
-                    <>
-                        <IconChecks className="size-4 me-2" />
-                        {isEditMode ? t("update") : t("submit")}
-                    </>
-                ) : (
-                    <>
-                        <IconPlus className="size-4 me-2" />
-                        {t("add")}
-                    </>
-                )}
-            </Button>
+            <div className="w-full flex">
+                <Button
+                    type="submit"
+                    size="md"
+                    // variant="outline"
+                    className="ms-auto"
+                    isDisabled={disabled || isSubmitting}
+                >
+                    {useServer ? (
+                        <>
+                            <IconChecks className="size-4 me-2" />
+                            {isEditMode ? t("update") : t("submit")}
+                        </>
+                    ) : (
+                        <>
+                            <IconPlus className="size-4 me-2" />
+                            {t("add")}
+                        </>
+                    )}
+                </Button>
+            </div>
         </Form>
     );
 };

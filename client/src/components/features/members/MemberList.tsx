@@ -34,7 +34,23 @@ export function MemberList({
     const { t } = useTranslations();
 
     return (
-        <>
+        <div>
+            <div className="px-4 py-2 bg-background rounded-t flex justify-between border border-border">
+                <div>
+                    <span className="text-xs text-muted me-2">
+                        {t("ui.membersCount")}:
+                    </span>
+                    <span className="text-sm">{members.length}</span>
+                </div>
+                <div>
+                    <span className="text-xs text-muted me-2">
+                        {t("ui.totalRatio")}:
+                    </span>
+                    <span className="text-sm">
+                        {members.reduce((pv, cv) => cv.ratio + pv, 0)}
+                    </span>
+                </div>
+            </div>
             <GridList
                 items={members}
                 selectionMode="single"
@@ -48,7 +64,7 @@ export function MemberList({
                 }}
                 aria-label={t("attributes.members")}
                 className={cn(
-                    "w-full overflow-auto bg-surface-strong/25 p-2 flex flex-col gap-2 outline-none",
+                    "w-full overflow-auto p-2 flex flex-col gap-2 outline-none border border-border border-t-0 rounded-b",
                     className
                 )}
                 renderEmptyState={() => (
@@ -163,7 +179,7 @@ export function MemberList({
                     </GridListItem>
                 ))}
             </GridList>
-        </>
+        </div>
     );
 }
 

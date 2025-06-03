@@ -277,7 +277,7 @@ const SettingsPage = () => {
                             }}
                         />
                         <MemberList
-                            className="max-h-60 h-60 border border-border rounded p-4 bg-surface"
+                            className="max-h-60 h-60 p-4 bg-surface"
                             members={members}
                             onSelectMember={setSelectedMember}
                             onDeleteMember={() => {}}

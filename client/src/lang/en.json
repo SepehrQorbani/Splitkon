@@ -139,6 +139,7 @@
         "addExpense": "Add Expense",
         "addMember": "Add Member",
         "addPayment": "Add Payment",
+        "addMembers": "Add Members",
         "all": "All",
         "authenticated": "Authenticated",
         "average": "Average",
@@ -183,6 +184,7 @@
         "from": "From",
         "finances": "Finances",
         "financesStats": "Financial Status Stats",
+        "goToDashboard": "Go to Dashboard",
         "group": {
             "description": "Group Description",
             "notFound": "Group not found",
@@ -252,7 +254,12 @@
             "and": " and ",
             "ago": "ago",
             "fromNow": "from now"
-        }
+        },
+        "next": "Next",
+        "groupCreateSuccess": "Group :name was created successfully.",
+        "groupAccessInfo": "Access to this group is only possible through the links below, please save them.",
+        "groupInfo": "Group Information",
+        "saveLinks": "Save Links"
     },
     "validation": {
         "bankAccount": "The :attribute must be a valid bank account number",
@@ -264,6 +271,9 @@
         "required": "The :attribute field is required",
         "url": "The :attribute must be a valid URL",
         "from_to_different": "The from and to persons must be different",
+        "before_closing_date": "Must be before group closing date!",
+        "after_last_expense": "Must be after last expense date! (:min)",
+        "after_date": "Must be after group start date!",
         "date": "The :attribute field must be a valid date."
     },
     "banks": {

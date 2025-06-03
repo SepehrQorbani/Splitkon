@@ -20,6 +20,8 @@
 }
 
 @theme {
+    --spacing-main: calc(100vh - 96px);
+    
     /* Default (Light Mode) */
     --color-background: var(--color-gray-100);
     --color-foreground: var(--color-gray-900);
