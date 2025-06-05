@@ -41,7 +41,7 @@ const MemberForm = ({
     const createMember = useCreateMember();
     const updateMember = useUpdateMember();
     const isEditMode = !!member;
-
+    console.log(isEditMode);
     const {
         control,
         handleSubmit,
@@ -173,7 +173,7 @@ const MemberForm = ({
                     type="submit"
                     size="md"
                     // variant="outline"
-                    className="ms-auto"
+                    className="ms-auto text-xs"
                     isDisabled={disabled || isSubmitting}
                 >
                     {useServer ? (
@@ -183,8 +183,14 @@ const MemberForm = ({
                         </>
                     ) : (
                         <>
-                            <IconPlus className="size-4 me-2" />
-                            {t("add")}
+                            {isEditMode ? (
+                                <IconChecks className="size-4 me-2" />
+                            ) : (
+                                <IconPlus className="size-4 me-2" />
+                            )}
+                            {isEditMode
+                                ? t("ui.updateMember")
+                                : t("ui.addToMember")}
                         </>
                     )}
                 </Button>

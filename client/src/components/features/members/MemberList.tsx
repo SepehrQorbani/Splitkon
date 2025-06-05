@@ -4,6 +4,7 @@ import { Member, MemberInput, MembersInput } from "@/types/schemas/members";
 import {
     IconCancel,
     IconCashBanknote,
+    IconCreditCard,
     IconPencil,
     IconTrash,
     IconUserOff,
@@ -123,13 +124,13 @@ export function MemberList({
                                             {item.name}
                                         </span>
                                         <span className="text-xs text-gray-500">
-                                            ({item.ratio} نفر)
+                                            ({t("ratio_unit")}:{item.ratio})
                                         </span>
                                     </div>
                                     {item.bank_info && (
                                         <div className="flex items-center gap-2 text-sm text-gray-500 ms-12">
                                             <span className="flex items-center gap-1 text-gray-500 text-xs shrink-0">
-                                                <IconCashBanknote className="w-4 h-4" />
+                                                <IconCreditCard className="size-4" />
                                                 {t("attributes.bank_info")}
                                             </span>
                                             <span className="shrink-0">

@@ -136,6 +136,8 @@
     "ui": {
         "appName": "اسپلیت کن",
         "add": "اضافه کردن",
+        "addToMember": "افزودن به لیست اعضا",
+        "updateMember": "اعمال تغییرات",
         "addExpense": "افزودن هزینه",
         "addMember": "افزودن عضو",
         "addPayment": "افزودن پرداخت",
@@ -160,6 +162,7 @@
         "debts": "بدهی ها",
         "delete": "حذف",
         "details": "جزئیات",
+        "accountBalances": "مانده حساب ها",
         "edit": "ویرایش",
         "editGroup": "ویرایش گروه",
         "editMembers": "ویرایش اعضا",
