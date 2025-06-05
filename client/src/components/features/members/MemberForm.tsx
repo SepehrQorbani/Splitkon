@@ -41,7 +41,7 @@ const MemberForm = ({
     const createMember = useCreateMember();
     const updateMember = useUpdateMember();
     const isEditMode = !!member;
-    console.log(isEditMode);
+
     const {
         control,
         handleSubmit,
