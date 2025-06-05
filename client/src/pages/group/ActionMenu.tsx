@@ -5,10 +5,10 @@ import ShareForm from "@/components/features/share/ShareForm";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { usePermissions } from "@/hooks/usePermissions";
 import { useTranslations } from "@/hooks/useTranslations";
-import { IconCashPlus, IconShare, IconTransform } from "@tabler/icons-react";
+import { useMemberStore } from "@/store";
+import { IconCashPlus, IconShare, IconTransfer } from "@tabler/icons-react";
 import React, { ReactNode } from "react";
 import { MobileActionMenu } from "./MobileActionMenu";
-import { useMemberStore } from "@/store";
 
 interface ActionDrawerProps {
     icon: ReactNode;
@@ -70,7 +70,7 @@ const actionButtons = [
     // },
     {
         id: "addPayment",
-        icon: <IconTransform className="size-4 mx-0.5" />,
+        icon: <IconTransfer className="size-4 mx-0.5" />,
         title: "ui.addPayment",
         component: RepaysForm,
         permission: "addRepays",
