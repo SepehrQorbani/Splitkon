@@ -35,7 +35,7 @@ function CopyButton({ data, className }: CopyButtonProps) {
             variant="ghost"
             size="icon"
             aria-label={t("ui.copy")}
-            className={className}
+            className={cn("p-1", className)}
             onPress={() => !isCopied(data) && copyToClipboard(data)}
         >
             <CopyIcons isCopied={isCopied(data)} />
