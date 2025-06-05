@@ -1,9 +1,4 @@
 import { useTranslations } from "@/hooks/useTranslations";
-import {
-    IconCreditCard,
-    IconCreditCardPay,
-    IconCreditCardRefund,
-} from "@tabler/icons-react";
 
 interface MembersStatusChartProps {
     membersCount: number;
@@ -31,36 +26,42 @@ export default function MembersStatusChart({
         <div className="pe-2">
             <div className="flex justify-between mt-1 text-[10px]">
                 <div className="flex items-center gap-1">
-                    <IconCreditCard className="size-3 text-action" />
+                    <span
+                        className={`size-2 rounded-full bg-settled-subtle border border-settled`}
+                    />
                     {t("statusSettled")}: {balanced.toLocaleString()}
                 </div>
                 <div className="flex items-center gap-1">
-                    <IconCreditCardPay className="size-3 text-error" />
+                    <span
+                        className={`size-2 rounded-full bg-debtor-subtle border border-debtor`}
+                    />
                     {t("statusDebtor")}: {debtors.toLocaleString()}
                 </div>
                 <div className="flex items-center gap-1">
-                    <IconCreditCardRefund className="size-3 text-success" />
+                    <span
+                        className={`size-2 rounded-full bg-creditor-subtle border border-creditor`}
+                    />
                     {t("statusCreditor")}: {creditors.toLocaleString()}
                 </div>
             </div>
             <div className="flex w-full h-1.5 box-content p-1 rounded-full border border-border gap-1">
                 {balancedPercent > 0 && (
                     <div
-                        className="flex items-center justify-center bg-action/40 border border-action text-xs text-white rounded-full"
+                        className="flex items-center justify-center bg-settled-subtle border border-settled text-xs text-white rounded-full"
                         style={{ width: `${balancedPercent}%` }}
                         title={t("statusSettled")}
                     />
                 )}
                 {debtorsPercent > 0 && (
                     <div
-                        className="flex items-center justify-center bg-error/40 border border-error text-xs text-white rounded-full"
+                        className="flex items-center justify-center bg-debtor-subtle border border-debtor text-xs text-white rounded-full"
                         style={{ width: `${debtorsPercent}%` }}
                         title={t("statusDebtor")}
                     />
                 )}
                 {creditorsPercent > 0 && (
                     <div
-                        className="flex items-center justify-center bg-success/40 border border-success text-xs text-white rounded-full"
+                        className="flex items-center justify-center bg-creditor-subtle border border-creditor text-xs text-white rounded-full"
                         style={{
                             width: `${creditorsPercent}%`,
                         }}

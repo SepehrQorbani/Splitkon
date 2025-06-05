@@ -1,28 +1,28 @@
+import Amount from "@/components/common/Amount";
 import Avatar from "@/components/common/Avatar";
+import CopyButton from "@/components/common/CopyButton";
 import { Drawer } from "@/components/common/Drawer";
 import ExpandableCard from "@/components/common/ExpandableCard";
 import ProgressBar from "@/components/common/ProgressBar";
 import BalanceCard from "@/components/features/balance/BalanceCard";
 import { RepaysForm } from "@/components/features/repays/RepayForm";
+import { usePermissions } from "@/hooks/usePermissions";
+import { useReportGenerator } from "@/hooks/useReportGenerator";
 import { useTranslations } from "@/hooks/useTranslations";
 import { useBalanceStore } from "@/store/balance";
 import { Member } from "@/types/schemas/members";
 import { cn } from "@/utils/cn";
 import {
+    IconChecks,
     IconCreditCard,
     IconReceiptDollar,
-    IconReplace,
-    IconTransform,
+    IconTransfer,
     IconUserEdit,
     IconUsers,
 } from "@tabler/icons-react";
 import { motion } from "motion/react";
 import { Heading } from "react-aria-components";
 import MemberForm from "./MemberForm";
-import { useReportGenerator } from "@/hooks/useReportGenerator";
-import CopyButton from "@/components/common/CopyButton";
-import Amount from "@/components/common/Amount";
-import { usePermissions } from "@/hooks/usePermissions";
 
 type MemberCardProps = {
     member: Member;
@@ -36,14 +36,15 @@ function MemberCard({ member }: MemberCardProps) {
     const memberBalance = balance?.[member.id] || [];
     const id = `member-${member.id}`;
     const netAmount = member.payment_balance - member.total_expenses;
-    const status = netAmount === 0 ? 0 : netAmount > 0 ? 1 : 2;
+    const status =
+        netAmount === 0 ? "settled" : netAmount > 0 ? "creditor" : "debtor";
     const statusText =
         netAmount === 0
             ? t("statusSettled")
             : netAmount > 0
             ? t("statusCreditor")
             : t("statusDebtor");
-    const statusColor = ["action", "success", "error"] as const;
+
     const { generateMemberReport } = useReportGenerator();
 
     const statusPercent =
@@ -54,7 +55,7 @@ function MemberCard({ member }: MemberCardProps) {
             : netAmount < 0 && member.total_expenses !== 0
             ? Math.abs(netAmount / member.total_expenses) * 100
             : 100;
-
+    // text-creditor-strong text-debtor-strong text-settled-strong
     return (
         <ExpandableCard id={id}>
             {({ isOpen }) => (
@@ -115,33 +116,41 @@ function MemberCard({ member }: MemberCardProps) {
                         </div>
 
                         <div
-                            className={`flex flex-col gap-1.5 ms-auto items-end text-${statusColor[status]}`}
+                            className={`flex flex-col gap-1.5 ms-auto items-end`}
                         >
                             <div className="text-sm font-medium">
-                                <Amount amount={netAmount} />
+                                {status === "settled" ? (
+                                    <IconChecks className="size-4 text-settled" />
+                                ) : (
+                                    <Amount amount={netAmount} />
+                                )}
                             </div>
-                            <div className="flex items-center justify-end gap-1 text-xs text-gray-500">
-                                <IconReplace className="w-3 h-3" />
-                                <span className="text-xs text-gray-500">
-                                    {statusText}
-                                </span>
+                            <div
+                                className={`flex items-center justify-end gap-1 text-xs text-${status} font-bold`}
+                            >
+                                <span
+                                    className={`size-2 rounded-full bg-${status}-subtle border border-${status}`}
+                                />
+                                <span>{statusText}</span>
                             </div>
                         </div>
                     </motion.div>
 
-                    <motion.div layoutId={`${id}-bank-info`}>
-                        <div className="border border-border-subtle rounded-md py-1 px-2 flex items-center gap-2 justify-between">
-                            <div className="flex items-center gap-1 text-xs text-muted">
-                                <IconCreditCard className="w-3 h-3" />
-                                <span>{t("bank_info")}</span>
+                    {isOpen && (
+                        <motion.div layoutId={`${id}-bank-info`}>
+                            <div className="border border-border-subtle rounded-md py-1 px-2 flex items-center gap-2 justify-between">
+                                <div className="flex items-center gap-1 text-xs text-muted">
+                                    <IconCreditCard className="w-3 h-3" />
+                                    <span>{t("bank_info")}</span>
+                                </div>
+                                <div>
+                                    <span className="text-sm">
+                                        {member.bank_info ?? "#"}
+                                    </span>
+                                </div>
                             </div>
-                            <div>
-                                <span className="text-sm">
-                                    {member.bank_info ?? "#"}
-                                </span>
-                            </div>
-                        </div>
-                    </motion.div>
+                        </motion.div>
+                    )}
 
                     {isOpen && (
                         <motion.div
@@ -153,13 +162,18 @@ function MemberCard({ member }: MemberCardProps) {
                         >
                             <div className="flex items-center justify-between">
                                 <h3 className="text-sm font-medium text-muted">
-                                    {t("details")}
+                                    {t("ui.accountBalances")}
                                 </h3>
                                 <div>
                                     {can("addRepays") && (
                                         <Drawer
                                             triggerLabel={
-                                                <IconTransform className="w-4 h-4" />
+                                                <>
+                                                    <span>
+                                                        {t("ui.addPayment")}
+                                                    </span>
+                                                    <IconTransfer className="w-4 h-4" />
+                                                </>
                                             }
                                             title={t("repay")}
                                             children={({ close }) => (
@@ -176,7 +190,8 @@ function MemberCard({ member }: MemberCardProps) {
                                             buttonProps={{
                                                 intent: "neutral",
                                                 // variant: "outline",
-                                                className: "h-8 w-8 p-1",
+                                                className:
+                                                    "h-8 text-xs gap-2 px-2",
                                             }}
                                         />
                                     )}
@@ -197,8 +212,9 @@ function MemberCard({ member }: MemberCardProps) {
                             className="mt-6 space-y-1"
                             label={statusText}
                             value={statusPercent}
-                            color={statusColor[status]}
+                            color={status}
                             remainFlag={statusPercent < 100}
+                            remainColor="settled"
                             percentageMode="plain"
                         />
                     </motion.div>

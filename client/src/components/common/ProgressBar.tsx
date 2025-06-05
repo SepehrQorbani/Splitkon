@@ -7,9 +7,24 @@ import {
 
 interface ProgressChartProps extends AriaProgressBarProps {
     label?: string;
-    color?: "action" | "error" | "success" | "warning";
+    color?:
+        | "action"
+        | "error"
+        | "success"
+        | "warning"
+        | "settled"
+        | "creditor"
+        | "debtor";
     className?: string;
     remainFlag?: boolean;
+    remainColor?:
+        | "action"
+        | "error"
+        | "success"
+        | "warning"
+        | "settled"
+        | "creditor"
+        | "debtor";
     percentageMode?: "plain" | "tooltip";
 }
 function ProgressBar({
@@ -18,6 +33,7 @@ function ProgressBar({
     className,
     remainFlag = false,
     percentageMode = "tooltip",
+    remainColor = "action",
     ...props
 }: ProgressChartProps) {
     return (
@@ -68,14 +84,14 @@ function ProgressBar({
                         dir="ltr"
                     >
                         <div
-                            className={`rounded-full border bg-${color}/40 border-${color}`}
+                            className={`rounded-full border bg-${color}-subtle border-${color}`}
                             style={{ width: percentage + "%" }}
                         />
                         {remainFlag &&
                             percentage !== undefined &&
                             percentage !== 100 && (
                                 <div
-                                    className={`rounded-full border bg-action/40 border-action`}
+                                    className={`rounded-full border bg-${remainColor}-subtle border-${remainColor}`}
                                     style={{ width: 100 - percentage + "%" }}
                                 />
                             )}

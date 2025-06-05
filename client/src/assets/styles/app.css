@@ -104,6 +104,16 @@
     --color-info-strong: var(--color-blue-700);
     --color-info-fg: var(--color-blue-50);
 
+    --color-settled: var(--color-emerald-500);
+    --color-settled-subtle: var(--color-emerald-200);
+    --color-settled-strong: var(--color-emerald-800);
+    --color-creditor: var(--color-sky-500);
+    --color-creditor-subtle: var(--color-sky-200);
+    --color-creditor-strong: var(--color-sky-800);
+    --color-debtor: var(--color-red-500);
+    --color-debtor-subtle: var(--color-red-200);
+    --color-debtor-strong: var(--color-red-800);
+
     --color-input: var(--color-white);
     --color-input-shadow: --alpha(var(--color-gray-900) / 10%);
 
@@ -273,6 +283,16 @@
         --color-info-bold: var(--color-blue-600);
         --color-info-strong: var(--color-blue-700);
         --color-info-fg: var(--color-blue-50);
+
+        --color-settled: var(--color-emerald-500);
+        --color-settled-subtle: var(--color-emerald-800);
+        --color-settled-strong: var(--color-emerald-200);
+        --color-creditor: var(--color-sky-500);
+        --color-creditor-subtle: var(--color-sky-800);
+        --color-creditor-strong: var(--color-sky-200);
+        --color-debtor: var(--color-red-500);
+        --color-debtor-subtle: var(--color-red-800);
+        --color-debtor-strong: var(--color-red-200);
 
         --color-input: var(--color-gray-950);
         --color-input-shadow: --alpha(var(--color-gray-100) / 30%);

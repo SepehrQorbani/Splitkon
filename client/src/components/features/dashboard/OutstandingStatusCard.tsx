@@ -70,6 +70,7 @@ export const OutstandingStatusCard: FC<OutstandingStatusCardProps> = ({
                                   100
                                 : 100
                         }
+                        color="settled"
                     />
                     <div className="space-y-4 max-h-48 overflow-y-auto">
                         {summary.pending_balances.map((transaction, index) => (
