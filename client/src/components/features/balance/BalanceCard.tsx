@@ -1,18 +1,18 @@
+import Amount from "@/components/common/Amount";
 import Avatar from "@/components/common/Avatar";
+import { Drawer } from "@/components/common/Drawer";
+import { RepaysForm } from "@/components/features/repays/RepayForm";
+import { usePermissions } from "@/hooks/usePermissions";
+import { useTranslations } from "@/hooks/useTranslations";
 import { useMemberStore } from "@/store/members";
 import { BalanceTransaction } from "@/types/schemas/balance";
 import { Member } from "@/types/schemas/members";
+import { PendingBalance } from "@/types/schemas/summary";
 import {
     IconArrowLeft,
     IconArrowRight,
-    IconTransform,
+    IconTransfer,
 } from "@tabler/icons-react";
-import { Drawer } from "@/components/common/Drawer";
-import { RepaysForm } from "@/components/features/repays/RepayForm";
-import { PendingBalance } from "@/types/schemas/summary";
-import { useTranslations } from "@/hooks/useTranslations";
-import Amount from "@/components/common/Amount";
-import { usePermissions } from "@/hooks/usePermissions";
 
 type BalanceCardProps = {
     transaction: BalanceTransaction | PendingBalance;
@@ -48,7 +48,7 @@ function BalanceCard({ transaction, member }: BalanceCardProps) {
                             )}
                         </>
                     ) : (
-                        <span>
+                        <span className="text-muted">
                             {transaction.amount > 0 ? t("to") : t("from")}
                         </span>
                     )}
@@ -65,7 +65,7 @@ function BalanceCard({ transaction, member }: BalanceCardProps) {
                     </div>
                     {can("addRepays") && (
                         <Drawer
-                            triggerLabel={<IconTransform className="size-3" />}
+                            triggerLabel={<IconTransfer className="size-4" />}
                             title={t("repay")}
                             children={({ close }) => (
                                 <RepaysForm
@@ -88,8 +88,7 @@ function BalanceCard({ transaction, member }: BalanceCardProps) {
                             )}
                             buttonProps={{
                                 intent: "neutral",
-                                variant: "ghost",
-                                className: "h-8 w-8 p-1",
+                                className: "h-6 w-6 p-1",
                             }}
                         />
                     )}
