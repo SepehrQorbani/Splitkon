@@ -30,7 +30,7 @@ function SettingMenu({}) {
                     setIsOpen((prevVal) => !prevVal);
                 }}
             >
-                <IconAdjustments className="size-4" />
+                <IconPalette className="size-4" />
             </Button>
             <Popover
                 isOpen={isOpen}

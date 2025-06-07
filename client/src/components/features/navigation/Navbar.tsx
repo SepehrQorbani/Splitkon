@@ -2,12 +2,20 @@ import MobileMenu from "@/components/features/navigation/MobileMenu";
 import { NavItems } from "@/components/features/navigation/NavItems";
 import SettingMenu from "@/components/features/navigation/SettingMenu";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { useTranslations } from "@/hooks/useTranslations";
 import { cn } from "@/utils/cn";
+import {
+    IconInfoSquareRounded,
+    IconInfoSquareRoundedFilled,
+    IconSquareRoundedPlus,
+    IconSquareRoundedPlusFilled,
+} from "@tabler/icons-react";
 import { useMotionValueEvent, useScroll } from "motion/react";
 import { useState } from "react";
 import { NavLink } from "react-router";
 
 export const Navbar = ({ layout }: { layout: "main" | "group" }) => {
+    const { t } = useTranslations();
     const isDesktop = useMediaQuery("(min-width: 768px)");
     const { scrollY } = useScroll();
     const [isScroll, setIsScroll] = useState(false);

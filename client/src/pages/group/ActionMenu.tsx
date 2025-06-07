@@ -8,7 +8,7 @@ import { useTranslations } from "@/hooks/useTranslations";
 import { useMemberStore } from "@/store";
 import { IconCashPlus, IconShare, IconTransfer } from "@tabler/icons-react";
 import React, { ReactNode } from "react";
-import { MobileActionMenu } from "./MobileActionMenu";
+import { GroupBottomNavbar } from "./GroupBottomNavbar";
 
 interface ActionDrawerProps {
     icon: ReactNode;
@@ -55,7 +55,7 @@ const ActionDrawer: React.FC<ActionDrawerProps> = ({
 const actionButtons = [
     {
         id: "share",
-        icon: <IconShare className="size-4 mx-0.5" />,
+        icon: <IconShare className="size-4" />,
         title: "ui.share",
         component: ShareForm,
         showLabel: false,
@@ -70,7 +70,7 @@ const actionButtons = [
     // },
     {
         id: "addPayment",
-        icon: <IconTransfer className="size-4 mx-0.5" />,
+        icon: <IconTransfer className="size-4" />,
         title: "ui.addPayment",
         component: RepaysForm,
         permission: "addRepays",
@@ -79,7 +79,7 @@ const actionButtons = [
     },
     {
         id: "newExpense",
-        icon: <IconCashPlus className="size-4 mx-0.5" />,
+        icon: <IconCashPlus className="size-4" />,
         title: "ui.newExpense",
         component: ExpenseForm,
         permission: "addExpenses",
@@ -94,7 +94,7 @@ const ActionMenu: React.FC = () => {
     const isDesktop = useMediaQuery("(min-width: 768px)");
 
     if (!isDesktop) {
-        return <MobileActionMenu actionButtons={actionButtons} />;
+        return <GroupBottomNavbar actionButtons={actionButtons} />;
     }
 
     return (

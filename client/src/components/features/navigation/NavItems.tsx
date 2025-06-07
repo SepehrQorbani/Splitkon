@@ -29,6 +29,7 @@ export interface NavItem {
 }
 
 interface NavItemsProps {
+    items?: any;
     className?: string;
     hideLabels?: boolean;
     navType?: "main" | "group";
@@ -41,12 +42,6 @@ const getNavItems = (
 ): NavItem[] =>
     type === "main"
         ? [
-              //   {
-              //       path: "/",
-              //       label: t("pages.home.title"),
-              //       icon: IconHome,
-              //       activeIcon: IconHomeFilled,
-              //   },
               {
                   path: "/about",
                   label: t("pages.about.title"),
@@ -90,7 +85,10 @@ const getNavItems = (
               },
           ];
 
-export const NavItems: React.FC<NavItemsProps> = ({ navType = "main" }) => {
+export const NavItems: React.FC<NavItemsProps> = ({
+    items,
+    navType = "main",
+}) => {
     const { t } = useTranslations();
     const { token } = useParams<{ token: string }>();
 

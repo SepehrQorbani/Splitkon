@@ -3,13 +3,16 @@ import AsyncContent from "@/components/common/AsyncContent";
 import GroupNavbar from "@/components/features/navigation/GroupNavbar";
 import { Navbar } from "@/components/features/navigation/Navbar";
 import useDocumentTitle from "@/hooks/useDocumentTitle";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { usePermissions } from "@/hooks/usePermissions";
 import { useTranslations } from "@/hooks/useTranslations";
 import ActionMenu from "@/pages/group/ActionMenu";
 import { useGroupStore, useMemberStore } from "@/store";
+import { IconSettings, IconSettingsFilled } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "motion/react";
 import React, { useEffect } from "react";
-import { useLocation, useOutlet, useParams } from "react-router";
+import { NavLink, useLocation, useOutlet, useParams } from "react-router";
 
 const GroupLayout: React.FC = () => {
     const { t } = useTranslations();
@@ -19,6 +22,9 @@ const GroupLayout: React.FC = () => {
     const group = useGroupStore((state) => state.group);
     const setGroup = useGroupStore((state) => state.setGroup);
     const setMembers = useMemberStore((state) => state.setMembers);
+    const isDesktop = useMediaQuery("(min-width: 768px)");
+    const { can } = usePermissions();
+
     const { data, isLoading, error, refetch } = useQuery({
         queryKey: ["group", token],
         queryFn: () => getGroup(token as string),
@@ -56,7 +62,7 @@ const GroupLayout: React.FC = () => {
                 refetch={refetch}
                 skeleton={groupSkeleton}
             >
-                <GroupNavbar />
+                {isDesktop && <GroupNavbar />}
                 <main className="pt-4 pb-20 px-2 sm:px-4 md:p-4 w-full max-w-7xl mx-auto">
                     {group && (
                         <div className="flex items-start justify-between gap-4 mb-4">
@@ -65,6 +71,23 @@ const GroupLayout: React.FC = () => {
                                     {group.title}
                                 </h1>
                             </div>
+                            {!isDesktop && can("edit") && (
+                                <div>
+                                    <NavLink
+                                        to={`${token}/setting`}
+                                        className=""
+                                        end
+                                    >
+                                        {({ isActive }) =>
+                                            isActive ? (
+                                                <IconSettingsFilled className="size-6 bg-action text-action-fg p-1 rounded" />
+                                            ) : (
+                                                <IconSettings className="size-6 p-1" />
+                                            )
+                                        }
+                                    </NavLink>
+                                </div>
+                            )}
                             <ActionMenu />
                         </div>
                     )}
