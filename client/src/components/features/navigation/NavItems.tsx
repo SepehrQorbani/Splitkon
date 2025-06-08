@@ -1,4 +1,5 @@
 import { NavItem } from "@/components/features/navigation/NavItem";
+import { usePermissions } from "@/hooks/usePermissions";
 import { useTranslations } from "@/hooks/useTranslations";
 import {
     IconCash,
@@ -26,6 +27,7 @@ export interface NavItem {
     icon: React.ComponentType<{ className?: string }>;
     activeIcon?: React.ComponentType<{ className?: string }>;
     className?: string;
+    permission?: string;
 }
 
 interface NavItemsProps {
@@ -81,31 +83,32 @@ const getNavItems = (
                   path: `${token}/setting`,
                   label: t("ui.settings"),
                   icon: IconSettings,
-                  className: "ms-auto",
+                  permission: "edit",
               },
           ];
 
-export const NavItems: React.FC<NavItemsProps> = ({
-    items,
-    navType = "main",
-}) => {
+export const NavItems: React.FC<NavItemsProps> = ({ navType = "main" }) => {
     const { t } = useTranslations();
     const { token } = useParams<{ token: string }>();
+    const { can } = usePermissions();
 
     const navItems = getNavItems(t, navType, token);
     return (
         <>
-            {navItems.map((item) => (
-                <NavItem
-                    key={item.path}
-                    to={item.path}
-                    label={item.label}
-                    icon={item.icon}
-                    activeIcon={item.activeIcon}
-                    className={item.className}
-                    navType={navType}
-                />
-            ))}
+            {navItems.map(
+                ({ permission, ...item }) =>
+                    ((permission && can(permission)) || !permission) && (
+                        <NavItem
+                            key={item.path}
+                            to={item.path}
+                            label={item.label}
+                            icon={item.icon}
+                            activeIcon={item.activeIcon}
+                            className={item.className}
+                            navType={navType}
+                        />
+                    )
+            )}
         </>
     );
 };

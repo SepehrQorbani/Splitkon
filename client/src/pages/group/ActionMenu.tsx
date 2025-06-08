@@ -33,7 +33,7 @@ const ActionDrawer: React.FC<ActionDrawerProps> = ({
                 <>
                     {icon}
                     {showLabel && (
-                        <span className="hidden md:inline text-sm ms-1">
+                        <span className="hidden md:inline text-xs">
                             {t(title)}
                         </span>
                     )}
@@ -47,7 +47,13 @@ const ActionDrawer: React.FC<ActionDrawerProps> = ({
             }
             isDisabled={isDisabled}
             children={children}
-            buttonProps={{ intent: "neutral", className: "p-2" }}
+            buttonProps={
+                showLabel
+                    ? {
+                          className: "px-3 py-2 h-8 min-w-8 gap-1",
+                      }
+                    : { className: "p-2 size-8" }
+            }
         />
     );
 };
@@ -55,7 +61,7 @@ const ActionDrawer: React.FC<ActionDrawerProps> = ({
 const actionButtons = [
     {
         id: "share",
-        icon: <IconShare className="size-4" />,
+        icon: <IconShare className="size-4 shrink-0" />,
         title: "ui.share",
         component: ShareForm,
         showLabel: false,
@@ -70,7 +76,7 @@ const actionButtons = [
     // },
     {
         id: "addPayment",
-        icon: <IconTransfer className="size-4" />,
+        icon: <IconTransfer className="size-4 shrink-0" />,
         title: "ui.addPayment",
         component: RepaysForm,
         permission: "addRepays",
@@ -79,7 +85,7 @@ const actionButtons = [
     },
     {
         id: "newExpense",
-        icon: <IconCashPlus className="size-4" />,
+        icon: <IconCashPlus className="size-4 shrink-0" />,
         title: "ui.newExpense",
         component: ExpenseForm,
         permission: "addExpenses",

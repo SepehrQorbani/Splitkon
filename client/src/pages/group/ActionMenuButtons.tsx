@@ -5,7 +5,7 @@ import { useTranslations } from "@/hooks/useTranslations";
 import { useMemberStore } from "@/store";
 import { cn } from "@/utils/cn";
 import { IconPlus } from "@tabler/icons-react";
-import React, { ReactElement, ReactNode, useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { Dialog, DialogTrigger, Popover } from "react-aria-components";
 
 export interface ActionButton {
@@ -33,19 +33,10 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
     const { can } = usePermissions();
     const members = useMemberStore((state) => state.members);
 
-    console.log(actions);
-
     return (
         <div className="flex flex-col gap-2">
             {actions.map(
-                ({
-                    id,
-                    // component: Component,
-                    icon,
-                    title,
-                    permission,
-                    canDisabled,
-                }) =>
+                ({ id, icon, title, permission, canDisabled }) =>
                     (can(permission) || permission === undefined) && (
                         <Button
                             key={id}

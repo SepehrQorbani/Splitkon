@@ -62,13 +62,15 @@ const GroupLayout: React.FC = () => {
                 refetch={refetch}
                 skeleton={groupSkeleton}
             >
-                {isDesktop && <GroupNavbar />}
+                <GroupNavbar />
                 <main className="pt-4 pb-20 px-2 sm:px-4 md:p-4 w-full max-w-7xl mx-auto">
                     {group && (
                         <div className="flex items-start justify-between gap-4 mb-4">
                             <div className="">
                                 <h1 className="text-2xl font-bold">
-                                    {group.title}
+                                    <NavLink to={`${token}`}>
+                                        {group.title}
+                                    </NavLink>
                                 </h1>
                             </div>
                             {!isDesktop && can("edit") && (
@@ -88,7 +90,6 @@ const GroupLayout: React.FC = () => {
                                     </NavLink>
                                 </div>
                             )}
-                            <ActionMenu />
                         </div>
                     )}
                     <AnimatePresence mode="wait">
