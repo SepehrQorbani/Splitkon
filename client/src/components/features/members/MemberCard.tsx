@@ -15,6 +15,7 @@ import { cn } from "@/utils/cn";
 import {
     IconChecks,
     IconCreditCard,
+    IconDots,
     IconReceiptDollar,
     IconTransfer,
     IconUserEdit,
@@ -219,7 +220,7 @@ function MemberCard({ member }: MemberCardProps) {
                         />
                     </motion.div>
 
-                    {isOpen && (
+                    {isOpen ? (
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -246,6 +247,10 @@ function MemberCard({ member }: MemberCardProps) {
                                 </div>
                             </div>
                         </motion.div>
+                    ) : (
+                        <div className="w-full flex items-center justify-center -mb-2 text-muted">
+                            <IconDots className="size-4" />
+                        </div>
                     )}
                 </motion.div>
             )}

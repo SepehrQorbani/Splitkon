@@ -4,10 +4,17 @@ import { Expense } from "@/types/schemas/expenses";
 import { cn } from "@/utils/cn";
 import {
     IconCalculator,
+    IconCalendar,
+    IconCalendarDollar,
+    IconCalendarDot,
     IconDivide,
+    IconDots,
+    IconEdit,
     IconEqual,
+    IconPencil,
     IconPencilDollar,
     IconPercentage,
+    IconQuestionMark,
     IconUsers,
     IconX,
 } from "@tabler/icons-react";
@@ -19,6 +26,7 @@ import { useReportGenerator } from "@/hooks/useReportGenerator";
 import CopyButton from "@/components/common/CopyButton";
 import Amount from "@/components/common/Amount";
 import { usePermissions } from "@/hooks/usePermissions";
+import AvatarGroup from "@/components/common/AvatarGroup";
 
 type ExpenseCardProps = {
     expense: Expense;
@@ -53,13 +61,20 @@ function ExpenseCard({ expense }: ExpenseCardProps) {
                             )}
                             aria-label="Expense Card"
                         >
-                            <div className="flex items-center justify-between border-b border-border">
-                                <div className="flex items-center text-sm font-medium px-1 gap-1">
-                                    {expense.title}
+                            <div className="flex items-center justify-between">
+                                <div className="text-sm font-medium space-y-2">
+                                    <h3>{expense.title}</h3>
+
+                                    <div className="flex items-center gap-1 text-xs text-muted-soft ps-1">
+                                        <IconCalendarDollar className="size-4" />
+                                        {formatDate(new Date(expense.date))}
+                                    </div>
+                                </div>
+                                <div>
                                     {can("editExpenses") && (
                                         <Drawer
                                             triggerLabel={
-                                                <IconPencilDollar className="w-4 h-4 text-muted" />
+                                                <IconEdit className="w-4 h-4 text-muted" />
                                             }
                                             title={t("expense")}
                                             children={({ close }) => (
@@ -79,11 +94,6 @@ function ExpenseCard({ expense }: ExpenseCardProps) {
                                         data={generateExpenseReport(expense)}
                                         className="h-8 w-8 p-1"
                                     />
-                                </div>
-                                <div className="text-xs text-gray-500 px-1">
-                                    <span>
-                                        {formatDate(new Date(expense.date))}
-                                    </span>
                                 </div>
                             </div>
                             <div className="flex items-center justify-between px-1 pt-2">
@@ -105,7 +115,7 @@ function ExpenseCard({ expense }: ExpenseCardProps) {
                         </motion.div>
                         <div className="px-4 space-y-4">
                             {isOpen && expense.description && (
-                                <div className="text-sm text-gray-700">
+                                <div className="text-xs bg-background rounded border border-border p-2">
                                     <span className="font-medium">
                                         {t("attributes.description")}:{" "}
                                     </span>
@@ -113,44 +123,34 @@ function ExpenseCard({ expense }: ExpenseCardProps) {
                                 </div>
                             )}
 
-                            <motion.div
-                                layoutId={`${id}-expense-split`}
-                                className="flex items-center justify-between text-xs text-muted"
-                            >
-                                <div className="flex items-center gap-1">
-                                    <IconUsers className="size-4" />
-                                    <span>
-                                        {expense.members.length} {t("member")}
-                                    </span>
-                                </div>
-                                <div className="flex items-center gap-1">
-                                    <IconPercentage className="size-4" />
-                                    <span>{expense.split}</span>
-                                    <span>{t("attributes.ratio_unit")}</span>
-                                </div>
-                            </motion.div>
-                            {isOpen && (
-                                <div className="w-full flex items-center justify-between text-xs bg-muted-faint border border-border px-1 py-2 rounded">
-                                    <div>
-                                        <IconCalculator className="size-4" />
+                            {!isOpen && (
+                                <motion.div
+                                    layoutId={`${id}-expense-split`}
+                                    className="flex items-center justify-between text-xs text-muted"
+                                >
+                                    <div className="flex items-center gap-1">
+                                        <AvatarGroup
+                                            members={expense.members}
+                                            size="sm"
+                                            maxVisible={3}
+                                        />
+                                        {/* <IconUsers className="size-4" /> */}
                                     </div>
-                                    <div
-                                        className="flex items-center gap-1"
-                                        dir="ltr"
-                                    >
-                                        {expense.amount}
-                                        <IconDivide className="size-3" />
-                                        {expense.split}
-                                        <IconEqual className="size-3" />
-                                        {expense.amount / expense.split}
-                                        <IconX className="size-3" />
-                                        {t("attributes.ratio_unit")}
+                                    <div className="flex items-center gap-1">
+                                        <IconUsers className="size-4" />
+                                        <span>
+                                            {expense.members.length}{" "}
+                                            {t("member")}
+                                        </span>
+                                        <span>({expense.split}</span>
+                                        <span>
+                                            {t("attributes.ratio_unit")})
+                                        </span>
                                     </div>
-                                </div>
+                                </motion.div>
                             )}
-
                             {/* Expanded State Details */}
-                            {isOpen && (
+                            {isOpen ? (
                                 <>
                                     <motion.div
                                         initial={{ opacity: 0 }}
@@ -160,13 +160,52 @@ function ExpenseCard({ expense }: ExpenseCardProps) {
                                             delay: 0.1,
                                             duration: 0.3,
                                         }}
-                                        className="mt-4 space-y-4"
+                                        className="mt-4"
                                     >
                                         <div className="space-y-2">
-                                            <h3 className="text-sm font-medium text-muted">
-                                                {t("attributes.members")}
-                                                {/* {t("expense.participants")} */}
-                                            </h3>
+                                            <motion.div
+                                                layoutId={`${id}-expense-split`}
+                                                className="flex items-center justify-between"
+                                            >
+                                                <h4 className="text-sm font-medium text-muted">
+                                                    {t("attributes.members")}
+                                                    {/* {t("expense.participants")} */}
+                                                </h4>
+                                                <div className="flex items-center gap-1 text-xs text-muted">
+                                                    <IconUsers className="size-4" />
+                                                    <span>
+                                                        {expense.members.length}{" "}
+                                                        {t("member")}
+                                                    </span>
+                                                    <span>
+                                                        ({expense.split}
+                                                    </span>
+                                                    <span>
+                                                        {t(
+                                                            "attributes.ratio_unit"
+                                                        )}
+                                                        )
+                                                    </span>
+                                                </div>
+                                            </motion.div>
+                                            <div className="w-full flex items-center justify-between text-xs bg-surface border border-border p-2 rounded">
+                                                <div>
+                                                    <IconQuestionMark className="size-6 p-1 bg-muted-faint text-action rounded" />
+                                                </div>
+                                                <div
+                                                    className="flex items-center gap-1"
+                                                    dir="ltr"
+                                                >
+                                                    {expense.amount}
+                                                    <IconDivide className="size-3" />
+                                                    {expense.split}
+                                                    <IconEqual className="size-3" />
+                                                    {expense.amount /
+                                                        expense.split}
+                                                    <IconX className="size-3" />
+                                                    {t("attributes.ratio_unit")}
+                                                </div>
+                                            </div>
                                             <div className="space-y-2">
                                                 {expense.members.map(
                                                     (member) => (
@@ -216,6 +255,10 @@ function ExpenseCard({ expense }: ExpenseCardProps) {
                                         </div>
                                     </motion.div>
                                 </>
+                            ) : (
+                                <div className="w-full flex items-center justify-center -mb-2 text-muted">
+                                    <IconDots className="size-4" />
+                                </div>
                             )}
                         </div>
                     </motion.div>

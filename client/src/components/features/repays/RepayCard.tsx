@@ -1,18 +1,34 @@
+import Amount from "@/components/common/Amount";
 import Avatar from "@/components/common/Avatar";
+import { Drawer } from "@/components/common/Drawer";
+import ExpandableCard from "@/components/common/ExpandableCard";
+import { usePermissions } from "@/hooks/usePermissions";
 import { useTranslations } from "@/hooks/useTranslations";
 import { Repay } from "@/types/schemas/repays";
 import { cn } from "@/utils/cn";
 import {
     IconArrowLeft,
+    IconArrowMoveLeft,
+    IconArrowMoveRight,
+    IconArrowNarrowLeft,
+    IconArrowNarrowLeftDashed,
     IconArrowRight,
-    IconPencilDollar,
+    IconArrowUp,
+    IconArrowUpSquare,
+    IconCalendarDollar,
+    IconCalendarEvent,
+    IconCaretLeft,
+    IconCaretRight,
+    IconChevronUp,
+    IconCornerLeftDown,
+    IconCornerRightDown,
+    IconCornerUpLeft,
+    IconCornerUpRight,
+    IconDots,
+    IconEdit,
 } from "@tabler/icons-react";
 import { motion } from "motion/react";
-import { Drawer } from "@/components/common/Drawer";
-import ExpandableCard from "@/components/common/ExpandableCard";
 import { RepaysForm } from "./RepayForm";
-import Amount from "@/components/common/Amount";
-import { usePermissions } from "@/hooks/usePermissions";
 
 type RepayCardProps = {
     repay: Repay;
@@ -46,69 +62,78 @@ function RepayCard({ repay }: RepayCardProps) {
                         )}
                         aria-label="Repay Card"
                     >
-                        <div className="flex flex-col gap-1">
+                        <div className="flex flex-col gap-2">
                             <div className="flex items-center text-sm font-medium">
-                                {t("repayment")}
-                                {can("editRepays") && (
-                                    <Drawer
-                                        triggerLabel={
-                                            <IconPencilDollar className="w-4 h-4 text-muted" />
-                                        }
-                                        title={t("edit_repayment")}
-                                        children={({ close }) => (
-                                            <RepaysForm
-                                                onSubmitSuccess={close}
-                                                repay={repay}
-                                            />
-                                        )}
-                                        buttonProps={{
-                                            intent: "neutral",
-                                            variant: "ghost",
-                                            className: "h-8 w-8 p-1",
-                                        }}
-                                    />
-                                )}
+                                <Amount amount={repay.amount} />
                             </div>
-                            <div className="text-xs text-gray-500">
+
+                            <div className="flex items-center gap-1 text-xs text-muted-soft ps--1">
+                                <IconCalendarEvent className="size-4 stroke-[1.5]" />
                                 {formatDate(new Date(repay.date))}
                             </div>
                         </div>
                         <div className="flex flex-col items-end gap-1">
-                            <div className="text-sm font-medium">
-                                <Amount amount={repay.amount} />
-                            </div>
+                            {can("editRepays") && (
+                                <Drawer
+                                    triggerLabel={
+                                        <IconEdit className="w-4 h-4 text-muted" />
+                                    }
+                                    title={t("edit_repayment")}
+                                    children={({ close }) => (
+                                        <RepaysForm
+                                            onSubmitSuccess={close}
+                                            repay={repay}
+                                        />
+                                    )}
+                                    buttonProps={{
+                                        intent: "neutral",
+                                        variant: "ghost",
+                                        className: "h-8 w-8 p-1",
+                                    }}
+                                />
+                            )}
                         </div>
                     </motion.div>
 
                     {!isOpen && (
-                        <div className="flex items-center gap-2 text-xs text-gray-500 justify-between">
-                            <div className="flex items-center gap-2">
-                                <Avatar
-                                    size="sm"
-                                    src={fromMember.avatar || undefined}
-                                    alt={fromMember.name}
-                                />
-                                <span>{fromMember.name}</span>
-                            </div>
-                            <div>
+                        <div>
+                            <div className="relative w-full flex justify-between items-center px-2 pt-2 mb-2">
                                 {direction === "rtl" ? (
-                                    <IconArrowLeft className="size-4" />
+                                    <>
+                                        <div className="absolute left-3 right-3 top-0 bottom-0 border rounded border-b-0 border-dashed border-border h-5" />
+                                        <span className="rounded-xs size-2 border border-border shrink-0 bg-surface relative" />
+                                        <span className="rounded-xs size-2 border border-border shrink-0 bg-surface relative" />
+                                    </>
                                 ) : (
-                                    <IconArrowRight className="size-4" />
+                                    <>
+                                        <div className="absolute left-3 right-3 top-0 bottom-0 border rounded border-b-0 border-dashed border-border h-5" />
+                                        <span className="rounded-xs size-2 border border-border shrink-0 bg-surface relative" />
+                                        <span className="rounded-xs size-2 border border-border shrink-0 bg-surface relative" />
+                                    </>
                                 )}
                             </div>
-                            <div className="flex items-center gap-2">
-                                <Avatar
-                                    size="sm"
-                                    src={toMember.avatar || undefined}
-                                    alt={toMember.name}
-                                />
-                                <span>{toMember.name}</span>
+                            <div className="flex items-center gap-2 text-xs justify-between">
+                                <div className="flex items-center gap-2">
+                                    <Avatar
+                                        size="sm"
+                                        src={fromMember.avatar || undefined}
+                                        alt={fromMember.name}
+                                    />
+                                    <span>{fromMember.name}</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <span>{toMember.name}</span>
+                                    <Avatar
+                                        size="sm"
+                                        src={toMember.avatar || undefined}
+                                        alt={toMember.name}
+                                    />
+                                </div>
                             </div>
                         </div>
                     )}
 
-                    {isOpen && (
+                    {isOpen ? (
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -117,7 +142,7 @@ function RepayCard({ repay }: RepayCardProps) {
                             className="mt-4 space-y-4"
                         >
                             {repay.description && (
-                                <div className="text-sm text-gray-700">
+                                <div className="text-xs bg-background rounded border border-border p-2">
                                     <span className="font-medium">
                                         {t("description")}:{" "}
                                     </span>
@@ -171,6 +196,10 @@ function RepayCard({ repay }: RepayCardProps) {
                                 </div>
                             </div>
                         </motion.div>
+                    ) : (
+                        <div className="w-full flex items-center justify-center -mb-2 text-muted">
+                            <IconDots className="size-4" />
+                        </div>
                     )}
                 </motion.div>
             )}
