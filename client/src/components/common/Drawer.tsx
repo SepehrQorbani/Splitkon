@@ -7,12 +7,12 @@ import {
     ModalOverlayProps,
     Pressable,
 } from "react-aria-components";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Button } from "./Button";
 import { cn } from "@/utils/cn";
 
 type DrawerProps = {
-    triggerLabel: ReactNode;
+    triggerLabel?: ReactNode;
     title: ReactNode;
     children: (props: { close: () => void }) => ReactNode;
     className?: string;
@@ -23,6 +23,8 @@ type DrawerProps = {
         variant?: "solid" | "outline" | "ghost" | "input";
         className?: string;
     };
+    open?: boolean;
+    onOpenChange?: (isOpen: boolean) => void;
 };
 
 export const Drawer = ({
@@ -37,23 +39,33 @@ export const Drawer = ({
         variant: "solid",
         className: "w-full h-10 gap-2",
     },
+    open = false,
+    onOpenChange,
 }: DrawerProps) => {
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(open);
+    useEffect(() => {
+        onOpenChange && onOpenChange(isOpen);
+    }, [isOpen]);
+    useEffect(() => {
+        setIsOpen(open);
+    }, [open]);
 
     const close = () => setIsOpen(false);
 
     return (
         <>
-            <Button
-                intent={buttonProps.intent}
-                variant={buttonProps.variant}
-                className={cn(buttonProps.className, isOpen && "group")}
-                onPress={() => setIsOpen(true)}
-                data-is-open={isOpen}
-                isDisabled={isDisabled}
-            >
-                {triggerLabel}
-            </Button>
+            {triggerLabel && (
+                <Button
+                    intent={buttonProps.intent}
+                    variant={buttonProps.variant}
+                    className={cn(buttonProps.className, isOpen && "group")}
+                    onPress={() => setIsOpen(true)}
+                    data-is-open={isOpen}
+                    isDisabled={isDisabled}
+                >
+                    {triggerLabel}
+                </Button>
+            )}
             <ModalOverlay
                 isOpen={isOpen}
                 onOpenChange={setIsOpen}
@@ -88,7 +100,7 @@ export const Drawer = ({
                                             ease: "easeInOut",
                                         }}
                                         className={cn(
-                                            "w-full relative max-w-md mx-auto max-h-min h-full overflow-y-auto px-2 pb-2 bg-surface border border-border shadow rounded-t",
+                                            "w-full relative max-w-md mx-auto max-h-min h-full overflow-y-auto px-2- pb-2 bg-surface border border-border shadow rounded-t",
                                             className
                                         )}
                                         onClick={(e) => {
@@ -97,11 +109,11 @@ export const Drawer = ({
                                     >
                                         <Heading
                                             slot="title"
-                                            className="border-b-2 border-border -bg-muted/10 -rounded mb-2 py-2 sticky top-0 bg-surface z-10"
+                                            className="sticky top-0 z-10 bg-surface p-2"
                                         >
                                             {title}
                                         </Heading>
-                                        <div className="py-2">
+                                        <div className="p-2">
                                             {children({ close })}
                                         </div>
                                     </motion.div>
