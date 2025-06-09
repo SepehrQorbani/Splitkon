@@ -6,27 +6,7 @@ import { usePermissions } from "@/hooks/usePermissions";
 import { useTranslations } from "@/hooks/useTranslations";
 import { Repay } from "@/types/schemas/repays";
 import { cn } from "@/utils/cn";
-import {
-    IconArrowLeft,
-    IconArrowMoveLeft,
-    IconArrowMoveRight,
-    IconArrowNarrowLeft,
-    IconArrowNarrowLeftDashed,
-    IconArrowRight,
-    IconArrowUp,
-    IconArrowUpSquare,
-    IconCalendarDollar,
-    IconCalendarEvent,
-    IconCaretLeft,
-    IconCaretRight,
-    IconChevronUp,
-    IconCornerLeftDown,
-    IconCornerRightDown,
-    IconCornerUpLeft,
-    IconCornerUpRight,
-    IconDots,
-    IconEdit,
-} from "@tabler/icons-react";
+import { IconCalendarEvent, IconDots, IconEdit } from "@tabler/icons-react";
 import { motion } from "motion/react";
 import { RepaysForm } from "./RepayForm";
 

@@ -1,32 +1,26 @@
+import Amount from "@/components/common/Amount";
 import Avatar from "@/components/common/Avatar";
+import AvatarGroup from "@/components/common/AvatarGroup";
+import CopyButton from "@/components/common/CopyButton";
+import { Drawer } from "@/components/common/Drawer";
+import ExpandableCard from "@/components/common/ExpandableCard";
+import { usePermissions } from "@/hooks/usePermissions";
+import { useReportGenerator } from "@/hooks/useReportGenerator";
 import { useTranslations } from "@/hooks/useTranslations";
 import { Expense } from "@/types/schemas/expenses";
 import { cn } from "@/utils/cn";
 import {
-    IconCalculator,
-    IconCalendar,
-    IconCalendarDollar,
-    IconCalendarDot,
+    IconCalendarEvent,
     IconDivide,
     IconDots,
     IconEdit,
     IconEqual,
-    IconPencil,
-    IconPencilDollar,
-    IconPercentage,
     IconQuestionMark,
     IconUsers,
     IconX,
 } from "@tabler/icons-react";
 import { motion } from "motion/react";
-import { Drawer } from "@/components/common/Drawer";
-import ExpandableCard from "@/components/common/ExpandableCard";
 import { ExpenseForm } from "./ExpenseForm";
-import { useReportGenerator } from "@/hooks/useReportGenerator";
-import CopyButton from "@/components/common/CopyButton";
-import Amount from "@/components/common/Amount";
-import { usePermissions } from "@/hooks/usePermissions";
-import AvatarGroup from "@/components/common/AvatarGroup";
 
 type ExpenseCardProps = {
     expense: Expense;
@@ -66,7 +60,7 @@ function ExpenseCard({ expense }: ExpenseCardProps) {
                                     <h3>{expense.title}</h3>
 
                                     <div className="flex items-center gap-1 text-xs text-muted-soft ps-1">
-                                        <IconCalendarDollar className="size-4" />
+                                        <IconCalendarEvent className="size-4" />
                                         {formatDate(new Date(expense.date))}
                                     </div>
                                 </div>
