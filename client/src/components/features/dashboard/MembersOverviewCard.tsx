@@ -69,7 +69,9 @@ export const MembersOverviewCard: FC<MembersOverviewCardProps> = ({
                 <div className="flex items-center gap-2">
                     <IconUsers className="w-12 h-12 p-3 rounded text-muted-fg bg-action" />
                     <div className="flex flex-col justify-between">
-                        <h4 className="text-sm font-medium ">{t("members")}</h4>
+                        <h4 className="text-sm font-medium ">
+                            {t("ui.members")}
+                        </h4>
                         <div>
                             <span className="text-sm">
                                 {summary.members_count}
@@ -78,7 +80,9 @@ export const MembersOverviewCard: FC<MembersOverviewCardProps> = ({
                     </div>
                 </div>
                 <div className="flex flex-col justify-between">
-                    <h4 className="text-sm font-medium ">{t("ratio")}</h4>
+                    <h4 className="text-sm font-medium ">
+                        {t("ui.totalRatio")}
+                    </h4>
                     <div className="flex gap-1 items-center">
                         <IconPercentage className="size-4 text-muted-soft" />
                         <span className="text-sm">

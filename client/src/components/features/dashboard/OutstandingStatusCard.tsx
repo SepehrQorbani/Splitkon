@@ -1,20 +1,19 @@
+import Amount from "@/components/common/Amount";
 import { Card } from "@/components/common/Card";
 import CopyButton from "@/components/common/CopyButton";
 import ProgressBar from "@/components/common/ProgressBar";
-import Amount from "@/components/common/Amount";
 import BalanceCard from "@/components/features/balance/BalanceCard";
+import { useReportGenerator } from "@/hooks/useReportGenerator";
+import { useTranslations } from "@/hooks/useTranslations";
+import { Summary } from "@/types/schemas/summary";
+import { cn } from "@/utils/cn";
 import {
-    IconAbacus,
     IconArrowLeft,
     IconMathSymbols,
     IconPlusEqual,
     IconTransfer,
     IconUser,
 } from "@tabler/icons-react";
-import { Summary } from "@/types/schemas/summary";
-import { cn } from "@/utils/cn";
-import { useReportGenerator } from "@/hooks/useReportGenerator";
-import { useTranslations } from "@/hooks/useTranslations";
 import { FC } from "react";
 
 interface OutstandingStatusCardProps {
@@ -35,14 +34,14 @@ export const OutstandingStatusCard: FC<OutstandingStatusCardProps> = ({
                     <IconMathSymbols className="w-12 h-12 p-3 rounded text-muted-fg bg-action" />
                     <div className="flex flex-col justify-between">
                         <h4 className="text-sm font-medium space-x-1 flex items-center">
-                            <span>{t("groupStatus")}</span>
+                            <span>{t("ui.groupStatus")}</span>
                             <CopyButton data={generateGroupReport(summary)} />
                         </h4>
                         <div>
                             <span className="text-sm">
                                 {summary.total_outstanding === 0
-                                    ? t("settled")
-                                    : t("unSettled")}
+                                    ? t("ui.settled")
+                                    : t("ui.unSettled")}
                             </span>
                         </div>
                     </div>
