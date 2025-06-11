@@ -7,7 +7,10 @@ type Direction = "rtl" | "ltr";
 type Theme = "dark" | "light" | "system";
 type Locale = Intl.Locale;
 
-type NestedTranslations = string | { [key: string]: NestedTranslations };
+export type NestedTranslations =
+    | string
+    | Array<NestedTranslations>
+    | { [key: string]: NestedTranslations };
 interface Translations {
     [key: string]: Record<string, NestedTranslations> | undefined;
 }
