@@ -1,4 +1,5 @@
-import { PermissionKey, usePermissionStore } from "@/store/permissions";
+import { usePermissionStore } from "@/store/permissions";
+import { PermissionKey } from "@/types";
 
 interface PermissionResult {
     can: (key: PermissionKey) => boolean;
