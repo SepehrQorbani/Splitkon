@@ -51,12 +51,12 @@ function ProgressBar({
                     >
                         {percentage !== undefined &&
                         percentageMode === "tooltip" ? (
-                            <div className="-me-2">
+                            <div className="relative h-4">
                                 <span
-                                    className="bg-action text-action-fg px-1 rounded-sm relative z-1 shadow"
+                                    className="bg-action text-action-fg px-1 rounded-sm z-1 shadow absolute bottom-0"
                                     dir="ltr"
                                     style={{
-                                        marginRight: 100 - percentage + "%",
+                                        right: 100 - percentage + "%",
                                     }}
                                 >
                                     <span className="w-3 h-3 absolute -bottom-3 right-0">
