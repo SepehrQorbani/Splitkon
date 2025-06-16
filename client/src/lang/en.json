@@ -47,7 +47,7 @@
                 "title": "Manage group expenses super easily!",
                 "subtitle": "Manage your expenses by ",
                 "flipWords": "recording,splitting,sharing,settling",
-                "createGroup": "Create Your Group Now",
+                "createGroup": "Start Now",
                 "howItWorks": "See How It Works",
                 "sample": {
                     "travel": "Nowruz Trip",
@@ -212,6 +212,8 @@
         "pageNotFound": "Page Not Found",
         "person": "Person",
         "statistics": "Statistics",
+        "ratio": "Ratio",
+        "ratioUnit": "Ratio",
         "recentActivity": "Recent Activity",
         "repay": "Repay",
         "repayment": "Repayment",
@@ -265,7 +267,13 @@
         "noMember": "This group has no members yet. To get started, please add members from the group settings!",
         "totalRatio": "Total Shares",
         "addToMember": "Add to Members List",
-        "updateMember": "Apply Changes"
+        "updateMember": "Apply Changes",
+        "avatarCollections": {
+            "None": "None",
+            "Monsters": "Monsters",
+            "Slimes": "Slimes",
+            "Animojies": "Animojies"
+        }
     },
     "validation": {
         "bankAccount": "The :attribute must be a valid bank account number",
