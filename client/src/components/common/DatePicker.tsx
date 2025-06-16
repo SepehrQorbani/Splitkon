@@ -1,36 +1,36 @@
+import { useTranslations } from "@/hooks/useTranslations";
+import { cn } from "@/utils/cn";
+import { defaultInputClass } from "@/utils/style";
 import {
-    getLocalTimeZone,
-    parseDate,
-    today as getToday,
     CalendarDate,
+    getLocalTimeZone,
+    today as getToday,
+    parseDate,
 } from "@internationalized/date";
 import {
-    IconCalendar,
+    IconChevronDown,
     IconChevronLeft,
     IconChevronRight,
 } from "@tabler/icons-react";
-import { cn } from "@/utils/cn";
-import { defaultInputClass } from "@/utils/style";
-import { useTranslations } from "@/hooks/useTranslations";
+import { AnimatePresence, motion } from "motion/react";
 import {
-    Group,
-    I18nProvider,
-    Label,
     DatePicker as AriaDatePicker,
-    DateInput,
-    DateSegment,
-    Popover,
-    Dialog,
-    Heading,
     Calendar,
+    CalendarCell,
     CalendarGrid,
+    CalendarGridBody,
     CalendarGridHeader,
     CalendarHeaderCell,
-    CalendarGridBody,
-    CalendarCell,
+    DateInput,
+    DateSegment,
+    Dialog,
+    Group,
+    Heading,
+    I18nProvider,
+    Label,
+    Popover,
 } from "react-aria-components";
 import { Button } from "./Button";
-import { AnimatePresence, motion } from "motion/react";
 
 interface DatePickerProps {
     name: string;
@@ -131,7 +131,7 @@ function DateField() {
                 size="icon"
                 className="p-1 focus-visible:ring-0 focus:outline-none"
             >
-                <IconCalendar className="size-4" />
+                <IconChevronDown className="size-4" />
             </Button>
         </Group>
     );
