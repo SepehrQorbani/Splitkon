@@ -5,7 +5,7 @@ import { Member } from "@/types/schemas/members";
 type SimpleMember = {
     id: number | string;
     name: string;
-    avatar: string;
+    avatar?: string | null;
 };
 
 interface AvatarGroupProps {
@@ -38,7 +38,7 @@ function AvatarGroup({
                 {visibleMembers.map((member, index) => (
                     <Avatar
                         key={member.id}
-                        src={member.avatar}
+                        src={member?.avatar}
                         alt={member.name}
                         size={size}
                         className={cn(

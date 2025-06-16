@@ -8,30 +8,31 @@ import {
     Select as AriaSelect,
     SelectProps as AriaSelectProps,
     Button,
+    Collection,
+    Header,
     Label,
     ListBox,
     ListBoxItem,
+    ListBoxSection,
     Popover,
     SelectValue,
 } from "react-aria-components";
 import { FieldError as HookFormFieldError } from "react-hook-form";
+import Avatar from "./Avatar";
+import { avatarCollections } from "@/constants/avatars";
 
 interface AvatarSelectProps
     extends Omit<AriaSelectProps, "value" | "onChange"> {
     name: string;
     label?: string;
-    value?: string;
+    value?: string | null;
     onChange?: (value: string | undefined) => void;
     isRequired?: boolean;
+    fallback?: string;
     className?: string;
     disabled?: boolean;
     error?: { message: string } | HookFormFieldError | undefined;
     ref?: React.Ref<HTMLDivElement>;
-}
-
-interface AvatarItem {
-    id: number;
-    avatar: string;
 }
 
 const AvatarSelect = ({
@@ -40,6 +41,7 @@ const AvatarSelect = ({
     value,
     onChange,
     isRequired = false,
+    fallback = "",
     className,
     disabled = false,
     error,
@@ -47,17 +49,10 @@ const AvatarSelect = ({
     ref,
     ...props
 }: AvatarSelectProps) => {
-    const { t } = useTranslations();
+    const { t, direction } = useTranslations();
 
-    // Static avatar list
-    const items: AvatarItem[] = Array.from({ length: 73 }, (_, i) => ({
-        id: i + 1,
-        avatar: `/images/avatars/set-01/Avatar${(i + 1)
-            .toString()
-            .padStart(2, "0")}.png`,
-    }));
-
-    const selectedItem = items.find((item) => item.avatar === value);
+    const flatItems = avatarCollections.flatMap((items) => items.children);
+    const selectedItem = flatItems.find((item) => item.avatar === value);
     const selectedKey = selectedItem ? selectedItem.id : null;
     const isInvalid = externalInvalid || !!error;
     const resolvedLabel = label ?? t(`attributes.${name}`);
@@ -71,7 +66,7 @@ const AvatarSelect = ({
             name={name}
             selectedKey={selectedKey}
             onSelectionChange={(key) => {
-                const selected = items.find((item) => item.id === key);
+                const selected = flatItems.find((item) => item.id === key);
                 onChange?.(selected ? selected.avatar : undefined);
             }}
             isRequired={isRequired}
@@ -101,12 +96,13 @@ const AvatarSelect = ({
                 <SelectValue className="inline-flex h-full aspect-square truncate shrink-0">
                     {({ isPlaceholder }) =>
                         isPlaceholder ? (
-                            <span className="w-full h-full rounded-xl bg-muted/50" />
+                            <Avatar className="w-full h-full rounded" />
                         ) : (
-                            <img
+                            <Avatar
                                 src={value}
                                 alt="Selected avatar"
-                                className="w-full h-full rounded-xl bg-muted/50 object-cover"
+                                fallback={false}
+                                className="w-full h-full rounded"
                             />
                         )
                     }
@@ -115,41 +111,56 @@ const AvatarSelect = ({
             </Button>
 
             <Popover
-                placement="bottom end"
+                placement={`bottom ${direction === "rtl" ? "end" : "start"}`}
                 className={cn(
-                    "max-h-40 h-40 p-2 w-60 overflow-auto rounded-md bg-surface shadow-input border border-border-input",
+                    "max-h-40 h-40 p-1 w-60 overflow-auto rounded-md bg-surface shadow-input border border-border-input",
                     "data-[placement=top]:data-[entering]:animate-slide-up-in data-[placement=bottom]:data-[entering]:animate-slide-down-in",
                     "data-[placement=top]:data-[exiting]:animate-slide-down-out data-[placement=bottom]:data-[exiting]:animate-slide-up-out"
                 )}
             >
-                <ListBox
-                    className="grid grid-cols-4 gap-2 p-1 outline-none"
-                    layout="grid"
-                    items={items}
-                >
-                    {(item) => (
-                        <ListBoxItem
-                            id={item.id}
-                            textValue={`Avatar ${item.id}`}
-                            className="relative flex items-center w-10 h-10 gap-2 rounded-xl cursor-pointer select-none group outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-surface focus:ring-action"
-                        >
-                            {({ isSelected }) => (
-                                <>
-                                    <img
-                                        src={item.avatar}
-                                        alt={`Avatar ${item.id}`}
-                                        className="w-full h-full rounded-xl bg-muted object-cover"
-                                    />
-                                    {isSelected && (
-                                        <span className="absolute inset-0 flex items-center justify-center rounded-xl bg-foreground/40">
-                                            <IconCheck className="w-5 h-5 stroke-surface" />
-                                        </span>
+                <div dir={direction}>
+                    <ListBox
+                        className="outline-none space-y-2"
+                        layout="grid"
+                        items={avatarCollections}
+                    >
+                        {(section) => (
+                            <ListBoxSection
+                                id={section.name}
+                                className="grid grid-cols-4 gap-2 p-2"
+                            >
+                                <Header className="text-xs text-action font-medium col-span-4">
+                                    {t(`ui.avatarCollections.${section.name}`)}
+                                </Header>
+                                <Collection items={section.children}>
+                                    {(item) => (
+                                        <ListBoxItem
+                                            id={item.id}
+                                            textValue={`Avatar ${item.id}`}
+                                            className="relative flex items-center w-10 h-10 rounded cursor-pointer select-none group outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-surface focus:ring-action"
+                                        >
+                                            {({ isSelected }) => (
+                                                <>
+                                                    <Avatar
+                                                        src={item.avatar}
+                                                        alt={`Avatar ${item.id}`}
+                                                        fallback={false}
+                                                        className="w-full h-full rounded bg-action-subtle object-cover"
+                                                    />
+                                                    {isSelected && (
+                                                        <span className="absolute inset-2 flex items-center justify-center rounded-full bg-action/75 ring-2 ring-action-fg">
+                                                            <IconCheck className="w-5 h-5 stroke-action-fg" />
+                                                        </span>
+                                                    )}
+                                                </>
+                                            )}
+                                        </ListBoxItem>
                                     )}
-                                </>
-                            )}
-                        </ListBoxItem>
-                    )}
-                </ListBox>
+                                </Collection>
+                            </ListBoxSection>
+                        )}
+                    </ListBox>
+                </div>
             </Popover>
 
             {/* Error Message */}
