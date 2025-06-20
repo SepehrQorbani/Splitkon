@@ -105,9 +105,7 @@ const BankAccountInputField = ({
 
     const isInvalid = externalInvalid || !!error;
     const resolvedLabel = label ?? t(`attributes.${name}`);
-    const errorMessage = error?.message
-        ? t(error.message, { attribute: resolvedLabel })
-        : undefined;
+    const errorMessage = error?.message ? error?.message : undefined;
     const handleChange = (formattedValue: string) => {
         const rawValue = parseBankAccountNumber(formattedValue);
         if (rawValue.length <= 16) {
