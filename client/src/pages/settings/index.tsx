@@ -1,5 +1,6 @@
+// TODO: Check permission
 import { useUpdateGroup } from "@/api/queries/groups";
-import { Button } from "@/components/common/Button";
+import { Button, getButtonStyles } from "@/components/common/Button";
 import { Card, CardTitle } from "@/components/common/Card";
 import DatePicker from "@/components/common/DatePicker";
 import InputField from "@/components/common/InputField";
@@ -14,11 +15,17 @@ import { GroupEditInput, GroupEditInputSchema } from "@/types/schemas/group";
 import { MemberInput } from "@/types/schemas/members";
 import { handleApiError } from "@/utils/apiErrorHandler";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { IconCircleX, IconSettings } from "@tabler/icons-react";
-import { useState } from "react";
+import {
+    IconCircleX,
+    IconCopyPlus,
+    IconObjectScan,
+    IconSettings,
+    IconUserScan,
+} from "@tabler/icons-react";
+import { useEffect, useState } from "react";
 import { Form } from "react-aria-components";
 import { Controller, useForm } from "react-hook-form";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 
 const SettingsPage = () => {
     const { t, formatDate } = useTranslations();
@@ -100,18 +107,28 @@ const SettingsPage = () => {
         },
     });
 
+    useEffect(() => {
+        if (group) {
+            reset({
+                title: group.title,
+                date: group.date,
+                description: group.description,
+                currency: group.currency,
+                closing_date: group.closing_date,
+            });
+        }
+    }, [group, reset]);
+
     //TODO: add Loading
     if (!group) return null;
 
     const onSubmit = async (data: GroupEditInput) => {
-        const changedFields = Object.keys(dirtyFields).reduce((acc, key) => {
-            if (dirtyFields[key as keyof typeof dirtyFields]) {
-                acc[key as keyof GroupEditInput] = data[
-                    key as keyof GroupEditInput
-                ] as any;
-            }
-            return acc;
-        }, {} as Partial<GroupEditInput>);
+        const changedFields = Object.fromEntries(
+            Object.entries(dirtyFields)
+                .filter(([_, dirty]) => dirty)
+                .map(([key]) => [key, data[key as keyof GroupEditInput]])
+        ) as Partial<GroupEditInput>;
+
         if (token) {
             clearErrors();
             try {
@@ -138,11 +155,11 @@ const SettingsPage = () => {
             <Card>
                 <CardTitle className="flex items-center gap-2">
                     <IconSettings className="w-5 h-5" />
-                    {t("ui.settings")}
+                    <h2>{t("ui.settings")}</h2>
                 </CardTitle>
                 <div className="flex flex-col md:flex-row gap-4">
                     <div className="w-full border border-border shadow-input rounded p-4">
-                        <h4>{t("ui.editGroup")}</h4>
+                        <h3>{t("ui.editGroup")}</h3>
                         <Form
                             onSubmit={handleSubmit(onSubmit)}
                             className="space-y-4 h-full py-4"
@@ -247,7 +264,7 @@ const SettingsPage = () => {
                         </Form>
                     </div>
                     <div className="w-full overflow-auto border border-border shadow-input rounded p-4">
-                        <h4>{t("ui.editMembers")}</h4>
+                        <h3>{t("ui.editMembers")}</h3>
                         <MemberForm
                             className="py-4"
                             member={
@@ -283,6 +300,32 @@ const SettingsPage = () => {
                             onDeleteMember={() => {}}
                             selectedMember={selectedMember || undefined}
                         />
+                    </div>
+                </div>
+                <div className="w-full space-y-6 md:flex md:justify-between md:items-center md:space-y-0 border border-border shadow-input rounded p-4">
+                    <div className="flex gap-2 items-center">
+                        <IconCopyPlus className="size-4" />
+                        <h3>{t("cloneTitle")}</h3>
+                    </div>
+                    <div className="flex flex-col gap-4 xs:flex-row">
+                        <Link
+                            to={`/new?originalGroup=${group.view_token}`}
+                            className={getButtonStyles({
+                                className: "text-xs font-light gap-2",
+                            })}
+                        >
+                            <IconObjectScan className="shrink-0 size-4" />
+                            {t("cloneGroup")}
+                        </Link>
+                        <Link
+                            to={`/new?originalMembers=${group.view_token}`}
+                            className={getButtonStyles({
+                                className: "text-xs font-light gap-2",
+                            })}
+                        >
+                            <IconUserScan className="shrink-0 size-4" />
+                            {t("cloneMembers")}
+                        </Link>
                     </div>
                 </div>
             </Card>

@@ -1,3 +1,4 @@
+import { getGroup } from "@/api/endpoints/groups";
 import { useCreateGroup } from "@/api/queries/groups";
 import { Button } from "@/components/common/Button";
 import { Card } from "@/components/common/Card";
@@ -23,11 +24,12 @@ import {
     IconSquareRoundedPlus,
     IconUserPlus,
 } from "@tabler/icons-react";
+import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Form } from "react-aria-components";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 
 const TITLE = ["ui.groupInfo", "ui.addMembers", "ui.saveLinks"] as const;
 const ICON = [
@@ -43,19 +45,75 @@ function New() {
     const setGroup = useGroupStore((state) => state.setGroup);
     const navigate = useNavigate();
     const [step, setStep] = useState(1);
+    const [searchParams, setSearchParams] = useSearchParams();
 
+    //TODO: extract to const and create currency select input component
+    const CURRENCY_ITEMS = [
+        {
+            id: 1,
+            label: t("ui.rial"),
+            value: {
+                display_unit: "rial",
+                code: "IRR",
+                conversion_factor: 1,
+                decimal_precision: 0,
+            },
+        },
+        {
+            id: 2,
+            label: t("ui.toman"),
+            value: {
+                display_unit: "toman",
+                code: "IRR",
+                conversion_factor: 10,
+                decimal_precision: 0,
+            },
+        },
+        {
+            id: 3,
+            label: t("ui.hezartoman"),
+            value: {
+                display_unit: "hezartoman",
+                code: "IRR",
+                conversion_factor: 10000,
+                decimal_precision: 0,
+            },
+        },
+        {
+            id: 4,
+            label: t("ui.dollar"),
+            value: {
+                display_unit: "dollar",
+                code: "USD",
+                conversion_factor: 1,
+                decimal_precision: 2,
+            },
+        },
+    ];
+
+    const original = searchParams.get("originalGroup")
+        ? "group"
+        : searchParams.get("originalMembers")
+        ? "members"
+        : null;
+
+    const originalGroupToken =
+        original === "group"
+            ? searchParams.get("originalGroup")
+            : searchParams.get("originalMembers");
     const {
         control,
         handleSubmit,
-        formState: { errors, isSubmitting, isDirty },
+        formState: { errors, isSubmitting, isValid },
         setError,
         clearErrors,
         trigger,
+        reset,
     } = useForm<GroupInput>({
         defaultValues: {
             title: "",
             description: "",
-            date: undefined,
+            date: "",
             currency: {
                 display_unit: "toman",
                 code: "IRR",
@@ -73,10 +131,42 @@ function New() {
         append,
         update,
         remove,
+        replace,
     } = useFieldArray({
         control,
         name: "members",
     });
+
+    const { data, isLoading, error } = useQuery({
+        queryKey: ["group", originalGroupToken],
+        queryFn: () => getGroup(originalGroupToken as string),
+        enabled: !!originalGroupToken,
+    });
+
+    useEffect(() => {
+        if (original === "group" && data?.data) {
+            const group = data.data;
+            reset({
+                title: group.title ?? "",
+                description: group.description ?? "",
+                date: group.date?.split("T")[0] ?? "",
+                currency: CURRENCY_ITEMS.find(
+                    (i) => i.value.display_unit === group.currency.display_unit
+                )?.value ?? {
+                    display_unit: "toman",
+                    code: "IRR",
+                    conversion_factor: 10,
+                    decimal_precision: 0,
+                },
+                members: data.data.members,
+            });
+        }
+        if (original === "members" && data?.data?.members) {
+            console.log(original, data.data.members);
+            replace(data.data.members);
+        }
+    }, [data]);
+
     const onStep1Submit = async () => {
         const isStep1Valid = await trigger([
             "title",
@@ -230,54 +320,7 @@ function New() {
                                         name="currency"
                                         render={({ field }) => (
                                             <Select
-                                                items={[
-                                                    {
-                                                        id: 1,
-                                                        label: t("ui.rial"),
-                                                        value: {
-                                                            display_unit:
-                                                                "rial",
-                                                            code: "IRR",
-                                                            conversion_factor: 1,
-                                                            decimal_precision: 0,
-                                                        },
-                                                    },
-                                                    {
-                                                        id: 2,
-                                                        label: t("ui.toman"),
-                                                        value: {
-                                                            display_unit:
-                                                                "toman",
-                                                            code: "IRR",
-                                                            conversion_factor: 10,
-                                                            decimal_precision: 0,
-                                                        },
-                                                    },
-                                                    {
-                                                        id: 3,
-                                                        label: t(
-                                                            "ui.hezartoman"
-                                                        ),
-                                                        value: {
-                                                            display_unit:
-                                                                "hezartoman",
-                                                            code: "IRR",
-                                                            conversion_factor: 10000,
-                                                            decimal_precision: 0,
-                                                        },
-                                                    },
-                                                    {
-                                                        id: 4,
-                                                        label: t("ui.dollar"),
-                                                        value: {
-                                                            display_unit:
-                                                                "dollar",
-                                                            code: "USD",
-                                                            conversion_factor: 1,
-                                                            decimal_precision: 2,
-                                                        },
-                                                    },
-                                                ]}
+                                                items={CURRENCY_ITEMS}
                                                 label={t("attributes.currency")}
                                                 {...field}
                                                 isInvalid={!!errors.currency}
@@ -303,7 +346,7 @@ function New() {
                                 />
 
                                 <Button
-                                    isDisabled={!isDirty || isSubmitting}
+                                    isDisabled={isSubmitting || !isValid}
                                     className="w-full justify-between"
                                     type="submit"
                                 >

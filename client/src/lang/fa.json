@@ -318,7 +318,10 @@
             "Monsters": "هیولاها",
             "Slimes": "اسلایم‌ها",
             "Animojies": "ایموجی‌ها"
-        }
+        },
+        "cloneTitle": "ایجاد گروه جدید از روی گروه فعلی",
+        "cloneGroup": "نسخه برداری کامل از گروه",
+        "cloneMembers": "نسخه برداری از لیست اعضا"
     },
     "validation": {
         "bankAccount": ":attribute باید یک شماره حساب معتبر باشد",
