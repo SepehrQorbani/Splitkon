@@ -57,7 +57,7 @@ interface BankAccountInputFieldProps
     extends Omit<TextFieldProps, "value" | "onChange"> {
     name: string;
     label?: string;
-    value?: string; // Raw digits (e.g., "1234123412341234")
+    value?: string | null; // Raw digits (e.g., "1234123412341234")
     onChange?: (value: string) => void; // Returns raw digits
     isRequired?: boolean;
     className?: string;
@@ -113,8 +113,8 @@ const BankAccountInputField = ({
             onChange?.(rawValue);
         }
     };
-    const displayedValue = formatBankAccountNumber(value);
-    const bankInfo = value.length >= 6 ? getBankInfo(value) : null;
+    const displayedValue = formatBankAccountNumber(value || "");
+    const bankInfo = value && value.length >= 6 ? getBankInfo(value) : null;
 
     return (
         <TextField
@@ -150,7 +150,7 @@ const BankAccountInputField = ({
                     )}
                     dir="ltr"
                 />
-                {value.length >= 6 && (
+                {value && value.length >= 6 && (
                     <span className="flex items-center gap-1 absolute right-1 text-[10px] font-medium text-text-subtle border border-border bg-background p-0.5 rounded-md">
                         {bankInfo ? (
                             <>
