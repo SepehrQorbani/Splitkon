@@ -83,7 +83,7 @@ function MemberCard({ member }: MemberCardProps) {
                                             triggerLabel={
                                                 <IconUserEdit className="w-4 h-4" />
                                             }
-                                            title="ویرایش"
+                                            title={t("ui.edit")}
                                             children={({ close }) => (
                                                 <MemberForm
                                                     onSubmitSuccess={(data) => {
