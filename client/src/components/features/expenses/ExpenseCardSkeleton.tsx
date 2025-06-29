@@ -12,33 +12,34 @@ export const ExpenseCardSkeleton: React.FC<
             )}
             {...props}
         >
-            <div className="w-full space-y-2 top-0 pt-4 px-3 pb-2">
-                <div className="flex items-center justify-between border-b border-border py-2">
-                    <div className="flex items-center gap-1 px-1">
-                        <Skeleton className="h-4 w-32" />
-                    </div>
-                    <Skeleton className="h-3 w-20 px-1" />
+            <div className="flex items-center justify-between border-border pt-6 px-4">
+                <div className="space-y-2">
+                    <Skeleton className="h-4 w-32" />
+                    <Skeleton className="h-3 w-16" />
                 </div>
-                <div className="flex items-center justify-between px-1 pt-2">
-                    <div className="flex items-center gap-2">
-                        <Skeleton className="w-6 h-6 rounded" />
-                        <Skeleton className="h-3 w-20" />
-                    </div>
-                    <Skeleton className="h-4 w-24" />
+                <Skeleton className="size-6" />
+            </div>
+            <div className="flex items-center justify-between px-4 pb-2">
+                <div className="flex items-center gap-2">
+                    <Skeleton className="w-6 h-6 rounded" />
+                    <Skeleton className="h-3 w-20" />
                 </div>
+                <Skeleton className="h-4 w-24" />
             </div>
 
-            <div className="px-4 space-y-4">
-                <div className="flex items-center justify-between text-xs">
-                    <div className="flex items-center gap-1">
-                        <Skeleton className="h-4 w-4" />
-                        <Skeleton className="h-3 w-16" />
-                    </div>
-                    <div className="flex items-center gap-1">
-                        <Skeleton className="h-4 w-4" />
-                        <Skeleton className="h-3 w-12" />
-                    </div>
+            <div className="flex items-center justify-between text-xs px-4">
+                <div className="flex items-center gap-1">
+                    <Skeleton className="size-6 border border-surface rounded-full" />
+                    <Skeleton className="size-6 border border-surface rounded-full -ms-4" />
+                    <Skeleton className="size-6 border border-surface rounded-full -ms-4" />
+                    <Skeleton className="size-6 border border-surface rounded-full -ms-4" />
                 </div>
+                <div className="flex items-center gap-1">
+                    <Skeleton className="h-3 w-20" />
+                </div>
+            </div>
+            <div className="flex items-center justify-center mt-2">
+                <Skeleton className="h-2 w-8" />
             </div>
         </div>
     );

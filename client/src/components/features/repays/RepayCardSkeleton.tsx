@@ -13,23 +13,31 @@ export const RepayCardSkeleton: React.FC<
             {...props}
         >
             <div className="w-full flex flex-col justify-between h-full pt-4 px-3">
-                <div className="flex items-center justify-between border-border py-2">
-                    <div className="space-y-4 px-1">
+                <div className="flex items-center justify-between border-border py-2 px-1">
+                    <div className="space-y-4">
                         <Skeleton className="h-4 w-32" />
                         <Skeleton className="h-3 w-16" />
                     </div>
-                    <Skeleton className="h-4 w-24 px-1" />
+                    <Skeleton className="size-6" />
+                </div>
+                <div className="relative w-full flex justify-between items-center px-2 pt-2 my-2">
+                    <div className="absolute left-3 right-3 top-0 bottom-0 border rounded border-b-0 border-dashed border-border h-5"></div>
+                    <span className="rounded-xs size-2 border border-border shrink-0 bg-surface relative"></span>
+                    <span className="rounded-xs size-2 border border-border shrink-0 bg-surface relative"></span>
                 </div>
                 <div className="flex items-center justify-between px-1">
                     <div className="flex items-center gap-2">
                         <Skeleton className="w-6 h-6 rounded" />
                         <Skeleton className="h-3 w-20" />
                     </div>
-                    <Skeleton className="h-4 w-4" />
+
                     <div className="flex items-center gap-2">
-                        <Skeleton className="w-6 h-6 rounded" />
                         <Skeleton className="h-3 w-20" />
+                        <Skeleton className="w-6 h-6 rounded" />
                     </div>
+                </div>
+                <div className="flex items-center justify-center mt-2">
+                    <Skeleton className="h-2 w-8" />
                 </div>
             </div>
         </div>
