@@ -3,10 +3,11 @@ import { z } from "zod";
 export const MemberSchema = z.object({
     id: z.number(),
     name: z.string().nonempty(),
-    avatar: z.string().nonempty(),
+    avatar: z.string().nullable().optional(),
     ratio: z.number().min(1).max(100),
     bank_info: z
         .string()
+        .nullable()
         .optional()
         .transform((val) => (val ? val.replace(/\D/g, "") : val))
         .refine((val) => !val || val.length === 16, {
@@ -31,11 +32,7 @@ export const MemberInputSchema = (
             .nonempty(
                 t("validation.required", { attribute: t("attributes.name") })
             ),
-        avatar: z
-            .string()
-            .nonempty(
-                t("validation.required", { attribute: t("attributes.avatar") })
-            ),
+        avatar: z.string().nullable().optional(),
         ratio: z
             .number({
                 required_error: t("validation.required", {
@@ -61,6 +58,7 @@ export const MemberInputSchema = (
             ),
         bank_info: z
             .string()
+            .nullable()
             .optional()
             .transform((val) => (val ? val.replace(/\D/g, "") : val))
             .refine((val) => !val || val.length === 16, {

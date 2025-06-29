@@ -80,7 +80,7 @@ export const ExpenseInputSchema = (
                 z.object({
                     id: z.number(),
                     name: z.string(),
-                    avatar: z.string(),
+                    avatar: z.string().nullable().optional(),
                     ratio: z.number().min(
                         1,
                         t("validation.min", {
