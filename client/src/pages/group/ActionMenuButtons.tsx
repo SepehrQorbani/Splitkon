@@ -3,6 +3,7 @@ import { Drawer } from "@/components/common/Drawer";
 import { usePermissions } from "@/hooks/usePermissions";
 import { useTranslations } from "@/hooks/useTranslations";
 import { useMemberStore } from "@/store";
+import { PermissionKey } from "@/types";
 import { cn } from "@/utils/cn";
 import { IconPlus } from "@tabler/icons-react";
 import React, { ReactElement, useState } from "react";
@@ -16,7 +17,7 @@ export interface ActionButton {
         onSubmitSuccess?: () => void;
     }>;
     showLabel: boolean;
-    permission?: string;
+    permission?: PermissionKey;
     canDisabled?: boolean;
 }
 
@@ -36,7 +37,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
     return (
         <div className="flex flex-col gap-2">
             {actions.map(
-                ({ id, icon, title, permission, canDisabled }) =>
+                ({ id, icon, title, permission, canDisabled }: ActionButton) =>
                     (can(permission) || permission === undefined) && (
                         <Button
                             key={id}

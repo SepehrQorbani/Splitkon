@@ -9,6 +9,7 @@ import { useMemberStore } from "@/store";
 import { IconCashPlus, IconShare, IconTransfer } from "@tabler/icons-react";
 import React, { ReactNode } from "react";
 import { GroupBottomNavbar } from "./GroupBottomNavbar";
+import { ActionButton } from "./ActionMenuButtons";
 
 interface ActionDrawerProps {
     icon: ReactNode;
@@ -58,7 +59,7 @@ const ActionDrawer: React.FC<ActionDrawerProps> = ({
     );
 };
 
-const actionButtons = [
+const actionButtons: ActionButton[] = [
     {
         id: "share",
         icon: <IconShare className="size-4 shrink-0" />,
