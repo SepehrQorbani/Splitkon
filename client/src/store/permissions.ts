@@ -38,12 +38,15 @@ export const PERMISSIONS: Record<PermissionKey, PermissionDefinition> = {
     //Members
     addMembers: {
         fn: (group) => !!group && !group?.closing_date,
+        dependsOn: ["edit"],
     },
     editMembers: {
         fn: (group) => !!group && !group?.closing_date,
+        dependsOn: ["edit"],
     },
     deleteMembers: {
         fn: () => false,
+        dependsOn: ["edit"],
     },
 };
 
