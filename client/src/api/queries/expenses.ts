@@ -11,6 +11,7 @@ import { queryKeys } from "../queryKeys";
 const EXPENSE_RELATED_QUERIES = [
     "expenses",
     "members",
+    "balance",
     "summary",
     "dailyExpenses",
 ] as const;
