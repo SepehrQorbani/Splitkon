@@ -1,13 +1,17 @@
+import { useCreateMember, useUpdateMember } from "@/api/queries/members";
 import InputField from "@/components/common/InputField";
 import NumberField from "@/components/common/NumberField";
 import { useTranslations } from "@/hooks/useTranslations";
 import { useGroupStore } from "@/store/group";
+import { ApiError } from "@/types/api/errors";
 import { MemberResponse } from "@/types/api/members";
 import {
     Member,
     MemberInput,
     MemberInputSchema,
 } from "@/types/schemas/members";
+import { handleApiError } from "@/utils/apiErrorHandler";
+import { cn } from "@/utils/cn";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconChecks, IconPlus } from "@tabler/icons-react";
 import { useEffect } from "react";
@@ -16,10 +20,6 @@ import { Controller, useForm } from "react-hook-form";
 import AvatarSelect from "../../common/AvatarSelect";
 import BankAccountInputField from "../../common/BankAccountInputField";
 import { Button } from "../../common/Button";
-import { cn } from "@/utils/cn";
-import { useCreateMember, useUpdateMember } from "@/api/queries/members";
-import { ApiError } from "@/types/api/errors";
-import { handleApiError } from "@/utils/apiErrorHandler";
 
 type Props = {
     disabled?: boolean;
@@ -113,7 +113,6 @@ const MemberForm = ({
                     render={({ field }) => (
                         <AvatarSelect
                             {...field}
-                            isRequired
                             isInvalid={!!errors?.avatar}
                             error={errors?.avatar}
                             className="max-w-20 shrink-0"

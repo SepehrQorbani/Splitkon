@@ -1,9 +1,9 @@
+import Avatar from "@/components/common/Avatar";
 import { useTranslations } from "@/hooks/useTranslations";
-import { cn } from "@/utils/cn";
 import { Member, MemberInput, MembersInput } from "@/types/schemas/members";
+import { cn } from "@/utils/cn";
 import {
     IconCancel,
-    IconCashBanknote,
     IconCreditCard,
     IconPencil,
     IconTrash,
@@ -115,16 +115,16 @@ export function MemberList({
                             >
                                 <div className="w-full overflow-x-auto overflow-y-hidden">
                                     <div className="flex items-center gap-2">
-                                        <img
+                                        <Avatar
                                             src={item.avatar}
-                                            alt={item.name}
-                                            className="w-10 h-10 rounded-xl bg-gray-200 object-cover"
+                                            alt={`${item.name}'s avatar`}
+                                            fallback={item.name}
                                         />
                                         <span className="text-xs">
                                             {item.name}
                                         </span>
                                         <span className="text-xs text-gray-500">
-                                            ({t("ratio_unit")}:{item.ratio})
+                                            ({t("ratioUnit")}:{item.ratio})
                                         </span>
                                     </div>
                                     {item.bank_info && (
@@ -139,7 +139,7 @@ export function MemberList({
                                         </div>
                                     )}
                                 </div>
-                                <div className="flex gap-2">
+                                <div className="flex gap-2 mb-auto">
                                     <Button
                                         className="w-8 h-8 p-0"
                                         isDisabled={disabled}
