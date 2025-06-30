@@ -8,10 +8,12 @@ import {
     IconPencil,
     IconTrash,
     IconUserOff,
+    IconX,
 } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "motion/react";
 import { GridList, GridListItem, GridListProps } from "react-aria-components";
 import { Button } from "../../common/Button";
+import { ConfirmableButton } from "@/components/common/ConfirmableButton";
 
 interface MemberListProps
     extends Omit<GridListProps<MemberInput | Member>, "items" | "children"> {
@@ -82,7 +84,7 @@ export function MemberList({
                         className="flex items-center gap-2 p-2"
                     >
                         <span className="w-10 h-10 rounded-xl bg-surface-strong flex items-center justify-center">
-                            <IconUserOff className="w-4 h-4" />
+                            <IconUserOff className="size-4" />
                         </span>
                         <span className="text-sm text-text-subtle">
                             {t("messages.noMembersAdded")}
@@ -110,7 +112,7 @@ export function MemberList({
                                     ease: "easeInOut",
                                 }}
                                 className={cn(
-                                    "flex justify-between items-center p-2 rounded gap-2"
+                                    "flex justify-between items-center p-2 rounded gap-2 relative"
                                 )}
                             >
                                 <div className="w-full overflow-x-auto overflow-y-hidden">
@@ -148,11 +150,7 @@ export function MemberList({
                                                 ? "solid"
                                                 : "outline"
                                         }
-                                        intent={
-                                            selectedMember === item.id
-                                                ? "danger"
-                                                : "primary"
-                                        }
+                                        intent="primary"
                                         onPress={() =>
                                             selectedMember === item.id
                                                 ? onSelectMember(undefined)
@@ -160,20 +158,26 @@ export function MemberList({
                                         }
                                     >
                                         {selectedMember === item.id ? (
-                                            <IconCancel className="w-4 h-4" />
+                                            <IconCancel className="size-4" />
                                         ) : (
-                                            <IconPencil className="w-4 h-4" />
+                                            <IconPencil className="size-4" />
                                         )}
                                     </Button>
-                                    <Button
-                                        onPress={() => onDeleteMember(item.id)}
-                                        isDisabled={disabled}
-                                        className="w-8 h-8 p-0"
+                                    <ConfirmableButton
+                                        onConfirm={() =>
+                                            onDeleteMember(item.id)
+                                        }
+                                        confirm={
+                                            <IconTrash className="size-4" />
+                                        }
+                                        cancel={<IconX className="size-4" />}
+                                        size="icon"
                                         variant="outline"
                                         intent="danger"
+                                        isDisabled={selectedMember === item.id}
                                     >
-                                        <IconTrash className="w-4 h-4" />
-                                    </Button>
+                                        <IconTrash className="size-4" />
+                                    </ConfirmableButton>
                                 </div>
                             </motion.div>
                         </AnimatePresence>
