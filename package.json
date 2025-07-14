@@ -27,6 +27,7 @@
         "@persian-tools/persian-tools": "^3.6.0",
         "@tabler/icons-react": "^3.34.0",
         "@tanstack/react-query": "^5.81.5",
+        "@uidotdev/usehooks": "^2.4.1",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "motion": "^12.20.0",
