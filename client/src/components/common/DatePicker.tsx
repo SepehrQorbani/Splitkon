@@ -121,9 +121,9 @@ function DateField() {
                 "flex items-center gap-1 justify-between w-full"
             )}
         >
-            <DateInput className="flex-1">
+            <DateInput className="flex-1 text-xs">
                 {(segment) => (
-                    <DateSegment segment={segment} className="px-1" />
+                    <DateSegment segment={segment} className="px-0.5" />
                 )}
             </DateInput>
             <Button
