@@ -1,10 +1,4 @@
-import { z } from "zod";
-import {
-    Group,
-    GroupEditInput,
-    GroupInput,
-    GroupSchema,
-} from "@/types/schemas/group";
+import { Group, GroupEditInput, GroupInput } from "@/types/schemas/group";
 import { Members } from "../schemas/members";
 
 export type GroupRequest = GroupInput;
