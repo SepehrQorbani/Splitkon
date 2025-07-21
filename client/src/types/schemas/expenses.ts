@@ -34,12 +34,19 @@ export const ExpenseInputSchema = (
             ),
         amount: z
             .number({
-                required_error: t("validation.required", {
-                    attribute: t("attributes.amount"),
-                }),
-                invalid_type_error: t("validation.required", {
-                    attribute: t("attributes.amount"),
-                }),
+                error: (issue) => {
+                    if (issue.input === undefined) {
+                        return t("validation.required", {
+                            attribute: t("attributes.amount"),
+                        });
+                    } else if (issue.code === "invalid_type") {
+                        return t("validation.invalid_type", {
+                            attribute: t("attributes.amount"),
+                        });
+                    } else {
+                        return undefined;
+                    }
+                },
             })
             .min(
                 1,
@@ -50,9 +57,15 @@ export const ExpenseInputSchema = (
             ),
         date: z
             .string({
-                required_error: t("validation.required", {
-                    attribute: t("attributes.date"),
-                }),
+                error: (issue) => {
+                    if (issue.input === undefined) {
+                        return t("validation.required", {
+                            attribute: t("attributes.date"),
+                        });
+                    } else {
+                        return undefined;
+                    }
+                },
             })
             .refine(
                 (value) => {
@@ -71,9 +84,19 @@ export const ExpenseInputSchema = (
                 }
             ),
         spender_id: z.number({
-            required_error: t("validation.required", {
-                attribute: t("attributes.spender"),
-            }),
+            error: (issue) => {
+                if (issue.input === undefined) {
+                    return t("validation.required", {
+                        attribute: t("attributes.spender"),
+                    });
+                } else if (issue.code === "invalid_type") {
+                    return t("validation.invalid_type", {
+                        attribute: t("attributes.spender"),
+                    });
+                } else {
+                    return undefined;
+                }
+            },
         }),
         members: z
             .array(
@@ -95,4 +118,5 @@ export const ExpenseInputSchema = (
             ),
         description: z.string().optional(),
     });
+
 export type ExpenseInput = z.infer<ReturnType<typeof ExpenseInputSchema>>;

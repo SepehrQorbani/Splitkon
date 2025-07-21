@@ -23,23 +23,50 @@ export const RepayInputSchema = (
     z
         .object({
             from_id: z.number({
-                required_error: t("validation.required", {
-                    attribute: t("attributes.from"),
-                }),
+                error: (issue) => {
+                    if (issue.input === undefined) {
+                        return t("validation.required", {
+                            attribute: t("attributes.from"),
+                        });
+                    } else if (issue.code === "invalid_type") {
+                        return t("validation.invalid_type", {
+                            attribute: t("attributes.from"),
+                        });
+                    } else {
+                        return undefined;
+                    }
+                },
             }),
             to_id: z.number({
-                required_error: t("validation.required", {
-                    attribute: t("attributes.to"),
-                }),
+                error: (issue) => {
+                    if (issue.input === undefined) {
+                        return t("validation.required", {
+                            attribute: t("attributes.to"),
+                        });
+                    } else if (issue.code === "invalid_type") {
+                        return t("validation.invalid_type", {
+                            attribute: t("attributes.to"),
+                        });
+                    } else {
+                        return undefined;
+                    }
+                },
             }),
             amount: z
                 .number({
-                    required_error: t("validation.required", {
-                        attribute: t("attributes.amount"),
-                    }),
-                    invalid_type_error: t("validation.required", {
-                        attribute: t("attributes.amount"),
-                    }),
+                    error: (issue) => {
+                        if (issue.input === undefined) {
+                            return t("validation.required", {
+                                attribute: t("attributes.amount"),
+                            });
+                        } else if (issue.code === "invalid_type") {
+                            return t("validation.invalid_type", {
+                                attribute: t("attributes.amount"),
+                            });
+                        } else {
+                            return undefined;
+                        }
+                    },
                 })
                 .min(
                     1,
@@ -50,9 +77,15 @@ export const RepayInputSchema = (
                 ),
             date: z
                 .string({
-                    required_error: t("validation.required", {
-                        attribute: t("attributes.date"),
-                    }),
+                    error: (issue) => {
+                        if (issue.input === undefined) {
+                            return t("validation.required", {
+                                attribute: t("attributes.date"),
+                            });
+                        } else {
+                            return undefined;
+                        }
+                    },
                 })
                 .refine(
                     (value) => {
@@ -76,4 +109,5 @@ export const RepayInputSchema = (
             message: t("validation.from_to_different"),
             path: ["to_id"],
         });
+
 export type RepayInput = z.infer<ReturnType<typeof RepayInputSchema>>;

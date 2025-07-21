@@ -19,6 +19,7 @@ export const MemberSchema = z.object({
     total_expenses: z.number().default(0),
     payment_balance: z.number().default(0),
 });
+
 export type Member = z.infer<typeof MemberSchema>;
 export type Members = Member[];
 
@@ -35,12 +36,19 @@ export const MemberInputSchema = (
         avatar: z.string().nullable().optional(),
         ratio: z
             .number({
-                required_error: t("validation.required", {
-                    attribute: t("attributes.ratio"),
-                }),
-                invalid_type_error: t("validation.required", {
-                    attribute: t("attributes.ratio"),
-                }),
+                error: (issue) => {
+                    if (issue.input === undefined) {
+                        return t("validation.required", {
+                            attribute: t("attributes.ratio"),
+                        });
+                    } else if (issue.code === "invalid_type") {
+                        return t("validation.invalid_type", {
+                            attribute: t("attributes.ratio"),
+                        });
+                    } else {
+                        return undefined;
+                    }
+                },
             })
             .min(
                 1,
@@ -73,5 +81,6 @@ export const MemberInputSchema = (
             }),
         index: z.number().optional(),
     });
+
 export type MemberInput = z.infer<ReturnType<typeof MemberInputSchema>>;
 export type MembersInput = MemberInput[];

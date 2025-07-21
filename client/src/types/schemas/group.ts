@@ -40,11 +40,22 @@ export const GroupInputSchema = (
         description: z.string().optional(),
         date: z
             .string({
-                required_error: t("validation.required", {
+                error: (issue) => {
+                    if (issue.input === undefined) {
+                        return t("validation.required", {
+                            attribute: t("attributes.date"),
+                        });
+                    } else {
+                        return undefined;
+                    }
+                },
+            })
+            .refine((value) => !isNaN(Date.parse(value)), {
+                message: t("validation.date", {
                     attribute: t("attributes.date"),
                 }),
-            })
-            .date(),
+                path: ["date"],
+            }),
         members: z.array(MemberInputSchema(t)).optional(),
     });
 
@@ -73,9 +84,9 @@ export const GroupEditInputSchema = (
                 .optional()
                 .refine(
                     (value) => {
-                        if (!value) return true; // Optional field
+                        if (!value) return true;
                         try {
-                            new Date(value); // Ensure it's a valid date
+                            new Date(value);
                             return true;
                         } catch {
                             return false;
@@ -96,9 +107,9 @@ export const GroupEditInputSchema = (
                 .optional()
                 .refine(
                     (value) => {
-                        if (!value) return true; // Nullable and optional
+                        if (!value) return true;
                         try {
-                            new Date(value); // Ensure it's a valid date
+                            new Date(value);
                             return true;
                         } catch {
                             return false;

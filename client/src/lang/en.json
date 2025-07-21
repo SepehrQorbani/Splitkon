@@ -291,7 +291,8 @@
         "before_closing_date": "Must be before group closing date!",
         "after_last_expense": "Must be after last expense date! (:min)",
         "after_date": "Must be after group start date!",
-        "date": "The :attribute field must be a valid date."
+        "date": "The :attribute field must be a valid date.",
+        "invalid_type": ":attribute is not valid."
     },
     "banks": {
         "ansar": "Bank Ansar",

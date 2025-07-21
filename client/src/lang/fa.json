@@ -336,7 +336,8 @@
         "before_closing_date": "باید قبل از تاریخ پایان گروه باشد!",
         "after_last_expense": "باید بعد از تاریخ آخرین هزینه باشد!(:min)",
         "after_date": "باید بعد از تاریخ شروع گروه باشد!",
-        "date": ":attribute باید یک تاریخ معتبر باشد."
+        "date": ":attribute باید یک تاریخ معتبر باشد.",
+        "invalid_type": ":attribute اشتباه وارد شده است."
     },
     "banks": {
         "ansar": "بانک انصار",
