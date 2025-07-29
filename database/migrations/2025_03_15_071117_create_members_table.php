@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('avatar')->nullable();
             $table->string('name');
+            $table->unsignedTinyInteger('role')->default(0);
             $table->unsignedInteger('ratio');
             $table->json('bank_info')->nullable();
             $table->integer('payment_balance')->default(0);

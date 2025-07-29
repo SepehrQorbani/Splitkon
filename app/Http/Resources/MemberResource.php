@@ -14,6 +14,7 @@ class MemberResource extends JsonResource
             'group_id' => $this->group_id,
             'avatar' => $this->avatar,
             'name' => $this->name,
+            'role' => $this->role,
             'ratio' => $this->pivot->ratio ?? $this->ratio,
             'share' => $this->whenPivotLoaded('expense_member', function () {
                 return (int) $this->pivot->share;

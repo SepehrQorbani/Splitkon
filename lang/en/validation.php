@@ -185,6 +185,11 @@ return [
         'date' => [
             'before_closing_date' => 'The group date cannot be after the closing date.',
         ],
+        'members' => [
+            'ratio_zero_for_role' => 'The :attribute for the ":role" role must be 0!',
+            'only_one_default' => 'Only one member can have the :role role.',
+            'only_one_fund' => 'Only one :role can exist in the group.',
+        ],
     ],
 
     /*
@@ -208,6 +213,10 @@ return [
         'description' => 'description',
         'image' => 'image',
         'avatar' => 'avatar',
+        'roles' => [
+            '1' => 'Default Spender',
+            '2' => 'Group Treasury Fund',
+        ]
     ],
 
 ];
