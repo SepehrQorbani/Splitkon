@@ -1,16 +1,10 @@
+import { Button } from "@/components/common/Button";
+import { CopyIcons } from "@/components/common/CopyButton";
 import { useCopyToClipboard } from "@/hooks/useCopyToClipboard";
 import { useShare } from "@/hooks/useShare";
 import { useTranslations } from "@/hooks/useTranslations";
 import { useGroupStore } from "@/store/group";
-import {
-    IconChecks,
-    IconCopy,
-    IconCopyCheck,
-    IconShare,
-} from "@tabler/icons-react";
-import { Button } from "@/components/common/Button";
-import { cn } from "@/utils/cn";
-import { CopyIcons } from "@/components/common/CopyButton";
+import { IconShare } from "@tabler/icons-react";
 
 function ShareForm() {
     const { t } = useTranslations();
@@ -31,8 +25,8 @@ function ShareForm() {
     const viewUrl = `${baseUrl}/${group?.view_token}`;
 
     const shareData = (url: string) => ({
-        title: group?.title,
-        text: group.description,
+        title: group?.title ?? "",
+        text: group?.description ?? "",
         url,
     });
 
