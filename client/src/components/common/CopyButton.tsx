@@ -1,21 +1,38 @@
 import { useCopyToClipboard } from "@/hooks/useCopyToClipboard";
 import { Button } from "./Button";
-import { IconChecks, IconCopy, IconCopyCheck } from "@tabler/icons-react";
+import { IconChecks, IconCopy } from "@tabler/icons-react";
 import { useTranslations } from "@/hooks/useTranslations";
 import { cn } from "@/utils/cn";
+import type { Icon } from "@tabler/icons-react";
 
-type CopyButtonProps = { data: string; className?: string };
+type CopyButtonProps = {
+    data: string;
+    className?: string;
+    copyIcon?: Icon;
+    copiedIcon?: Icon;
+};
 
-export function CopyIcons({ isCopied }: { isCopied: boolean }) {
+export function CopyIcons({
+    isCopied,
+    copyIcon,
+    copiedIcon,
+}: {
+    isCopied: boolean;
+    copyIcon?: Icon;
+    copiedIcon?: Icon;
+}) {
+    const CopyIconEl = copyIcon ?? IconCopy;
+    const CopiedIconEl = copiedIcon ?? IconChecks;
+
     return (
         <>
-            <IconCopy
+            <CopyIconEl
                 className={cn(
                     "size-4 transition-all duration-300",
                     isCopied ? "scale-0" : "scale-100"
                 )}
             />
-            <IconChecks
+            <CopiedIconEl
                 className={cn(
                     "absolute size-4 transition-all duration-300",
                     isCopied ? "scale-100" : "scale-0"
@@ -25,7 +42,12 @@ export function CopyIcons({ isCopied }: { isCopied: boolean }) {
     );
 }
 
-function CopyButton({ data, className }: CopyButtonProps) {
+function CopyButton({
+    data,
+    className,
+    copyIcon,
+    copiedIcon,
+}: CopyButtonProps) {
     const { t } = useTranslations();
     const { isCopied, error, copyToClipboard } = useCopyToClipboard({
         timeout: 2000,
@@ -35,12 +57,18 @@ function CopyButton({ data, className }: CopyButtonProps) {
             variant="ghost"
             size="icon"
             aria-label={t("ui.copy")}
-            className={cn("p-1", className)}
+            className={cn("p-1 relative", className)}
             onPress={() => !isCopied(data) && copyToClipboard(data)}
         >
-            <CopyIcons isCopied={isCopied(data)} />
+            <CopyIcons
+                isCopied={isCopied(data)}
+                copyIcon={copyIcon}
+                copiedIcon={copiedIcon}
+            />
         </Button>
     );
 }
+
+CopyButton.displayName = "CopyButton";
 
 export default CopyButton;
