@@ -36,6 +36,7 @@ export const ExpenseForm = ({
     const group = useGroupStore((state) => state.group);
     const members = useMemberStore((state) => state.members);
     const isEditMode = !!expense;
+    const existingDefault = members?.find((m) => m.role === 1 || m.role === 3);
 
     const {
         control,
@@ -47,8 +48,11 @@ export const ExpenseForm = ({
             title: expense?.title || "",
             date: expense?.date || new Date().toISOString(),
             amount: expense?.amount || undefined,
-            spender_id: expense?.spender.id || undefined,
-            members: expense?.members || members || [],
+            spender_id: expense?.spender.id || existingDefault?.id || undefined,
+            members:
+                expense?.members ||
+                members.filter((member) => (+(member?.role ?? 0) & 2) !== 2) ||
+                [],
             description: expense?.description || "",
         },
         resolver: zodResolver(ExpenseInputSchema(t)),
@@ -131,7 +135,11 @@ export const ExpenseForm = ({
                 render={({ field }) => (
                     <>
                         <MembersSelect
-                            members={members || []}
+                            members={
+                                members.filter(
+                                    (member) => (+(member?.role ?? 0) & 2) !== 2
+                                ) || []
+                            }
                             label={t("attributes.members")}
                             {...field}
                             value={field.value}

@@ -276,7 +276,10 @@
         },
         "cloneTitle": "Create a new group based on the current group",
         "cloneGroup": "Clone the entire group",
-        "cloneMembers": "Clone only the member list"
+        "cloneMembers": "Clone only the member list",
+        "roles": {
+            "defaultPayer": "Default Payer"
+        }
     },
     "validation": {
         "bankAccount": "The :attribute must be a valid bank account number",

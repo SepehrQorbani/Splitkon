@@ -10,16 +10,19 @@ type CopyButtonProps = {
     className?: string;
     copyIcon?: Icon;
     copiedIcon?: Icon;
+    iconSize?: string;
 };
 
 export function CopyIcons({
     isCopied,
     copyIcon,
     copiedIcon,
+    iconSize,
 }: {
     isCopied: boolean;
     copyIcon?: Icon;
     copiedIcon?: Icon;
+    iconSize?: string;
 }) {
     const CopyIconEl = copyIcon ?? IconCopy;
     const CopiedIconEl = copiedIcon ?? IconChecks;
@@ -29,12 +32,14 @@ export function CopyIcons({
             <CopyIconEl
                 className={cn(
                     "size-4 transition-all duration-300",
+                    iconSize,
                     isCopied ? "scale-0" : "scale-100"
                 )}
             />
             <CopiedIconEl
                 className={cn(
                     "absolute size-4 transition-all duration-300",
+                    iconSize,
                     isCopied ? "scale-100" : "scale-0"
                 )}
             />
@@ -47,6 +52,7 @@ function CopyButton({
     className,
     copyIcon,
     copiedIcon,
+    iconSize,
 }: CopyButtonProps) {
     const { t } = useTranslations();
     const { isCopied, error, copyToClipboard } = useCopyToClipboard({
@@ -64,6 +70,7 @@ function CopyButton({
                 isCopied={isCopied(data)}
                 copyIcon={copyIcon}
                 copiedIcon={copiedIcon}
+                iconSize={iconSize}
             />
         </Button>
     );

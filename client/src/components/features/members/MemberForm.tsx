@@ -11,9 +11,15 @@ import {
     MemberInputSchema,
 } from "@/types/schemas/members";
 import { handleApiError } from "@/utils/apiErrorHandler";
+import { hasRole } from "@/utils/checkRoles";
 import { cn } from "@/utils/cn";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { IconChecks, IconPlus } from "@tabler/icons-react";
+import {
+    IconCancel,
+    IconChecks,
+    IconPlus,
+    IconRestore,
+} from "@tabler/icons-react";
 import { useEffect } from "react";
 import { Form } from "react-aria-components";
 import { Controller, useForm } from "react-hook-form";
@@ -24,6 +30,7 @@ import { Button } from "../../common/Button";
 type Props = {
     disabled?: boolean;
     onSubmitSuccess?: (data?: MemberResponse["data"] | MemberInput) => void;
+    onCancel?: () => void;
     member?: Member | MemberInput;
     useServer?: boolean;
     className?: string;
@@ -32,6 +39,7 @@ type Props = {
 const MemberForm = ({
     disabled = false,
     onSubmitSuccess,
+    onCancel,
     member,
     useServer = true,
     className,
@@ -41,29 +49,32 @@ const MemberForm = ({
     const createMember = useCreateMember();
     const updateMember = useUpdateMember();
     const isEditMode = !!member;
+    const minRatio = isEditMode && hasRole("wallet", member) ? 0 : 1;
 
     const {
         control,
         handleSubmit,
         reset,
-        formState: { errors, isSubmitting },
+        formState: { errors, isSubmitting, isDirty },
         setError,
     } = useForm<MemberInput>({
         defaultValues: {
             name: member?.name || "",
             avatar: member?.avatar || "",
-            ratio: member?.ratio || 1,
+            ratio: member?.ratio || minRatio,
+            role: member?.role || 0,
             bank_info: member?.bank_info || "",
         },
         resolver: zodResolver(MemberInputSchema(t)),
-        mode: "onChange",
+        mode: "all",
     });
 
     useEffect(() => {
         reset({
             name: member?.name || "",
             avatar: member?.avatar || "",
-            ratio: member?.ratio || 1,
+            ratio: member?.ratio || minRatio,
+            role: member?.role || 0,
             bank_info: member?.bank_info || "",
         });
     }, [member, reset]);
@@ -144,12 +155,14 @@ const MemberForm = ({
                         <NumberField
                             label={t("attributes.ratio")}
                             {...field}
-                            minValue={1}
+                            minValue={minRatio}
                             maxValue={100}
                             className="w-full sm:w-32 form-field shrink-0"
                             isInvalid={!!errors?.ratio}
                             error={errors?.ratio}
-                            disabled={disabled || isSubmitting}
+                            disabled={
+                                disabled || isSubmitting || minRatio === 0
+                            }
                         />
                     )}
                 />
@@ -167,13 +180,38 @@ const MemberForm = ({
                     )}
                 />
             </div>
-            <div className="w-full flex">
+            <div className="w-full flex gap-2 justify-end">
+                {isDirty && (
+                    <Button
+                        size="icon"
+                        variant="ghost"
+                        className="text-xs"
+                        isDisabled={disabled || isSubmitting || !isDirty}
+                        onPress={() => reset()}
+                    >
+                        <IconRestore className="size-4" />
+                    </Button>
+                )}
+
+                {isEditMode && onCancel && (
+                    <Button
+                        size="icon"
+                        variant="ghost"
+                        className="text-xs"
+                        isDisabled={disabled || isSubmitting}
+                        onPress={() =>
+                            isEditMode && onCancel ? onCancel() : reset()
+                        }
+                    >
+                        <IconCancel className="size-4" />
+                    </Button>
+                )}
+
                 <Button
                     type="submit"
                     size="md"
-                    // variant="outline"
-                    className="ms-auto text-xs"
-                    isDisabled={disabled || isSubmitting}
+                    className="text-xs"
+                    isDisabled={disabled || isSubmitting || !isDirty}
                 >
                     {useServer ? (
                         <>

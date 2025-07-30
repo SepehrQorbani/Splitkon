@@ -1,6 +1,7 @@
 import { Group } from "@/types/schemas/group";
 import { create } from "zustand";
 import { usePermissionStore } from "./permissions";
+import { useMemberStore } from "./members";
 
 interface GroupStore {
     group: Group | null;
@@ -21,6 +22,7 @@ export const useGroupStore = create<GroupStore>((set, get) => ({
         set({ group: null });
         set({ currency: null });
 
+        useMemberStore.getState().setMembers([]);
         usePermissionStore.getState().setPermissions(null);
     },
     updateGroup: (updates: Partial<Group>) => {

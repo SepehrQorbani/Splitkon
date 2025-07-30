@@ -1,18 +1,17 @@
 // TODO: Check permission
 import { useUpdateGroup } from "@/api/queries/groups";
+import { useCreateMember } from "@/api/queries/members";
 import { Button, getButtonStyles } from "@/components/common/Button";
 import { Card, CardTitle } from "@/components/common/Card";
 import DatePicker from "@/components/common/DatePicker";
 import InputField from "@/components/common/InputField";
 import Select from "@/components/common/Select";
-import MemberForm from "@/components/features/members/MemberForm";
-import MemberList from "@/components/features/members/MemberList";
+import MemberListWithForm from "@/components/features/members/MemberListWithForm";
 import { useTranslations } from "@/hooks/useTranslations";
 import { useGroupStore } from "@/store/group";
 import { useMemberStore } from "@/store/members";
 import { ApiError } from "@/types/api/errors";
 import { GroupEditInput, GroupEditInputSchema } from "@/types/schemas/group";
-import { MemberInput } from "@/types/schemas/members";
 import { handleApiError } from "@/utils/apiErrorHandler";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -22,7 +21,7 @@ import {
     IconSettings,
     IconUserScan,
 } from "@tabler/icons-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Form } from "react-aria-components";
 import { Controller, useForm } from "react-hook-form";
 import { Link, useParams } from "react-router";
@@ -33,12 +32,10 @@ const SettingsPage = () => {
     const group = useGroupStore((state) => state.group);
     const updateGroup = useUpdateGroup();
     const members = useMemberStore((state) => state.members);
-    const [selectedMember, setSelectedMember] = useState<
-        MemberInput["id"] | null
-    >(null);
     const addMember = useMemberStore((state) => state.addMember);
     const updateMember = useMemberStore((state) => state.updateMember);
     const deleteMember = useMemberStore((state) => state.deleteMember);
+    const createMember = useCreateMember();
 
     const currencyOptions = [
         {
@@ -265,40 +262,26 @@ const SettingsPage = () => {
                     </div>
                     <div className="w-full overflow-auto border border-border shadow-input rounded p-4">
                         <h3>{t("ui.editMembers")}</h3>
-                        <MemberForm
-                            className="py-4"
-                            member={
-                                selectedMember !== null
-                                    ? members.find(
-                                          (m) => m.id === selectedMember
-                                      )
-                                    : undefined
-                            }
-                            onSubmitSuccess={(data) => {
-                                if (selectedMember && data) {
-                                    const memberData = {
-                                        ...data,
-                                        id: Number(data.id),
-                                    };
-                                    updateMember(memberData);
-                                    setSelectedMember(null);
-                                } else if (data) {
-                                    const newMember = {
-                                        ...data,
-                                        id: Number(data.id),
-                                        total_expenses: 0,
-                                        payment_balance: 0,
-                                    };
-                                    addMember(newMember);
-                                }
+                        <MemberListWithForm
+                            members={members || []}
+                            useServer={true}
+                            onAdd={(data) => {
+                                const newMember = {
+                                    ...data,
+                                    id: Number(data.id),
+                                    total_expenses: 0,
+                                    payment_balance: 0,
+                                };
+                                addMember(newMember);
                             }}
-                        />
-                        <MemberList
-                            className="max-h-60 h-60 p-4 bg-surface"
-                            members={members}
-                            onSelectMember={setSelectedMember}
-                            onDeleteMember={() => {}}
-                            selectedMember={selectedMember || undefined}
+                            onDelete={(i) => console.log(i)}
+                            onUpdate={(data) => {
+                                const memberData = {
+                                    ...data,
+                                    id: Number(data.id),
+                                };
+                                updateMember(memberData);
+                            }}
                         />
                     </div>
                 </div>

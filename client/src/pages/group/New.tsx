@@ -162,7 +162,6 @@ function New() {
             });
         }
         if (original === "members" && data?.data?.members) {
-            console.log(original, data.data.members);
             replace(data.data.members);
         }
     }, [data]);
@@ -359,8 +358,14 @@ function New() {
                             <>
                                 <MemberListWithForm
                                     members={members}
+                                    useServer={false}
                                     onAdd={append}
-                                    onUpdate={update}
+                                    onUpdate={(data) => {
+                                        const index = members.findIndex(
+                                            (m) => m.id === data.id
+                                        );
+                                        update(index, data);
+                                    }}
                                     onDelete={remove}
                                     disabled={isSubmitting}
                                     className=""

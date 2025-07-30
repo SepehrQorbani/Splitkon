@@ -321,7 +321,10 @@
         },
         "cloneTitle": "ایجاد گروه جدید از روی گروه فعلی",
         "cloneGroup": "نسخه برداری کامل از گروه",
-        "cloneMembers": "نسخه برداری از لیست اعضا"
+        "cloneMembers": "نسخه برداری از لیست اعضا",
+        "roles": {
+            "defaultPayer": "هزینه کننده پیش فرض"
+        }
     },
     "validation": {
         "bankAccount": ":attribute باید یک شماره حساب معتبر باشد",
