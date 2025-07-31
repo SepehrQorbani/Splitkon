@@ -1,3 +1,7 @@
+import { CardStack } from "@/components/common/CardStack";
+import ImageSlideshow from "@/components/common/ImageSlideshow";
+import { AnimatedLine } from "@/components/features/home/AnimatedLine";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 import {
     IconChartBar,
     IconId,
@@ -8,10 +12,8 @@ import {
     IconUser,
 } from "@tabler/icons-react";
 import { motion } from "motion/react";
-import { AnimatedLine } from "@/components/features/home/AnimatedLine";
 import HeroGroupCardStack from "./HeroGroupCardStack";
 import HeroRepayCardStack from "./HeroRepayCardStack";
-import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 const TRANSITION = {
     duration: 2,
@@ -135,15 +137,24 @@ const Mobile = () => (
         className="flex flex-col md:flex-row justify-center items-center px-4 py-8 relative"
         dir="ltr"
     >
+        <ImageSlideshow className="h-1/3 -top-1/5 " />
+
         <div className="flex flex-col justify-center items-center">
+            <GroupImageStack />
+            <AnimatedLine
+                direction="vertical"
+                width={2}
+                height={20}
+                transition={{ duration: 0.5 }}
+            />
             <div className="w-[176px]">
                 <IconSquareRoundedPlus className="size-10 p-2 rounded bg-surface text-action border border-border shadow-md mx-auto" />
             </div>
             <AnimatedLine
                 direction="vertical"
                 width={2}
-                height={40}
-                transition={{ duration: 1 }}
+                height={20}
+                transition={{ delay: 0.5, duration: 0.5 }}
             />
             <HeroGroupCardStack />
             <AnimatedLine
@@ -320,15 +331,23 @@ const Desktop = () => (
         className="flex justify-center items-center px-4 py-8 relative"
         dir="ltr"
     >
+        <ImageSlideshow />
         <div className="flex flex-col justify-center items-center">
+            <GroupImageStack />
+            <AnimatedLine
+                direction="vertical"
+                width={2}
+                height={20}
+                transition={{ duration: 0.5 }}
+            />
             <div className="w-[176px]">
                 <IconSquareRoundedPlus className="size-10 p-2 rounded bg-surface text-action border border-border shadow-md mx-auto" />
             </div>
             <AnimatedLine
                 direction="vertical"
                 width={2}
-                height={40}
-                transition={{ duration: 1 }}
+                height={20}
+                transition={{ delay: 0.5, duration: 0.5 }}
             />
             <HeroGroupCardStack />
         </div>
@@ -501,3 +520,55 @@ const Desktop = () => (
         {/* <div className="absolute -z-13 inset-0  bg-radial from-brand/50 via-blue-500/50 to-brand/0 to-50% blur-3xl scale-70 opacity-70" /> */}
     </div>
 );
+
+interface CardStackItem {
+    id: number;
+    content: React.ReactNode;
+}
+function GroupImageStack() {
+    const cardStackItems: CardStackItem[] = [
+        {
+            id: 1,
+            content: (
+                <img
+                    src="/images/hero-01.jpg"
+                    className="rounded-lg w-full aspect-video object-cover object-center"
+                />
+            ),
+        },
+        {
+            id: 2,
+            content: (
+                <img
+                    src="/images/hero-04.jpg"
+                    className="rounded-lg w-full aspect-video object-cover object-center"
+                />
+            ),
+        },
+        {
+            id: 3,
+            content: (
+                <img
+                    src="/images/hero-03.jpg"
+                    className="rounded-lg w-full aspect-video object-cover object-center"
+                />
+            ),
+        },
+        {
+            id: 4,
+            content: (
+                <img
+                    src="/images/hero-02.jpg"
+                    className="rounded-lg w-full aspect-video object-cover object-center"
+                />
+            ),
+        },
+    ];
+    return (
+        <CardStack
+            items={cardStackItems}
+            duration={8000}
+            className="w-[200px] aspect-video h-auto"
+        />
+    );
+}

@@ -56,6 +56,10 @@
                     "building": "Building Management"
                 }
             },
+            "whatIs": {
+                "title": "What is SplitKon?",
+                "description": "SplitKon is a free, open-source app for managing and splitting group expenses. From friend trips to family gatherings, shared costs like building fees or team projects, SplitKon calculates everyone’s fair share quickly and smartly with no hassle. No sign-up needed—create a group, add expenses, and focus on enjoying the moment. With SplitKon, group budgeting is just a few clicks away!"
+            },
             "features": {
                 "title": "Key Features",
                 "subtitle": "SplitKon has everything you need for shared expense management",
@@ -113,6 +117,52 @@
                         "description": "Effortlessly manage shared building expenses among neighbors with no hassle!"
                     }
                 }
+            },
+            "faq": {
+                "title": "Frequently Asked Questions",
+                "subtitle": "Get all your answers about using SplitKon effortlessly",
+                "faq": [
+                    {
+                        "question": "What is SplitKon and what can it do?",
+                        "answer": "SplitKon is a free, open-source app that makes managing and splitting group expenses incredibly easy. From friend trips and family gatherings to shared costs like building fees or team projects, it smartly and fairly calculates everyone’s share with no hassle. No sign-up required—just create your group, add expenses, and focus on enjoying your time together. With SplitKon, group budgeting is just a few clicks away!"
+                    },
+                    {
+                        "question": "Do I need to sign up or pay to use it?",
+                        "answer": "No, there’s no need to sign up, and SplitKon is completely free. Just create a group and get started!"
+                    },
+                    {
+                        "question": "How can I enter expenses and create a group?",
+                        "answer": "Simply open the app, create a new group, add members, and enter expenses with details. It’s all set in just a few clicks!"
+                    },
+                    {
+                        "question": "Can I adjust contribution ratios?",
+                        "answer": "Yes, you can customize each person’s contribution ratio when adding expenses. You can also exclude those not involved in the cost and select only the relevant people with your preferred ratios for fairer and more accurate calculations."
+                    },
+                    {
+                        "question": "Can I save or share expense reports?",
+                        "answer": "Yes, for sharing, you can use the copy button to grab a neat, structured text for messengers or anywhere else, or share your group with others using the display link. For saving reports, this isn’t available yet, but you’ll be able to download Excel and PDF files in future versions."
+                    },
+                    {
+                        "question": "Can I quickly create a new version of a group?",
+                        "answer": "Yes, you can use the section “Create a new group from the current group” within the group settings. This section has two buttons: one to create a full copy of the group (with all members) and one to create a new group with just the same members. You can edit the details of the new group before saving."
+                    },
+                    {
+                        "question": "On which devices does SplitKon work?",
+                        "answer": "SplitKon works as a web app, easily accessible on phones, tablets, and computers regardless of the operating system."
+                    },
+                    {
+                        "question": "Is it possible to use SplitKon offline without internet access?",
+                        "answer": "Not at the moment, but this feature will be added in future versions."
+                    },
+                    {
+                        "question": "What does it mean that SplitKon is open-source, and why is it important?",
+                        "answer": "Being open-source means the app’s source code is publicly available, ensuring transparency and trust, which enhances security and collaboration."
+                    },
+                    {
+                        "question": "What if my question isn’t listed here?",
+                        "answer": "You can reach out to the SplitKon team via our support email or open-source community forum if your question isn’t listed."
+                    }
+                ]
             },
             "contribution": {
                 "title": "Join Us and Improve SplitKon!",

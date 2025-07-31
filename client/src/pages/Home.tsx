@@ -1,5 +1,7 @@
 import { Button, getButtonStyles } from "@/components/common/Button";
+import { DisclosureGroup } from "@/components/common/DisclosureGroup";
 import { FlipWords } from "@/components/common/FLipWords";
+import { SOCIAL_LINKS } from "@/constants/links";
 import { useTranslations } from "@/hooks/useTranslations";
 import {
     IconBrandGithub,
@@ -18,8 +20,8 @@ import { motion } from "motion/react";
 import { Link } from "react-router";
 import { FeatureCard } from "../components/features/home/FeatureCard";
 import { Hero } from "../components/features/home/Hero";
-import { UseCaseCard } from "../components/features/home/UseCaseCard";
 import { StepCard } from "../components/features/home/StepCard";
+import { UseCaseCard } from "../components/features/home/UseCaseCard";
 
 const Home: React.FC = () => {
     const { t, direction } = useTranslations();
@@ -33,6 +35,9 @@ const Home: React.FC = () => {
                 transition={{ duration: 0.5 }}
                 className="min-h-[90vh] flex flex-col items-center justify-center text-center gap-8 py-20"
             >
+                {/* <div className="absolute -z-10 inset-0 opacity-35">
+                    <img src="/images/03.png" />
+                </div> */}
                 <motion.h1
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -100,8 +105,52 @@ const Home: React.FC = () => {
                 </motion.div>
             </motion.section>
 
+            {/* What is Section */}
+            <section className="pt-0 pb-40 relative">
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}
+                    className="text-center mb-16"
+                >
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                        {t("pages.home.whatIs.title")}
+                    </h2>
+                    <p className="text-xl text-action">
+                        {t("pages.home.whatIs.description")}
+                    </p>
+                </motion.div>
+                <div className="absolute -z-10 top-1/3 w-full h-full overflow-hidden">
+                    <div className="w-full h-1/2 top-1/5 sm:top-0 lg:w-1/2 sm:h-full mx-auto relative bg-background">
+                        <div
+                            className="w-full h-full bg-cover bg-no-repeat bg-center mix-blend-multiply dark:invert dark:mix-blend-color-dodge dark:opacity-75 dark:brightness-90 dark:contrast-100"
+                            style={{
+                                backgroundImage: `url('/images/what-is.jpg')`,
+                            }}
+                        />
+                        <div
+                            className="absolute -top-1 left-0 w-full h-1/2 bg-gradient-to-t from-transparent via-background/50 to-background"
+                            aria-hidden="true"
+                        />
+                        <div
+                            className="absolute -bottom-1 left-0 w-full h-1/8 bg-gradient-to-b from-transparent to-background"
+                            aria-hidden="true"
+                        />
+                        <div
+                            className="absolute top-0 -left-1 w-1/3 h-full bg-gradient-to-l from-transparent via-background/50 to-background"
+                            aria-hidden="true"
+                        />
+                        <div
+                            className="absolute top-0 -right-1 w-1/3 h-full bg-gradient-to-r from-transparent via-background/50 to-background"
+                            aria-hidden="true"
+                        />
+                    </div>
+                </div>
+            </section>
+
             {/* Features Section */}
-            <section className="py-20">
+            <section className="pt-32">
                 <motion.div
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
@@ -247,6 +296,32 @@ const Home: React.FC = () => {
                 </div>
             </section>
 
+            {/* FAQ Section */}
+            <section className="py-20 text-center relative">
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}
+                >
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                        {t("pages.home.faq.title")}
+                    </h2>
+                    <p className="text-xl text-muted-soft max-w-2xl mx-auto mb-8">
+                        {t("pages.home.faq.subtitle")}
+                    </p>
+                    <DisclosureGroup
+                        items={t<{ question: string; answer: string }[]>(
+                            "pages.home.faq.faq"
+                        ).map((item, index) => ({
+                            id: index,
+                            title: item.question,
+                            content: item.answer,
+                        }))}
+                    />
+                </motion.div>
+            </section>
+
             {/* Contribution & Feedback Section */}
             <section className="py-20 text-center relative">
                 <motion.div
@@ -262,20 +337,30 @@ const Home: React.FC = () => {
                         {t("pages.home.contribution.description")}
                     </p>
                     <div className="flex flex-col md:flex-row gap-4 justify-center">
-                        <Button
-                            intent="neutral"
-                            className="rounded-xl py-3 bg-surface/50 border-surface text-sm hover:bg-surface/80"
+                        <a
+                            href={SOCIAL_LINKS.github}
+                            className={getButtonStyles({
+                                size: "lg",
+                                intent: "neutral",
+                                className:
+                                    "rounded-xl py-3 bg-surface/50 border-surface text-sm hover:bg-surface/80",
+                            })}
                         >
                             <IconBrandGithub className="size-8 rounded-full p-2 bg-action me-2 shadow text-action-fg" />
                             {t("pages.home.contribution.github")}
-                        </Button>
-                        <Button
-                            intent="neutral"
-                            className="rounded-xl py-3 bg-surface/50 border-surface text-sm hover:bg-surface/80"
+                        </a>
+                        <a
+                            href={SOCIAL_LINKS.telegram}
+                            className={getButtonStyles({
+                                size: "lg",
+                                intent: "neutral",
+                                className:
+                                    "rounded-xl py-3 bg-surface/50 border-surface text-sm hover:bg-surface/80",
+                            })}
                         >
                             <IconMessages className="size-8 rounded-full p-2 bg-action me-2 shadow text-action-fg" />
                             {t("pages.home.contribution.feedback")}
-                        </Button>
+                        </a>
                     </div>
                 </motion.div>
 
@@ -305,12 +390,12 @@ const Home: React.FC = () => {
                                 </Link>
                             </li>
                             <li>
-                                <Link
-                                    to="/contact"
+                                <a
+                                    href={SOCIAL_LINKS.telegram}
                                     className="text-muted-soft hover:text-action"
                                 >
                                     {t("pages.home.footer.contact")}
-                                </Link>
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -320,19 +405,19 @@ const Home: React.FC = () => {
                         </h4>
                         <div className="flex gap-4">
                             <a
-                                href="#"
+                                href={SOCIAL_LINKS.github}
                                 className="text-muted-soft hover:text-action"
                             >
                                 <IconBrandGithub className="w-6 h-6" />
                             </a>
                             <a
-                                href="#"
+                                href={SOCIAL_LINKS.instagram}
                                 className="text-muted-soft hover:text-action"
                             >
                                 <IconBrandInstagram className="w-6 h-6" />
                             </a>
                             <a
-                                href="#"
+                                href={SOCIAL_LINKS.telegram}
                                 className="text-muted-soft hover:text-action"
                             >
                                 <IconBrandTelegram className="w-6 h-6" />

@@ -26,12 +26,12 @@ export const FeatureCard: React.FC<FeatureCardProps> = ({
             className={cn("relative group", className)}
         >
             <div className="absolute z-0 inset-0 bg-gradient-to-r from-blue-500/25 to-brand/50 blur-xl transition duration-300 ease-in-out opacity-10 group-hover:opacity-100" />
-            <Card className="h-full  relative overflow-clip rounded-xl shadow bg-background  p-0">
+            <Card className="h-full relative overflow-clip rounded-xl shadow bg-background  p-0">
                 <div className="rounded-lg border- border-border overflow-clip h-full bg-surface">
                     <div className="relative">
                         <img
                             src={`/images/${image}`}
-                            className="block h-80 w-full scale-105 transform object-cover object-top-right transition duration-300 group-hover:scale-100 rotate-2 group-hover:rotate-0"
+                            className="block h-80 w-full scale-105 transform object-cover object-top-right transition duration-300 group-hover:scale-100 rotate-1 group-hover:rotate-0"
                             alt=""
                         />
                         <div className="absolute inset-0 w-full bg-surface/30 group-hover:opacity-0"></div>
