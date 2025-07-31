@@ -43,11 +43,11 @@ export function DisclosureGroup({
             allowsMultipleExpanded={allowsMultiple}
             className={cn("space-y-2 w-full relative", className)}
         >
-            {items.map((item) => (
-                <Disclosure key={item.id}>
-                    {({ isExpanded }) => {
-                        const [ref, { height }] = useMeasure();
-                        return (
+            {items.map((item) => {
+                const [ref, { height }] = useMeasure();
+                return (
+                    <Disclosure key={item.id}>
+                        {({ isExpanded }) => (
                             <>
                                 <Heading>
                                     <Button
@@ -91,10 +91,10 @@ export function DisclosureGroup({
                                     )}
                                 </AnimatePresence>
                             </>
-                        );
-                    }}
-                </Disclosure>
-            ))}
+                        )}
+                    </Disclosure>
+                );
+            })}
         </AriaDisclosureGroup>
     );
 }
