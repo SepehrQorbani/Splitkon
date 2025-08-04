@@ -1,2 +1,8 @@
 User-agent: *
-Disallow:
+Disallow: /assets/
+Disallow: /*/members
+Disallow: /*/expenses
+Disallow: /*/repays
+Disallow: /*/setting
+
+Sitemap: https://splitkon.ir/sitemap.xml
