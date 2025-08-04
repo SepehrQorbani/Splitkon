@@ -17,7 +17,7 @@ import HeroRepayCardStack from "./HeroRepayCardStack";
 
 const TRANSITION = {
     duration: 2,
-    ease: "easeInOut",
+    ease: "easeInOut" as const,
     repeat: Infinity,
     repeatType: "loop" as const,
 };
