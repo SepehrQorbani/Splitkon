@@ -2,20 +2,12 @@ import MobileMenu from "@/components/features/navigation/MobileMenu";
 import { NavItems } from "@/components/features/navigation/NavItems";
 import SettingMenu from "@/components/features/navigation/SettingMenu";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
-import { useTranslations } from "@/hooks/useTranslations";
 import { cn } from "@/utils/cn";
-import {
-    IconInfoSquareRounded,
-    IconInfoSquareRoundedFilled,
-    IconSquareRoundedPlus,
-    IconSquareRoundedPlusFilled,
-} from "@tabler/icons-react";
 import { useMotionValueEvent, useScroll } from "motion/react";
 import { useState } from "react";
 import { NavLink } from "react-router";
 
 export const Navbar = ({ layout }: { layout: "main" | "group" }) => {
-    const { t } = useTranslations();
     const isDesktop = useMediaQuery("(min-width: 768px)");
     const { scrollY } = useScroll();
     const [isScroll, setIsScroll] = useState(false);
@@ -30,7 +22,7 @@ export const Navbar = ({ layout }: { layout: "main" | "group" }) => {
                 className={cn(
                     "sticky transition-all duration-200 border-b top-0 left-0 right-0 flex items-center justify-between px-4 py-2 min-h-16 text-xs md:text-base z-99999",
                     isScroll && layout === "main"
-                        ? "bg-surface/90 backdrop-blur-xs rounded-xl border border-border shadow-md mx-2 top-2"
+                        ? "bg-surface/90 backdrop-blur-xs rounded border border-border shadow-md mx-1 top-1"
                         : "bg-surface/0 border-transparent",
                     isScroll && layout === "group" && "min-h-12 py-1",
                     layout === "group" && "bg-surface border-border"
@@ -46,7 +38,7 @@ export const Navbar = ({ layout }: { layout: "main" | "group" }) => {
                         <svg
                             viewBox="0 0 500 500"
                             xmlns="http://www.w3.org/2000/svg"
-                            className="w-full h-6 me-2"
+                            className="h-6 w-6 me-2"
                             fill="currentColor"
                         >
                             <path d="M301.948 5.00001C320.746 5.00001 332.246 25.6307 322.362 41.6197L49.4142 483.153C36.7028 503.716 5 494.708 5 470.534L5.00002 29C5.00002 15.7452 15.7452 5 29 5L301.948 5.00001Z" />

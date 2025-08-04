@@ -2,10 +2,11 @@ import { Button } from "@/components/common/Button";
 import { LanguageToggle } from "@/components/common/LanguageToggle";
 import { ThemeToggle } from "@/components/common/ThemeToggle";
 import { useTranslations } from "@/hooks/useTranslations";
+import { cn } from "@/utils/cn";
 import {
     IconLanguage,
     IconMenu2,
-    IconPalette,
+    IconSunMoon,
     IconX,
 } from "@tabler/icons-react";
 import {
@@ -17,7 +18,6 @@ import {
     ModalOverlay,
 } from "react-aria-components";
 import { NavItems } from "./NavItems";
-import { cn } from "@/utils/cn";
 
 function MobileMenu() {
     const { t, direction } = useTranslations();
@@ -52,13 +52,9 @@ function MobileMenu() {
                                 <NavItems />
                             </div>
                             <div className="flex flex-col gap-4 bg-background- p-4 rounded border border-border">
-                                {/* <div className="flex gap-1 items-center">
-                                    <IconAdjustments className="size-4" />
-                                    <h4>تنظیمات</h4>
-                                </div> */}
                                 <div className="flex items-center justify-between gap-2">
                                     <Label>
-                                        <IconPalette className="size-4 inline me-1" />
+                                        <IconSunMoon className="size-4 inline me-1" />
                                         {t("ui.theme")}
                                     </Label>
                                     <ThemeToggle />
