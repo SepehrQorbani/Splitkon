@@ -11,7 +11,7 @@ type ButtonVariant = "solid" | "outline" | "ghost" | "input";
 type ButtonIntent = "primary" | "brand" | "danger" | "neutral";
 type ButtonSize = "sm" | "md" | "lg" | "icon";
 
-interface ButtonProps extends AriaButtonProps {
+export interface ButtonProps extends AriaButtonProps {
     variant?: ButtonVariant;
     intent?: ButtonIntent;
     className?: string;
@@ -49,15 +49,15 @@ export function getButtonStyles({
         outline: {
             primary:
                 "border border-action text-action hover:bg-action hover:text-action-fg focus:ring-action disabled:border-action-subtle disabled:text-action-subtle",
-            danger: "border border-error text-error hover:bg-error hover:text-error-fg focus:ring-error disabled:border-error-subtle disabled:text-error-subtle",
+            danger: "border border-error text-error hover:bg-error hover:text-error-fg focus:ring-error disabled:border-error-subtle disabled:text-error-subtle disabled:bg-transparent",
         },
         ghost: {
             primary:
                 "text-action hover:bg-action-subtle hover:text-action-strong focus:ring-action focus:ring-inset focus:ring-offset-0",
-            danger: "text-error hover:bg-error-subtle hover:text-error-strong focus:ring-error disabled:text-error-subtle",
+            danger: "text-error hover:bg-error-subtle hover:text-error-strong focus:ring-error disabled:text-error-subtle disabled:bg-transparent",
         },
         input: {
-            primary: defaultInputClass + "focus:ring-3 focus:ring-offset-0",
+            primary: defaultInputClass + " focus:ring-3 focus:ring-offset-0",
         },
     };
 
