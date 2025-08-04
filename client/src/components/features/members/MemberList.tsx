@@ -11,6 +11,7 @@ import {
     IconCreditCard,
     IconCurrencyDollar,
     IconCurrencyDollarOff,
+    IconHexagonFilled,
     IconMoneybag,
     IconPencil,
     IconTrash,
@@ -202,10 +203,14 @@ export function MemberList({
                                                     <IconMoneybag className="size-4 bg-action p-0.5 text-action-faint rounded-full" />
                                                 )}
                                                 {hasRole("default", item) && (
-                                                    <IconCurrencyDollar
-                                                        stroke={2.5}
-                                                        className="size-4 bg-action p-0.5 text-action-faint rounded-full"
-                                                    />
+                                                    <span className="size-4 relative inline-flex items-center justify-center">
+                                                        {/* <IconRosetteFilled className="size-5 text-action absolute inset-0" /> */}
+                                                        <IconHexagonFilled className="size-full text-action absolute inset-0" />
+                                                        <IconCurrencyDollar
+                                                            stroke={2.5}
+                                                            className="size-2.5 text-action-faint rounded-full relative"
+                                                        />
+                                                    </span>
                                                 )}
                                             </div>
                                             <div className="text-[10px] text-gray-500 pt-1">

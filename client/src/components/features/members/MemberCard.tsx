@@ -15,11 +15,15 @@ import { hasRole } from "@/utils/checkRoles";
 import { cn } from "@/utils/cn";
 import {
     IconChecks,
+    IconChevronLeft,
     IconCreditCard,
     IconCurrencyDollar,
-    IconDots,
+    IconHexagonFilled,
     IconPercentage,
     IconReceiptDollar,
+    IconRosette,
+    IconRosetteDiscount,
+    IconRosetteFilled,
     IconTransfer,
     IconUserEdit,
 } from "@tabler/icons-react";
@@ -61,7 +65,7 @@ function MemberCard({ member }: MemberCardProps) {
     // text-creditor-strong text-debtor-strong text-settled-strong
     // text-settled text-creditor text-debtor
     return (
-        <ExpandableCard id={id}>
+        <ExpandableCard id={id} className="group">
             {({ isOpen }) => (
                 <motion.div
                     layoutId={`${id}-card-content`}
@@ -86,10 +90,14 @@ function MemberCard({ member }: MemberCardProps) {
                                 <div className="text-sm font-medium flex items-center gap-1">
                                     {member.name}
                                     {hasRole("default", member) && (
-                                        <IconCurrencyDollar
-                                            stroke={2.5}
-                                            className="size-4 bg-action p-0.5 text-action-faint rounded-full"
-                                        />
+                                        <span className="size-4 relative inline-flex items-center justify-center">
+                                            {/* <IconRosetteFilled className="size-5 text-action absolute inset-0" /> */}
+                                            <IconHexagonFilled className="size-full text-action absolute inset-0" />
+                                            <IconCurrencyDollar
+                                                stroke={2.5}
+                                                className="size-2.5 text-action-faint rounded-full relative"
+                                            />
+                                        </span>
                                     )}
                                 </div>
                             </Heading>
@@ -279,7 +287,9 @@ function MemberCard({ member }: MemberCardProps) {
                                 className="size-8 p-1 text-muted"
                             />
                         </div>
-                        {!isOpen && <IconDots className="size-4" />}
+                        {!isOpen && (
+                            <IconChevronLeft className="size-8 p-2 text-muted group-hover:stroke-[2.5] group-hover:text-action" />
+                        )}
                     </div>
                 </motion.div>
             )}
