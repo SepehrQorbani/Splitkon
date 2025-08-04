@@ -5,6 +5,10 @@
 
     RewriteEngine On
 
+    RewriteRule ^robots\.txt$ - [L]
+    RewriteRule ^sitemap\.xml$ - [L]
+    #RewriteRule ^manifest\.webmanifest$ - [L]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
