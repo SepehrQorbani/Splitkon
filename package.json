@@ -25,6 +25,8 @@
     "dependencies": {
         "@hookform/resolvers": "^5.2.1",
         "@persian-tools/persian-tools": "^3.6.0",
+        "@react-input/mask": "^2.0.4",
+        "@react-input/number-format": "^2.0.3",
         "@tabler/icons-react": "^3.34.1",
         "@tanstack/react-query": "^5.83.0",
         "@uidotdev/usehooks": "^2.4.1",
