@@ -328,6 +328,8 @@
         "unSettled": "تسویه نشده",
         "splitBy": "تقسیم بر",
         "status": "وضعیت",
+        "creditor": "طلبکار",
+        "debtor": "بدهکار",
         "statusCreditor": "طلبکار",
         "statusDebtor": "بدهکار",
         "statusSettled": "تسویه شده",

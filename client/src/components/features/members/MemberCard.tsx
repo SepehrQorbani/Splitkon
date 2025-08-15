@@ -21,9 +21,6 @@ import {
     IconHexagonFilled,
     IconPercentage,
     IconReceiptDollar,
-    IconRosette,
-    IconRosetteDiscount,
-    IconRosetteFilled,
     IconTransfer,
     IconUserEdit,
 } from "@tabler/icons-react";
@@ -36,32 +33,20 @@ type MemberCardProps = {
 };
 
 function MemberCard({ member }: MemberCardProps) {
+    if (!member.status) {
+        return null;
+    }
+
     const { can } = usePermissions();
     const { t } = useTranslations();
     const balance = useBalanceStore((state) => state.balance);
+    const { status } = member;
 
     const memberBalance = balance?.[member.id] || [];
     const id = `member-${member.id}`;
-    const netAmount = member.payment_balance - member.total_expenses;
-    const status =
-        netAmount === 0 ? "settled" : netAmount > 0 ? "creditor" : "debtor";
-    const statusText =
-        netAmount === 0
-            ? t("statusSettled")
-            : netAmount > 0
-            ? t("statusCreditor")
-            : t("statusDebtor");
 
     const { generateMemberReport } = useReportGenerator();
 
-    const statusPercent =
-        netAmount === 0
-            ? 100
-            : netAmount > 0 && member.payment_balance !== 0
-            ? Math.abs(netAmount / member.payment_balance) * 100
-            : netAmount < 0 && member.total_expenses !== 0
-            ? Math.abs(netAmount / member.total_expenses) * 100
-            : 100;
     // text-creditor-strong text-debtor-strong text-settled-strong
     // text-settled text-creditor text-debtor
     return (
@@ -116,19 +101,19 @@ function MemberCard({ member }: MemberCardProps) {
                             className={`flex flex-col gap-1.5 ms-auto items-end`}
                         >
                             <div className="text-sm font-medium">
-                                {status === "settled" ? (
+                                {status.title === "settled" ? (
                                     <IconChecks className="size-4 text-settled" />
                                 ) : (
-                                    <Amount amount={netAmount} />
+                                    <Amount amount={status.net} />
                                 )}
                             </div>
                             <div
-                                className={`flex items-center justify-end gap-1 text-xs text-${status} font-bold`}
+                                className={`flex items-center justify-end gap-1 text-xs text-${status.title} font-bold`}
                             >
                                 <span
-                                    className={`size-2 rounded-full bg-${status}-subtle border border-${status}`}
+                                    className={`size-2 rounded-full bg-${status.title}-subtle border border-${status.title}`}
                                 />
-                                <span>{statusText}</span>
+                                <span>{t(status.title)}</span>
                             </div>
                         </div>
                     </motion.div>
@@ -195,10 +180,10 @@ function MemberCard({ member }: MemberCardProps) {
                     <motion.div layoutId={`${id}-progress-chart`}>
                         <ProgressBar
                             className="mt-6 space-y-1"
-                            label={statusText}
-                            value={statusPercent}
-                            color={status}
-                            remainFlag={statusPercent < 100}
+                            label={t(status.title)}
+                            value={status.percent}
+                            color={status.title}
+                            remainFlag={status.percent < 100}
                             remainColor="settled"
                             percentageMode="plain"
                         />
@@ -268,7 +253,6 @@ function MemberCard({ member }: MemberCardProps) {
                                                 from_id: member.id,
                                             }}
                                             onSubmitSuccess={(data) => {
-                                                console.log(data);
                                                 close();
                                             }}
                                         />

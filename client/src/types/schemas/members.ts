@@ -1,12 +1,17 @@
 import { hasRole } from "@/utils/checkRoles";
 import { z } from "zod";
 
+const MemberStatus = z.object({
+    title: z.enum(["settled", "creditor", "debtor"]),
+    net: z.number(),
+    percent: z.number(),
+});
+
 export const MemberSchema = z
     .object({
         id: z.number(),
         name: z.string().nonempty(),
         avatar: z.string().nullable().optional(),
-        // ratio: z.number().min(1).max(100),
         ratio: z.number().min(0).max(100),
         role: z.int().min(0).max(3).nullable().optional(),
         bank_info: z
@@ -22,6 +27,7 @@ export const MemberSchema = z
             .optional(),
         total_expenses: z.number().default(0),
         payment_balance: z.number().default(0),
+        status: MemberStatus.optional(),
     })
     .refine(
         (data) => {
