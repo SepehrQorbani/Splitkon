@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Http\Resources;
+
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class RepayResource extends JsonResource
+{
+    public function toArray($request)
+    {
+        return [
+            'id' => $this->id,
+            'from' => new MemberResource($this->whenLoaded('from')),
+            'to' => new MemberResource($this->whenLoaded('to')),
+            'amount' => (int) $this->amount,
+            'description' => $this->description,
+            'date' => $this->date,
+            'attachments' => $this->attachments,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+        ];
+    }
+}
