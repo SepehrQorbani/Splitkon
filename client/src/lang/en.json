@@ -279,6 +279,8 @@
         "share": "Share",
         "settings": "Settings",
         "status": "Status",
+        "creditor": "Creditor",
+        "debtor": "Debtor",
         "statusCreditor": "Creditor",
         "statusDebtor": "Debtor",
         "statusSettled": "Settled",

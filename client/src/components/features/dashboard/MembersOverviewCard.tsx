@@ -1,29 +1,18 @@
-import { Card } from "@/components/common/Card";
 import Amount from "@/components/common/Amount";
 import Avatar from "@/components/common/Avatar";
+import { Card } from "@/components/common/Card";
 import MembersStatusChart from "@/components/features/dashboard/MembersStatusChart";
-import {
-    IconUsers,
-    IconPercentage,
-    IconUser,
-    IconChecks,
-} from "@tabler/icons-react";
+import { useTranslations } from "@/hooks/useTranslations";
+import { Member } from "@/types";
 import { Summary } from "@/types/schemas/summary";
 import { cn } from "@/utils/cn";
-import { useTranslations } from "@/hooks/useTranslations";
+import {
+    IconChecks,
+    IconPercentage,
+    IconUser,
+    IconUsers,
+} from "@tabler/icons-react";
 import { FC } from "react";
-
-interface Member {
-    id: number;
-    name: string;
-    avatar?: string;
-}
-
-interface MemberBalanceDistribution {
-    creditors: number;
-    debtors: number;
-    balanced: number;
-}
 
 interface MembersOverviewCardProps {
     summary: Summary;
@@ -100,10 +89,6 @@ export const MembersOverviewCard: FC<MembersOverviewCardProps> = ({
                     />
                     <div className="max-h-48 overflow-y-auto border border-border rounded">
                         {members.map((member) => {
-                            const memberBalance =
-                                summary.net_balances.find(
-                                    (balance) => balance.id === member.id
-                                )?.net || 0;
                             return (
                                 <div
                                     key={member.id}
@@ -112,19 +97,7 @@ export const MembersOverviewCard: FC<MembersOverviewCardProps> = ({
                                     <span
                                         className={cn(
                                             "w-1 absolute inset-0 my-3 ms-1 rounded",
-                                            (() => {
-                                                const st =
-                                                    summary.net_balances.find(
-                                                        (balance) =>
-                                                            balance.id ===
-                                                            member.id
-                                                    )?.net || 0;
-                                                if (st === 0)
-                                                    return "bg-settled";
-                                                return st > 0
-                                                    ? "bg-creditor"
-                                                    : "bg-debtor";
-                                            })()
+                                            `bg-${member.status?.title}`
                                         )}
                                     ></span>
                                     <div className="flex items-center gap-2">
@@ -138,13 +111,15 @@ export const MembersOverviewCard: FC<MembersOverviewCardProps> = ({
                                         </span>
                                     </div>
                                     <div>
-                                        {memberBalance === 0 ? (
+                                        {member.status?.net === 0 ? (
                                             <IconChecks
                                                 className="size-4"
                                                 strokeWidth={1.5}
                                             />
                                         ) : (
-                                            <Amount amount={memberBalance} />
+                                            <Amount
+                                                amount={member.status?.net ?? 0}
+                                            />
                                         )}
                                     </div>
                                 </div>
