@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
+@source inline("{bg,text,border}-{debtor,creditor,settled}{,-subtle,-strong}");
+
 @font-face {
     font-family: "Vazirmatn";
     src: url("../fonts/Vazirmatn[wght].woff2")
