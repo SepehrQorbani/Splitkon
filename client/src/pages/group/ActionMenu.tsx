@@ -12,6 +12,7 @@ import { GroupBottomNavbar } from "./GroupBottomNavbar";
 import { ActionButton } from "./ActionMenuButtons";
 
 interface ActionDrawerProps {
+    id: string;
     icon: ReactNode;
     title: string;
     children: (props: { close: () => void }) => ReactNode;
@@ -20,6 +21,7 @@ interface ActionDrawerProps {
 }
 
 const ActionDrawer: React.FC<ActionDrawerProps> = ({
+    id,
     icon,
     title,
     children,
@@ -30,6 +32,7 @@ const ActionDrawer: React.FC<ActionDrawerProps> = ({
 
     return (
         <Drawer
+            id={id}
             triggerLabel={
                 <>
                     {icon}
@@ -61,22 +64,14 @@ const ActionDrawer: React.FC<ActionDrawerProps> = ({
 
 const actionButtons: ActionButton[] = [
     {
-        id: "share",
+        id: "share-links",
         icon: <IconShare className="size-4 shrink-0" />,
         title: "ui.share",
         component: ShareForm,
         showLabel: false,
     },
-    // {
-    //     id: "addMember",
-    //     icon: <IconUsersPlus className="size-4 mx-0.5" />,
-    //     title: "ui.addMember",
-    //     component: MemberForm,
-    //     show: canEdit,
-    //     showLabel: false,
-    // },
     {
-        id: "addPayment",
+        id: "add-payment",
         icon: <IconTransfer className="size-4 shrink-0" />,
         title: "ui.addPayment",
         component: RepaysForm,
@@ -85,7 +80,7 @@ const actionButtons: ActionButton[] = [
         canDisabled: true,
     },
     {
-        id: "newExpense",
+        id: "add-expense",
         icon: <IconCashPlus className="size-4 shrink-0" />,
         title: "ui.newExpense",
         component: ExpenseForm,
@@ -117,6 +112,7 @@ const ActionMenu: React.FC = () => {
                     (can(permission) || permission === undefined) && (
                         <ActionDrawer
                             key={id}
+                            id={id}
                             children={({ close }) => (
                                 <Component onSubmitSuccess={close} />
                             )}

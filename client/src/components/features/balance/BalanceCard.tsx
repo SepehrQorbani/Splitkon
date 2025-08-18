@@ -66,6 +66,12 @@ function BalanceCard({ transaction, member }: BalanceCardProps) {
                     {can("addRepays") && (
                         <Drawer
                             triggerLabel={<IconTransfer className="size-4" />}
+                            id={
+                                "add-repay-from-" +
+                                fromMember?.id +
+                                "-" +
+                                transaction.to
+                            }
                             title={t("repay")}
                             children={({ close }) => (
                                 <RepaysForm

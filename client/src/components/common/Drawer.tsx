@@ -1,4 +1,12 @@
-import { AnimatePresence, motion } from "motion/react";
+import { useModalState } from "@/hooks/useModalState";
+import { cn } from "@/utils/cn";
+import {
+    AnimatePresence,
+    motion,
+    PanInfo,
+    useDragControls,
+} from "motion/react";
+import { ReactNode, useRef } from "react";
 import {
     Dialog,
     Heading,
@@ -7,11 +15,10 @@ import {
     ModalOverlayProps,
     Pressable,
 } from "react-aria-components";
-import { ReactNode, useEffect, useState } from "react";
 import { Button } from "./Button";
-import { cn } from "@/utils/cn";
 
 type DrawerProps = {
+    id?: string | number;
     triggerLabel?: ReactNode;
     title: ReactNode;
     children: (props: { close: () => void }) => ReactNode;
@@ -23,34 +30,61 @@ type DrawerProps = {
         variant?: "solid" | "outline" | "ghost" | "input";
         className?: string;
     };
-    open?: boolean;
+    isOpen?: boolean;
     onOpenChange?: (isOpen: boolean) => void;
+    syncWithUrl?: boolean;
+    onClose?: () => void;
+    urlParamName?: string;
 };
 
 export const Drawer = ({
+    id,
+    isOpen,
+    onClose,
+    onOpenChange,
+    modalProps,
     triggerLabel,
     title,
     children,
     className,
-    modalProps,
     isDisabled = false,
     buttonProps = {
         intent: "primary",
         variant: "solid",
         className: "w-full h-10 gap-2",
     },
-    open = false,
-    onOpenChange,
+    syncWithUrl = true,
+    urlParamName = "modal",
 }: DrawerProps) => {
-    const [isOpen, setIsOpen] = useState(open);
-    useEffect(() => {
-        onOpenChange && onOpenChange(isOpen);
-    }, [isOpen]);
-    useEffect(() => {
-        setIsOpen(open);
-    }, [open]);
+    const modal = useModalState({
+        id,
+        isOpen,
+        onOpenChange,
+        onClose,
+        syncWithUrl,
+        urlParamName,
+    });
 
-    const close = () => setIsOpen(false);
+    const dragControls = useDragControls();
+    const contentRef = useRef(null);
+
+    const handleDragEnd = (
+        event: MouseEvent | TouchEvent | PointerEvent,
+        info: PanInfo
+    ) => {
+        const velocity = info.velocity.y;
+        const offset = info.offset.y;
+
+        if (velocity > 300) {
+            modal.close();
+        } else if (velocity < -300) {
+            // swipe up for Expand
+        } else {
+            if (offset > 150) {
+                modal.close();
+            }
+        }
+    };
 
     return (
         <>
@@ -59,7 +93,7 @@ export const Drawer = ({
                     intent={buttonProps.intent}
                     variant={buttonProps.variant}
                     className={cn(buttonProps.className, isOpen && "group")}
-                    onPress={() => setIsOpen(true)}
+                    onPress={modal.open}
                     data-is-open={isOpen}
                     isDisabled={isDisabled}
                 >
@@ -67,30 +101,30 @@ export const Drawer = ({
                 </Button>
             )}
             <ModalOverlay
-                isOpen={isOpen}
-                onOpenChange={setIsOpen}
-                className="fixed inset-0 h-full px-4 pt-32 pb-16 md:pb-4 z-10 flex min-h-full w-full items-center justify-center bg-background/50 backdrop-blur-[2px] data-[entering]:animate-modal-blur-entering data-[exiting]:animate-modal-blur-exiting"
+                isOpen={modal.isOpen}
+                onOpenChange={modal.setIsOpen}
+                className="fixed inset-0  z-10 flex w-full justify-center bg-background/50 backdrop-blur-xs select-none
+                 data-[entering]:animate-modal-blur-entering data-[exiting]:animate-modal-blur-exiting"
                 {...modalProps}
                 isDismissable
             >
-                <Modal className="fixed z-50 bottom-0 left-0 right-0 h-full pt-40 pb-14 md:pb-0">
-                    <Dialog className="w-full h-full flex justify-center items-end outline-none">
+                <Modal className="absolute top-18 bottom-14 md:top-32 md:bottom-0 w-full md:max-w-md flex flex-col overflow-hidden">
+                    <Dialog
+                        className="absolute bottom-0 outline-hidden w-full h-full overflow-hidden flex flex-col md:px-2 md:pt-2 justify-end"
+                        aria-label="modal"
+                    >
+                        <Pressable onPress={modal.close}>
+                            <div
+                                className="fixed inset-0"
+                                style={{
+                                    scrollbarGutter: "stable",
+                                }}
+                                role="button"
+                            />
+                        </Pressable>
                         <AnimatePresence>
-                            {isOpen && (
+                            {modal.isOpen && (
                                 <>
-                                    <Pressable
-                                        onPress={() => {
-                                            setIsOpen(false);
-                                        }}
-                                    >
-                                        <div
-                                            className="fixed inset-0"
-                                            style={{
-                                                scrollbarGutter: "stable",
-                                            }}
-                                            role="button"
-                                        />
-                                    </Pressable>
                                     <motion.div
                                         initial={{ y: "100%" }}
                                         animate={{ y: 0 }}
@@ -100,21 +134,34 @@ export const Drawer = ({
                                             ease: "easeInOut",
                                         }}
                                         className={cn(
-                                            "w-full relative max-w-md mx-auto max-h-min h-full overflow-y-auto px-2- pb-2 bg-surface border border-border shadow rounded-t",
+                                            "relative max-h-full h-fit w-full overflow-auto pb-2 bg-surface border border-border shadow-center rounded-t",
                                             className
                                         )}
                                         onClick={(e) => {
                                             e.stopPropagation();
                                         }}
+                                        drag="y"
+                                        dragControls={dragControls}
+                                        dragListener={false}
+                                        dragDirectionLock
+                                        dragElastic={{ top: 0.01, bottom: 0.5 }}
+                                        dragConstraints={{ top: 0, bottom: 0 }}
+                                        onDragEnd={handleDragEnd}
+                                        ref={contentRef}
                                     >
                                         <Heading
                                             slot="title"
                                             className="sticky top-0 z-10 bg-surface p-2"
+                                            onPointerDown={(e) =>
+                                                dragControls.start(e)
+                                            }
+                                            style={{ touchAction: "none" }}
                                         >
+                                            <div className="w-12 h-1 bg-muted-subtle rounded-full mx-auto mb-1 -mt-1 cursor-grab active:cursor-grabbing" />
                                             {title}
                                         </Heading>
                                         <div className="p-2">
-                                            {children({ close })}
+                                            {children({ close: modal.close })}
                                         </div>
                                     </motion.div>
                                 </>
