@@ -67,6 +67,7 @@ function ExpenseCard({ expense }: ExpenseCardProps) {
                                 <div>
                                     {can("editExpenses") && (
                                         <Drawer
+                                            id={`edit-member-${expense.id}`}
                                             triggerLabel={
                                                 <IconEdit className="w-4 h-4 text-muted" />
                                             }

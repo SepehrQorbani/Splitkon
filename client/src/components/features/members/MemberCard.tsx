@@ -23,10 +23,12 @@ import {
     IconReceiptDollar,
     IconTransfer,
     IconUserEdit,
+    IconX,
 } from "@tabler/icons-react";
 import { motion } from "motion/react";
 import { Heading } from "react-aria-components";
 import MemberForm from "./MemberForm";
+import { Button } from "@/components/common/Button";
 
 type MemberCardProps = {
     member: Member;
@@ -47,15 +49,13 @@ function MemberCard({ member }: MemberCardProps) {
 
     const { generateMemberReport } = useReportGenerator();
 
-    // text-creditor-strong text-debtor-strong text-settled-strong
-    // text-settled text-creditor text-debtor
     return (
         <ExpandableCard id={id} className="group">
-            {({ isOpen }) => (
+            {({ isOpen, setIsOpen }) => (
                 <motion.div
                     layoutId={`${id}-card-content`}
                     className={cn(
-                        "relative bg-surface w-full p-4 rounded ring-1 ring-border space-y-4 shadow-sm overflow-y-auto max-h-full",
+                        "relative bg-surface w-full p-4 rounded ring-1 ring-border space-y-4 shadow-sm overflow-auto max-h-full",
                         isOpen
                             ? "shadow-lg overflow-y-auto"
                             : "hover:shadow-md hover:cursor-pointer"
@@ -97,29 +97,73 @@ function MemberCard({ member }: MemberCardProps) {
                             </div>
                         </div>
 
-                        <div
-                            className={`flex flex-col gap-1.5 ms-auto items-end`}
-                        >
-                            <div className="text-sm font-medium">
-                                {status.title === "settled" ? (
-                                    <IconChecks className="size-4 text-settled" />
-                                ) : (
-                                    <Amount amount={status.net} />
-                                )}
-                            </div>
+                        {!isOpen ? (
                             <div
-                                className={`flex items-center justify-end gap-1 text-xs text-${status.title} font-bold`}
+                                className={`flex flex-col gap-1.5 ms-auto items-end`}
                             >
-                                <span
-                                    className={`size-2 rounded-full bg-${status.title}-subtle border border-${status.title}`}
-                                />
-                                <span>{t(status.title)}</span>
+                                <motion.div
+                                    layoutId={`${id}-status`}
+                                    className="text-sm font-medium"
+                                >
+                                    {status.title === "settled" ? (
+                                        <IconChecks className="size-4 text-settled" />
+                                    ) : (
+                                        <Amount amount={status.net} />
+                                    )}
+                                </motion.div>
+                                <motion.div
+                                    transition={{ delay: 0.1, duration: 0.3 }}
+                                    className={`flex items-center justify-end gap-1 text-xs text-${status.title} font-bold`}
+                                >
+                                    <span
+                                        className={`size-2 rounded-full bg-${status.title}-subtle border border-${status.title}`}
+                                    />
+                                    <span>{t(status.title)}</span>
+                                </motion.div>
                             </div>
-                        </div>
+                        ) : (
+                            <div className="ms-auto items-start flex h-full">
+                                <Button
+                                    variant="ghost"
+                                    className="size-8 p-1 text-muted"
+                                    onPress={() => {
+                                        setIsOpen(false);
+                                    }}
+                                >
+                                    <IconX className="size-4" />
+                                </Button>
+                            </div>
+                        )}
                     </motion.div>
 
                     {isOpen && (
                         <>
+                            <div
+                                className={`flex gap-4 justify-between items-center`}
+                            >
+                                <motion.div
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{ delay: 0.1, duration: 0.3 }}
+                                    className={`flex items-center justify-end gap-1 text-xs text-${status.title} font-bold`}
+                                >
+                                    <span
+                                        className={`size-2 rounded-full bg-${status.title}-subtle border border-${status.title}`}
+                                    />
+                                    <span>{t(status.title)}</span>
+                                </motion.div>
+                                <motion.div
+                                    layoutId={`${id}-status`}
+                                    className="text-sm font-medium"
+                                >
+                                    {status.title === "settled" ? (
+                                        <IconChecks className="size-4 text-settled" />
+                                    ) : (
+                                        <Amount amount={status.net} />
+                                    )}
+                                </motion.div>
+                            </div>
                             {member.bank_info && (
                                 <motion.div
                                     initial={{ opacity: 0 }}
@@ -221,6 +265,7 @@ function MemberCard({ member }: MemberCardProps) {
                         <div className="flex items-center gap-2">
                             {can("editMembers") && (
                                 <Drawer
+                                    id={`edit-member-${member.id}`}
                                     triggerLabel={
                                         <IconUserEdit className="size-4" />
                                     }
@@ -241,6 +286,7 @@ function MemberCard({ member }: MemberCardProps) {
                             )}
                             {can("addRepays") && (
                                 <Drawer
+                                    id={`add-repay-${member.id}`}
                                     triggerLabel={
                                         <>
                                             <IconTransfer className="w-4 h-4" />
