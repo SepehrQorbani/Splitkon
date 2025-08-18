@@ -55,6 +55,7 @@ function RepayCard({ repay }: RepayCardProps) {
                         <div className="flex flex-col items-end gap-1">
                             {can("editRepays") && (
                                 <Drawer
+                                    id={`edit-repay-${repay.id}`}
                                     triggerLabel={
                                         <IconEdit className="w-4 h-4 text-muted" />
                                     }
