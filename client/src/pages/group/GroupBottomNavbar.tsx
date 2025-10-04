@@ -7,10 +7,9 @@ import {
     IconUsers,
 } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "motion/react";
-import React, { ReactNode } from "react";
+import React from "react";
 import { NavLink, useParams } from "react-router";
-import ActionMenuButtons from "./ActionMenuButtons";
-import { ActionButton } from "./ActionMenuButtons";
+import ActionMenuButtons, { ActionButton } from "./ActionMenuButtons";
 
 type NavItem =
     | {

@@ -3,7 +3,7 @@ import { useGroupStore } from "@/store";
 import { cn } from "@/utils/cn";
 import { defaultInputClass } from "@/utils/style";
 import { InputNumberFormat, unformat } from "@react-input/number-format";
-import { IconMinus, IconPlus } from "@tabler/icons-react";
+import { IconX } from "@tabler/icons-react"; // ⬅️ تغییر جدید (اضافه شدن IconX)
 import { AnimatePresence, motion } from "motion/react";
 import React, { useCallback } from "react";
 import {
@@ -15,7 +15,6 @@ import {
 } from "react-aria-components";
 import { FieldError as HookFormFieldError } from "react-hook-form";
 import Amount from "./Amount";
-import { Button } from "./Button";
 
 interface AmountFieldProps extends Omit<TextFieldProps, "value" | "onChange"> {
     name: string;
@@ -31,6 +30,8 @@ interface AmountFieldProps extends Omit<TextFieldProps, "value" | "onChange"> {
     minValue?: number;
     maxValue?: number;
     ref?: React.Ref<HTMLInputElement>;
+    showWord?: boolean;
+    allowClear?: boolean;
 }
 
 const AmountField = ({
@@ -43,6 +44,8 @@ const AmountField = ({
     maxValue,
     isInvalid: externalInvalid,
     ref,
+    showWord = true,
+    allowClear = false,
     ...props
 }: AmountFieldProps) => {
     const isInvalid = externalInvalid || !!error;
@@ -51,7 +54,6 @@ const AmountField = ({
     const handleInput = useCallback(
         (value?: string | number) => {
             const raw = unformat(String(value), "en").trim();
-
             if (!raw) {
                 onChange?.(undefined);
                 return;
@@ -87,11 +89,15 @@ const AmountField = ({
                 component={AmountFieldComponent}
                 onChange={handleInput}
                 isInvalid={isInvalid}
+                allowClear={allowClear}
+                onClear={() => onChange?.(undefined)}
                 {...props}
             />
-            <div>
-                <Amount amount={isInvalid ? "" : value} word={true} />
-            </div>
+            {showWord && (
+                <div>
+                    <Amount amount={isInvalid ? "" : value} word={true} />
+                </div>
+            )}
 
             {/* Error Message */}
             <AnimatePresence>
@@ -100,7 +106,10 @@ const AmountField = ({
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
-                        className="text-xs font-medium text-error absolute bottom-5 end-0 w-full"
+                        className={cn(
+                            "text-xs font-medium text-error absolute end-0 w-full",
+                            showWord && isInvalid ? "bottom-5" : "-bottom-1"
+                        )}
                     >
                         <span className="text-xs font-medium text-error absolute end-0">
                             {errorMessage}
@@ -130,6 +139,8 @@ interface AmountFieldComponentProps {
     isRequired?: boolean;
     isInvalid?: boolean;
     ref?: React.Ref<HTMLInputElement>;
+    allowClear?: boolean;
+    onClear?: () => void;
     [key: string]: any;
 }
 
@@ -146,8 +157,9 @@ const AmountFieldComponent = ({
     maxValue = Number.MAX_SAFE_INTEGER,
     isRequired = false,
     isInvalid,
-    inputRef,
     ref,
+    allowClear = false,
+    onClear,
     ...props
 }: AmountFieldComponentProps) => {
     const { t } = useTranslations();
@@ -156,6 +168,7 @@ const AmountFieldComponent = ({
     return (
         <NumberFieldAria
             onInput={(v) => onChange(v.currentTarget.value)}
+            value={value}
             onChange={onChange}
             isRequired={isRequired}
             isDisabled={disabled}
@@ -180,19 +193,11 @@ const AmountFieldComponent = ({
             <Group
                 className={cn(
                     defaultInputClass,
-                    "flex items-center justify-between",
+                    "flex items-center justify-between relative",
                     isInvalid && "border-error focus-within:ring-error",
                     inputClassName
                 )}
             >
-                <Button
-                    variant="outline"
-                    slot="decrement"
-                    className="w-6 h-6 p-0 shrink-0"
-                    isDisabled={disabled || value === minValue}
-                >
-                    <IconMinus className="w-4 h-4" />
-                </Button>
                 <Input
                     ref={ref}
                     placeholder={placeholder}
@@ -200,17 +205,28 @@ const AmountFieldComponent = ({
                     dir="ltr"
                     name={name}
                 />
-                <span className="px-2 text-xs text-muted">
+
+                {allowClear && value !== undefined && !disabled && (
+                    <AnimatePresence>
+                        <motion.button
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            exit={{ scale: 0 }}
+                            type="button"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                onClear?.();
+                            }}
+                            className="rounded-full border border-action text-action hover:bg-action hover:text-action-fg cursor-pointer"
+                        >
+                            <IconX className="size-4 p-0.5 transition-all" />
+                        </motion.button>
+                    </AnimatePresence>
+                )}
+                <Label className="ps-2 text-xs text-muted">
                     {unit && t(unit)}
-                </span>
-                <Button
-                    variant="outline"
-                    slot="increment"
-                    className="w-6 h-6 p-0 shrink-0"
-                    isDisabled={disabled || value === maxValue}
-                >
-                    <IconPlus className="w-4 h-4" />
-                </Button>
+                </Label>
             </Group>
         </NumberFieldAria>
     );

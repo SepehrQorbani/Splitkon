@@ -12,7 +12,7 @@ export const MemberSchema = z
         id: z.number(),
         name: z.string().nonempty(),
         avatar: z.string().nullable().optional(),
-        ratio: z.number().min(0).max(100),
+        ratio: z.number().min(0).max(100).nullable().optional(),
         role: z.int().min(0).max(3).nullable().optional(),
         bank_info: z
             .string()
@@ -34,7 +34,7 @@ export const MemberSchema = z
             if (hasRole("wallet", data)) {
                 return data.ratio === 0;
             } else {
-                return data.ratio > 0;
+                return data.ratio != null && data.ratio > 0;
             }
         },
         {
@@ -87,7 +87,32 @@ export const MemberInputSchema = (
                         attribute: t("attributes.ratio"),
                         max: "100",
                     })
-                ),
+                )
+                .optional(),
+            amount: z
+                .number({
+                    error: (issue) => {
+                        if (issue.input === undefined) {
+                            return t("validation.required", {
+                                attribute: t("attributes.amount"),
+                            });
+                        } else if (issue.code === "invalid_type") {
+                            return t("validation.invalid_type", {
+                                attribute: t("attributes.amount"),
+                            });
+                        } else {
+                            return undefined;
+                        }
+                    },
+                })
+                .min(
+                    0,
+                    t("validation.min", {
+                        attribute: t("attributes.amount"),
+                        min: "0",
+                    })
+                )
+                .optional(),
             role: z.int().min(0).max(3).nullable().optional(),
             bank_info: z
                 .string()
@@ -107,21 +132,32 @@ export const MemberInputSchema = (
             index: z.number().optional(),
         })
         .refine(
-            (data) => {
-                if (hasRole("wallet", data)) {
-                    return data.ratio === 0;
-                } else {
-                    return data.ratio > 0;
-                }
-            },
+            (data) => data.ratio !== undefined || data.amount !== undefined,
             {
-                message: t("validation.min", {
-                    attribute: t("attributes.ratio"),
-                    min: "1",
+                message: t("validation.at_least_one_required", {
+                    fields: `${t("attributes.ratio")} یا ${t(
+                        "attributes.amount"
+                    )}`,
                 }),
                 path: ["ratio"],
             }
         );
+// .refine(
+//     (data) => {
+//         if (hasRole("wallet", data)) {
+//             return data.ratio === 0;
+//         } else {
+//             return data.ratio > 0;
+//         }
+//     },
+//     {
+//         message: t("validation.min", {
+//             attribute: t("attributes.ratio"),
+//             min: "1",
+//         }),
+//         path: ["ratio"],
+//     }
+// )
 
 export type MemberInput = z.infer<ReturnType<typeof MemberInputSchema>>;
 export type MembersInput = MemberInput[];

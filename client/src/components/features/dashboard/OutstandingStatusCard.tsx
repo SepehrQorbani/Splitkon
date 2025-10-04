@@ -60,7 +60,7 @@ export const OutstandingStatusCard: FC<OutstandingStatusCardProps> = ({
             {summary.pending_balances?.length ? (
                 <>
                     <ProgressBar
-                        label=""
+                        label="outstanding-status"
                         value={
                             summary.total_expenses !== 0
                                 ? ((summary.total_expenses -

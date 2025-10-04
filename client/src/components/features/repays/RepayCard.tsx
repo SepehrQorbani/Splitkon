@@ -1,14 +1,16 @@
 import Amount from "@/components/common/Amount";
 import Avatar from "@/components/common/Avatar";
-import { Drawer } from "@/components/common/Drawer";
-import ExpandableCard from "@/components/common/ExpandableCard";
+import { Button } from "@/components/common/Button";
+import { Card } from "@/components/common/Card";
 import { usePermissions } from "@/hooks/usePermissions";
 import { useTranslations } from "@/hooks/useTranslations";
+import { useModalStore } from "@/store/modals";
 import { Repay } from "@/types/schemas/repays";
-import { cn } from "@/utils/cn";
-import { IconCalendarEvent, IconDots, IconEdit } from "@tabler/icons-react";
-import { motion } from "motion/react";
-import { RepaysForm } from "./RepayForm";
+import {
+    IconCalendarEvent,
+    IconChevronLeft,
+    IconEdit,
+} from "@tabler/icons-react";
 
 type RepayCardProps = {
     repay: Repay;
@@ -17,174 +19,93 @@ type RepayCardProps = {
 function RepayCard({ repay }: RepayCardProps) {
     const { can } = usePermissions();
     const { t, direction, formatDate } = useTranslations();
-    const id = `repay-${repay.id}`;
+    const openModal = useModalStore((state) => state.openModal);
 
     const fromMember = repay.from;
     const toMember = repay.to;
-
     return (
-        <ExpandableCard id={id}>
-            {({ isOpen }) => (
-                <motion.div
-                    layoutId={`${id}-repay-card-content`}
-                    className={cn(
-                        "relative bg-surface w-full px-4 pb-4 rounded ring-1 ring-border space-y-4 shadow-sm overflow-y-auto max-h-full",
-                        isOpen
-                            ? "shadow-lg overflow-y-auto"
-                            : "hover:shadow-md hover:cursor-pointer"
-                    )}
-                >
-                    <motion.div
-                        layoutId={`${id}-repay-header`}
-                        className={cn(
-                            "flex items-center justify-between w-full",
-                            "sticky top-0 bg-surface pt-4 pb-2"
-                        )}
-                        aria-label="Repay Card"
-                    >
-                        <div className="flex flex-col gap-2">
-                            <div className="flex items-center text-sm font-medium">
-                                <Amount amount={repay.amount} />
-                            </div>
+        <Card
+            className="group hover:shadow-md hover:cursor-pointer gap-2"
+            onClick={() => openModal("repays", repay)}
+        >
+            <div
+                className="flex items-center justify-between w-full mb-4"
+                aria-label="repay-card"
+            >
+                <div className="flex items-center text-sm font-medium">
+                    <Amount amount={repay.amount} />
+                </div>
 
-                            <div className="flex items-center gap-1 text-xs text-muted-soft ps--1">
-                                <IconCalendarEvent className="size-4 stroke-[1.5]" />
-                                {formatDate(new Date(repay.date))}
-                            </div>
-                        </div>
-                        <div className="flex flex-col items-end gap-1">
-                            {can("editRepays") && (
-                                <Drawer
-                                    id={`edit-repay-${repay.id}`}
-                                    triggerLabel={
-                                        <IconEdit className="w-4 h-4 text-muted" />
-                                    }
-                                    title={t("edit_repayment")}
-                                    children={({ close }) => (
-                                        <RepaysForm
-                                            onSubmitSuccess={close}
-                                            repay={repay}
-                                        />
-                                    )}
-                                    buttonProps={{
-                                        intent: "neutral",
-                                        variant: "ghost",
-                                        className: "h-8 w-8 p-1",
-                                    }}
-                                />
-                            )}
-                        </div>
-                    </motion.div>
+                <div className="flex items-center gap-1 text-xs text-muted-soft ps--1">
+                    <IconCalendarEvent className="size-4 stroke-[1.5]" />
+                    {formatDate(new Date(repay.date))}
+                </div>
+            </div>
 
-                    {!isOpen && (
-                        <div>
-                            <div className="relative w-full flex justify-between items-center px-2 pt-2 mb-2">
-                                {direction === "rtl" ? (
-                                    <>
-                                        <div className="absolute left-3 right-3 top-0 bottom-0 border rounded border-b-0 border-dashed border-border h-5" />
-                                        <span className="rounded-xs size-2 border border-border shrink-0 bg-surface relative" />
-                                        <span className="rounded-xs size-2 border border-border shrink-0 bg-surface relative" />
-                                    </>
-                                ) : (
-                                    <>
-                                        <div className="absolute left-3 right-3 top-0 bottom-0 border rounded border-b-0 border-dashed border-border h-5" />
-                                        <span className="rounded-xs size-2 border border-border shrink-0 bg-surface relative" />
-                                        <span className="rounded-xs size-2 border border-border shrink-0 bg-surface relative" />
-                                    </>
-                                )}
-                            </div>
-                            <div className="flex items-center gap-2 text-xs justify-between">
-                                <div className="flex items-center gap-2">
-                                    <Avatar
-                                        size="sm"
-                                        src={fromMember.avatar || undefined}
-                                        alt={fromMember.name}
-                                    />
-                                    <span>{fromMember.name}</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <span>{toMember.name}</span>
-                                    <Avatar
-                                        size="sm"
-                                        src={toMember.avatar || undefined}
-                                        alt={toMember.name}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {isOpen ? (
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ delay: 0.1, duration: 0.3 }}
-                            className="mt-4 space-y-4"
-                        >
-                            {repay.description && (
-                                <div className="text-xs bg-background rounded border border-border p-2">
-                                    <span className="font-medium">
-                                        {t("description")}:{" "}
-                                    </span>
-                                    {repay.description}
-                                </div>
-                            )}
-
-                            <div className="space-y-2">
-                                <h3 className="text-sm font-medium text-muted">
-                                    {t("details")}
-                                </h3>
-                                <div className="flex items-center justify-between gap-2 p-2 rounded bg-muted/10 border border-border">
-                                    <div className="flex items-center gap-2">
-                                        <Avatar
-                                            size="sm"
-                                            src={fromMember.avatar || undefined}
-                                            alt={fromMember.name}
-                                        />
-                                        <div className="flex flex-col">
-                                            <span className="text-xs text-gray-500">
-                                                {t("from")}
-                                            </span>
-                                            <span className="text-sm">
-                                                {fromMember.name}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div className="text-sm">
-                                        <Amount amount={repay.amount} />
-                                    </div>
-                                </div>
-                                <div className="flex items-center justify-between gap-2 p-2 rounded bg-muted/10 border border-border">
-                                    <div className="flex items-center gap-2">
-                                        <Avatar
-                                            size="sm"
-                                            src={toMember.avatar || undefined}
-                                            alt={toMember.name}
-                                        />
-                                        <div className="flex flex-col">
-                                            <span className="text-xs text-gray-500">
-                                                {t("to")}
-                                            </span>
-                                            <span className="text-sm">
-                                                {toMember.name}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div className="text-sm">
-                                        <Amount amount={repay.amount} />
-                                    </div>
-                                </div>
-                            </div>
-                        </motion.div>
+            <div>
+                <div className="relative w-full flex justify-between items-center px-2 pt-2 mb-2">
+                    {direction === "rtl" ? (
+                        <>
+                            <div className="absolute left-3 right-3 top-0 bottom-0 border rounded border-b-0 border-dashed border-border h-5" />
+                            <span className="rounded-xs size-2 border border-border shrink-0 bg-surface relative" />
+                            <span className="rounded-xs size-2 border border-border shrink-0 bg-surface relative" />
+                        </>
                     ) : (
-                        <div className="w-full flex items-center justify-center -mb-2 text-muted">
-                            <IconDots className="size-4" />
-                        </div>
+                        <>
+                            <div className="absolute left-3 right-3 top-0 bottom-0 border rounded border-b-0 border-dashed border-border h-5" />
+                            <span className="rounded-xs size-2 border border-border shrink-0 bg-surface relative" />
+                            <span className="rounded-xs size-2 border border-border shrink-0 bg-surface relative" />
+                        </>
                     )}
-                </motion.div>
-            )}
-        </ExpandableCard>
+                </div>
+                <div className="flex items-center gap-2 text-xs justify-between">
+                    <div className="flex items-center gap-2">
+                        <Avatar
+                            size="sm"
+                            src={fromMember.avatar || undefined}
+                            alt={fromMember.name}
+                        />
+                        <span>{fromMember.name}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <span>{toMember.name}</span>
+                        <Avatar
+                            size="sm"
+                            src={toMember.avatar || undefined}
+                            alt={toMember.name}
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <div className="w-full flex items-center justify-between border-t border-border-subtle pt-2 text-muted mt-2">
+                <div className="flex items-center gap-2">
+                    {can("editRepays") && (
+                        <Button
+                            onPress={() => {
+                                openModal("repay-form", repay);
+                            }}
+                            intent="neutral"
+                            variant="ghost"
+                            className="h-8 w-8 p-1"
+                        >
+                            <IconEdit className="w-4 h-4 text-muted" />
+                        </Button>
+                    )}
+                    {/* <CopyButton
+                        data={generateMemberReport(member, memberBalance)}
+                        className="size-8 p-1 text-muted"
+                    /> */}
+                </div>
+                <Button
+                    variant="ghost"
+                    className="size-8 p-1 text-muted"
+                    onPress={() => openModal("repays", repay)}
+                >
+                    <IconChevronLeft className="size-4 text-muted group-hover:stroke-[2.5] group-hover:text-action" />
+                </Button>
+            </div>
+        </Card>
     );
 }
 

@@ -3,7 +3,7 @@ import { CardStack } from "./CardStack";
 
 type EmptyStateProps = {
     items: { id: number; content: ReactNode }[];
-    message: string;
+    message: string | ReactNode;
     action?: ReactNode;
 };
 

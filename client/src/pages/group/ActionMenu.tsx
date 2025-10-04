@@ -1,89 +1,33 @@
-import { Drawer } from "@/components/common/Drawer";
-import { ExpenseForm } from "@/components/features/expenses/ExpenseForm";
-import { RepaysForm } from "@/components/features/repays/RepayForm";
-import ShareForm from "@/components/features/share/ShareForm";
+import { Button } from "@/components/common/Button";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { usePermissions } from "@/hooks/usePermissions";
 import { useTranslations } from "@/hooks/useTranslations";
 import { useMemberStore } from "@/store";
+import { useModalStore } from "@/store/modals";
 import { IconCashPlus, IconShare, IconTransfer } from "@tabler/icons-react";
-import React, { ReactNode } from "react";
-import { GroupBottomNavbar } from "./GroupBottomNavbar";
+import React from "react";
 import { ActionButton } from "./ActionMenuButtons";
-
-interface ActionDrawerProps {
-    id: string;
-    icon: ReactNode;
-    title: string;
-    children: (props: { close: () => void }) => ReactNode;
-    showLabel?: boolean;
-    isDisabled?: boolean;
-}
-
-const ActionDrawer: React.FC<ActionDrawerProps> = ({
-    id,
-    icon,
-    title,
-    children,
-    isDisabled = false,
-    showLabel = false,
-}) => {
-    const { t } = useTranslations();
-
-    return (
-        <Drawer
-            id={id}
-            triggerLabel={
-                <>
-                    {icon}
-                    {showLabel && (
-                        <span className="hidden md:inline text-xs">
-                            {t(title)}
-                        </span>
-                    )}
-                </>
-            }
-            title={
-                <div className="flex items-center gap-2">
-                    {icon}
-                    <span className="text-sm">{t(title)}</span>
-                </div>
-            }
-            isDisabled={isDisabled}
-            children={children}
-            buttonProps={
-                showLabel
-                    ? {
-                          className: "px-3 py-2 h-8 min-w-8 gap-1",
-                      }
-                    : { className: "p-2 size-8" }
-            }
-        />
-    );
-};
+import { GroupBottomNavbar } from "./GroupBottomNavbar";
 
 const actionButtons: ActionButton[] = [
     {
-        id: "share-links",
+        id: "share",
         icon: <IconShare className="size-4 shrink-0" />,
         title: "ui.share",
-        component: ShareForm,
         showLabel: false,
     },
     {
-        id: "add-payment",
+        id: "repay-form",
         icon: <IconTransfer className="size-4 shrink-0" />,
         title: "ui.addPayment",
-        component: RepaysForm,
         permission: "addRepays",
         showLabel: true,
         canDisabled: true,
     },
     {
-        id: "add-expense",
+        id: "expense-form",
         icon: <IconCashPlus className="size-4 shrink-0" />,
         title: "ui.newExpense",
-        component: ExpenseForm,
         permission: "addExpenses",
         showLabel: true,
         canDisabled: true,
@@ -94,6 +38,8 @@ const ActionMenu: React.FC = () => {
     const { can } = usePermissions();
     const members = useMemberStore((state) => state.members);
     const isDesktop = useMediaQuery("(min-width: 768px)");
+    const { t } = useTranslations();
+    const openModal = useModalStore((state) => state.openModal);
 
     if (!isDesktop) {
         return <GroupBottomNavbar actionButtons={actionButtons} />;
@@ -102,23 +48,27 @@ const ActionMenu: React.FC = () => {
     return (
         <div className="gap-2 flex shrink-0">
             {actionButtons.map(
-                ({
-                    id,
-                    component: Component,
-                    permission,
-                    canDisabled,
-                    ...props
-                }) =>
+                ({ id, permission, canDisabled, icon, showLabel, title }) =>
                     (can(permission) || permission === undefined) && (
-                        <ActionDrawer
+                        <Button
                             key={id}
-                            id={id}
-                            children={({ close }) => (
-                                <Component onSubmitSuccess={close} />
-                            )}
+                            className={
+                                showLabel
+                                    ? "px-3 py-2 h-8 min-w-8 gap-1"
+                                    : "p-2 size-8"
+                            }
+                            onPress={() => {
+                                openModal(id, true);
+                            }}
                             isDisabled={canDisabled && members?.length < 2}
-                            {...props}
-                        />
+                        >
+                            {icon}
+                            {showLabel && (
+                                <span className="hidden md:inline text-xs">
+                                    {t(title)}
+                                </span>
+                            )}
+                        </Button>
                     )
             )}
         </div>

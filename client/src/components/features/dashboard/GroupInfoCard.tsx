@@ -57,7 +57,12 @@ export const GroupInfoCard: FC<GroupInfoCardProps> = ({ group, className }) => {
                     </div>
                 </div>
             </div>
-            <div className="overflow-y-auto flex-1 flex text-muted-soft text-xs bg-linear-0 from-muted-fg\0 to-muted-fg rounded h-full w-full p-4">
+            <div
+                className={cn(
+                    "overflow-y-auto flex-1 flex text-muted-soft text-xs bg-linear-0 from-muted-fg\0 to-muted-fg rounded h-full w-full p-4",
+                    !group?.description && "hidden lg:flex"
+                )}
+            >
                 {group?.description ? (
                     <p className="text-muted">
                         <IconScript className="size-4 inline me-1" />

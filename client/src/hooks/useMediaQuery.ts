@@ -1,3 +1,4 @@
+//TODO: Maybe change to useHook library
 import { useEffect, useState } from "react";
 
 export function useMediaQuery(query: string) {

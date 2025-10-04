@@ -1,14 +1,14 @@
 import { getGroup } from "@/api/endpoints/groups";
 import AsyncContent from "@/components/common/AsyncContent";
+import { ModalRoot } from "@/components/common/ModalRoot";
 import GroupNavbar from "@/components/features/navigation/GroupNavbar";
+import GroupSettingMenu from "@/components/features/navigation/GroupSettingMenu";
 import { Navbar } from "@/components/features/navigation/Navbar";
 import useDocumentTitle from "@/hooks/useDocumentTitle";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { usePermissions } from "@/hooks/usePermissions";
 import { useTranslations } from "@/hooks/useTranslations";
-import ActionMenu from "@/pages/group/ActionMenu";
 import { useGroupStore, useMemberStore } from "@/store";
-import { IconSettings, IconSettingsFilled } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "motion/react";
 import React, { useEffect } from "react";
@@ -67,29 +67,15 @@ const GroupLayout: React.FC = () => {
                     {group && (
                         <div className="flex items-start justify-between gap-4 mb-4">
                             <div className="">
-                                <h1 className="text-2xl font-bold">
+                                <h1 className="text-lg md:text-2xl font-bold">
                                     <NavLink to={`${token}`}>
                                         {group.title}
                                     </NavLink>
                                 </h1>
                             </div>
-                            {!isDesktop && can("edit") && (
-                                <div>
-                                    <NavLink
-                                        to={`${token}/setting`}
-                                        className=""
-                                        end
-                                    >
-                                        {({ isActive }) =>
-                                            isActive ? (
-                                                <IconSettingsFilled className="size-6 bg-action text-action-fg p-1 rounded" />
-                                            ) : (
-                                                <IconSettings className="size-6 p-1" />
-                                            )
-                                        }
-                                    </NavLink>
-                                </div>
-                            )}
+                            <div className="flex items-center gap-1">
+                                <GroupSettingMenu />
+                            </div>
                         </div>
                     )}
                     <AnimatePresence mode="wait">
@@ -114,6 +100,9 @@ const GroupLayout: React.FC = () => {
                     </AnimatePresence>
                 </main>
             </AsyncContent>
+            <>
+                <ModalRoot />
+            </>
         </div>
     );
 };

@@ -1,19 +1,26 @@
 import { useGetRepays } from "@/api/queries/repays";
 import AsyncContent from "@/components/common/AsyncContent";
-import { Drawer } from "@/components/common/Drawer";
+import { Button, getButtonStyles } from "@/components/common/Button";
 import { EmptyState } from "@/components/common/EmptyState";
+import FiltersSkeleton from "@/components/common/filters/FiltersSkeleton";
 import RepayCardStackItem from "@/components/common/RepayCardStackItem";
-import RepayCard from "@/components/features/repays/RepayCard";
+import TableSkeleton from "@/components/common/TableSkeleton";
 import { RepayCardSkeleton } from "@/components/features/repays/RepayCardSkeleton";
-import { RepaysForm } from "@/components/features/repays/RepayForm";
+import RepaysCard from "@/components/features/repays/RepaysCard";
+import RepaysTable from "@/components/features/repays/RepaysTable";
 import { usePermissions } from "@/hooks/usePermissions";
 import { useTranslations } from "@/hooks/useTranslations";
-import { useMemberStore } from "@/store";
+import { useMemberStore, useUIStore } from "@/store";
+import { useModalStore } from "@/store/modals";
 import { useRepayStore } from "@/store/repays";
-import { IconTransfer } from "@tabler/icons-react";
-import { LayoutGroup } from "motion/react";
+import {
+    IconHelpCircle,
+    IconInfoCircle,
+    IconSettings,
+    IconTransfer,
+} from "@tabler/icons-react";
 import { useEffect } from "react";
-import { useParams } from "react-router";
+import { NavLink, useParams } from "react-router";
 
 type Props = {};
 
@@ -23,8 +30,9 @@ function RepaysIndex({}: Props) {
     const members = useMemberStore((state) => state.members);
     const { t } = useTranslations();
     const { can } = usePermissions();
-
+    const view = useUIStore((state) => state.view);
     const { data, isLoading, error, refetch } = useGetRepays(token as string);
+    const openModal = useModalStore((state) => state.openModal);
 
     useEffect(() => {
         if (data) {
@@ -38,25 +46,34 @@ function RepaysIndex({}: Props) {
             error={error}
             refetch={refetch}
             skeleton={
-                <div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {Array(6)
-                            .fill(0)
-                            .map((_, index) => (
-                                <RepayCardSkeleton key={index} />
-                            ))}
+                view === "grid" ? (
+                    <div>
+                        <FiltersSkeleton />
+
+                        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {Array(6)
+                                .fill(0)
+                                .map((_, index) => (
+                                    <RepayCardSkeleton key={index} />
+                                ))}
+                        </div>
                     </div>
-                </div>
+                ) : (
+                    <TableSkeleton />
+                )
             }
         >
-            {repays?.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <LayoutGroup>
-                        {repays?.map((repay) => (
-                            <RepayCard key={repay.id} repay={repay} />
-                        ))}
-                    </LayoutGroup>
-                </div>
+            {repays.length > 0 ? (
+                <>
+                    {view === "grid" ? (
+                        <RepaysCard repays={repays} />
+                    ) : (
+                        <div>
+                            <RepaysTable repays={repays} />
+                        </div>
+                    )}
+                    {/* <RepayDetailModal /> */}
+                </>
             ) : (
                 <EmptyState
                     items={[
@@ -64,32 +81,49 @@ function RepaysIndex({}: Props) {
                         { id: 2, content: <RepayCardStackItem /> },
                         { id: 3, content: <RepayCardStackItem /> },
                     ]}
-                    message="لیست بازپرداختها خالی است!"
+                    message=<div className="space-y-4 mt-4">
+                        <p>{t("ui.noRepays")}</p>
+                        {members.length < 2 && (
+                            <div className="flex flex-col items-center gap-4 ">
+                                <div className="text-xs flex items-center gap-1">
+                                    <IconInfoCircle className="size-4" />
+                                    {t("ui.minMemberIsTwo")}
+                                </div>
+                                <div className="text-xs flex items-center gap-1">
+                                    <IconHelpCircle className="size-4" />
+                                    {t("ui.addMembersFromSetting")}
+                                </div>
+                            </div>
+                        )}
+                    </div>
                     action={
-                        can("addRepays") && (
-                            <Drawer
-                                buttonProps={{ className: "h-10 gap-2" }}
-                                triggerLabel={
-                                    <>
-                                        <IconTransfer className="size-4 mx-0.5" />
-                                        <span className=" text-sm ms-1">
-                                            {t("ui.addPayment")}
-                                        </span>
-                                    </>
-                                }
-                                title={
-                                    <div className="flex items-center gap-2">
-                                        <IconTransfer className="size-4 mx-0.5" />
-                                        <span className="text-sm">
-                                            {t("ui.addPayment")}
-                                        </span>
-                                    </div>
-                                }
-                                children={({ close }) => (
-                                    <RepaysForm onSubmitSuccess={close} />
-                                )}
-                                isDisabled={members.length < 2}
-                            />
+                        members.length < 2 ? (
+                            <NavLink
+                                to={`/${token}/setting`}
+                                className={getButtonStyles({
+                                    className: "mx-auto",
+                                })}
+                            >
+                                <div className="flex gap-1 items-center text-xs">
+                                    <IconSettings className="size-4" />
+                                    <span>{t("ui.settings")}</span>
+                                </div>
+                            </NavLink>
+                        ) : (
+                            can("addRepays") && (
+                                <Button
+                                    className="px-3 py-2 h-8 min-w-8 gap-1"
+                                    onPress={() => {
+                                        openModal("repay-form", true);
+                                    }}
+                                    isDisabled={members.length < 2}
+                                >
+                                    <IconTransfer className="size-4 mx-0.5" />
+                                    <span className="text-xs ms-1">
+                                        {t("ui.addPayment")}
+                                    </span>
+                                </Button>
+                            )
                         )
                     }
                 />

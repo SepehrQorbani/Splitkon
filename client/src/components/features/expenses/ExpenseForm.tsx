@@ -16,8 +16,10 @@ import {
     ExpenseInputSchema,
 } from "@/types/schemas/expenses";
 import { handleApiError } from "@/utils/apiErrorHandler";
+import { cn } from "@/utils/cn";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconChecks } from "@tabler/icons-react";
+import { useEffect } from "react";
 import { Form } from "react-aria-components";
 import { Controller, useForm } from "react-hook-form";
 
@@ -25,12 +27,14 @@ type ExpenseFormProps = {
     onSubmitSuccess?: (response?: ExpenseResponse) => void;
     expense?: Expense;
     disabled?: boolean;
+    className?: string;
 };
 
 export const ExpenseForm = ({
     onSubmitSuccess,
     expense,
     disabled = false,
+    className,
 }: ExpenseFormProps) => {
     const { t } = useTranslations();
     const group = useGroupStore((state) => state.group);
@@ -43,21 +47,40 @@ export const ExpenseForm = ({
         handleSubmit,
         formState: { errors, isSubmitting },
         setError,
+        setValue,
+        watch,
+        reset,
     } = useForm<ExpenseInput>({
         defaultValues: {
-            title: expense?.title || "",
-            date: expense?.date || new Date().toISOString(),
-            amount: expense?.amount || undefined,
-            spender_id: expense?.spender.id || existingDefault?.id || undefined,
+            title: "",
+            date: new Date().toISOString(),
+            amount: undefined,
+            spender_id: existingDefault?.id || undefined,
             members:
                 expense?.members ||
                 members.filter((member) => (+(member?.role ?? 0) & 2) !== 2) ||
                 [],
-            description: expense?.description || "",
+            description: "",
         },
         resolver: zodResolver(ExpenseInputSchema(t)),
         mode: "all",
     });
+    useEffect(() => {
+        if (expense) {
+            reset({
+                title: expense.title,
+                date: expense.date,
+                amount: expense.amount,
+                spender_id: expense.spender.id,
+                members: expense.members,
+                description: expense.description,
+            });
+        }
+    }, [expense, reset]);
+
+    const membersField = watch("members");
+    const hasRatio = membersField.findIndex((m) => m.ratio !== null) !== -1;
+
     const createExpense = useCreateExpense();
     const updateExpense = useUpdateExpense();
     const submit = async (data: ExpenseRequest) => {
@@ -84,7 +107,10 @@ export const ExpenseForm = ({
     };
 
     return (
-        <Form onSubmit={handleSubmit(submit)} className="space-y-4">
+        <Form
+            onSubmit={handleSubmit(submit)}
+            className={cn("space-y-4", className)}
+        >
             <Controller
                 control={control}
                 name="title"
@@ -101,6 +127,19 @@ export const ExpenseForm = ({
             />
             <Controller
                 control={control}
+                name="date"
+                render={({ field }) => (
+                    <DatePicker
+                        label={t("attributes.date")}
+                        {...field}
+                        isInvalid={!!errors.date}
+                        error={errors?.date}
+                        // disabled={disabled || isSubmitting}
+                    />
+                )}
+            />
+            <Controller
+                control={control}
                 name="amount"
                 render={({ field }) => (
                     <AmountField
@@ -108,8 +147,8 @@ export const ExpenseForm = ({
                         {...field}
                         isInvalid={!!errors.amount}
                         error={errors?.amount}
-                        minValue={1}
-                        disabled={disabled || isSubmitting}
+                        disabled={disabled || isSubmitting || !hasRatio}
+                        allowClear={true}
                     />
                 )}
             />
@@ -143,7 +182,21 @@ export const ExpenseForm = ({
                             label={t("attributes.members")}
                             {...field}
                             value={field.value}
-                            onChange={field.onChange}
+                            onChange={(v) => {
+                                if (
+                                    v.findIndex((m) => m.ratio !== null) === -1
+                                ) {
+                                    setValue(
+                                        "amount",
+                                        v.reduce(
+                                            (sum, v) => sum + (v.share ?? 0),
+                                            0
+                                        )
+                                    );
+                                }
+                                field.onChange(v);
+                            }}
+                            shareType={hasRatio ? "ratio" : "amount"}
                             isInvalid={!!errors?.members}
                             error={errors?.members}
                             isRequired
@@ -166,23 +219,17 @@ export const ExpenseForm = ({
                     />
                 )}
             />
-            <Controller
-                control={control}
-                name="date"
-                render={({ field }) => (
-                    <DatePicker
-                        label={t("attributes.date")}
-                        {...field}
-                        isInvalid={!!errors.date}
-                        error={errors?.date}
-                        // disabled={disabled || isSubmitting}
-                    />
-                )}
-            />
-            <Button type="submit" isDisabled={disabled || isSubmitting}>
-                <IconChecks className="size-4 me-2" />
-                {isEditMode ? t("update") : t("submit")}
-            </Button>
+
+            <div className="sticky bottom-0 bg-surface py-2 border-t border-border">
+                <Button
+                    type="submit"
+                    isDisabled={disabled || isSubmitting}
+                    className="w-full text-xs"
+                >
+                    <IconChecks className="size-4 me-2" />
+                    {isEditMode ? t("update") : t("submit")}
+                </Button>
+            </div>
         </Form>
     );
 };

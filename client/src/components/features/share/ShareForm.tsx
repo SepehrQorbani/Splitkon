@@ -31,7 +31,7 @@ function ShareForm() {
     });
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-4 pb-2">
             {editUrl && (
                 <div className="space-y-1">
                     <h3 className="text-muted text-xs">{t("ui.editLink")}</h3>

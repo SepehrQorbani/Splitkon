@@ -8,7 +8,7 @@ class ExpenseResource extends JsonResource
 {
     public function toArray($request)
     {
-        //TODO: Edit this to return the correct data
+        // TODO: Edit this to return the correct data
         return [
             'id' => $this->id,
             'title' => $this->title,

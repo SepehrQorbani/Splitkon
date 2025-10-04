@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
@@ -14,7 +15,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('member_id')->constrained('members')->onDelete('cascade');
             $table->foreignId('expense_id')->constrained('expenses')->onDelete('cascade');
-            $table->integer('ratio')->default(1);
+            $table->integer('ratio')->nullable();
             $table->integer('share')->default(0);
             $table->integer('remainder')->default(0);
             $table->timestamps();

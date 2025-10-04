@@ -18,12 +18,22 @@ import {
     ModalOverlay,
 } from "react-aria-components";
 import { NavItems } from "./NavItems";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router";
 
 function MobileMenu() {
     const { t, direction } = useTranslations();
+    const [isOpen, setIsOpen] = useState(false);
+    const location = useLocation();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+
+        if (isOpen) setIsOpen(false);
+    }, [location]);
 
     return (
-        <DialogTrigger>
+        <DialogTrigger isOpen={isOpen} onOpenChange={setIsOpen}>
             <Button variant="ghost" size="icon" aria-label="Menu">
                 <IconMenu2 className="size-4" />
             </Button>
