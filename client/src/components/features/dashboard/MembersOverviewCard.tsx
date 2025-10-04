@@ -102,7 +102,7 @@ export const MembersOverviewCard: FC<MembersOverviewCardProps> = ({
                                         )}
                                     ></span>
                                     <Link
-                                        to={`members?view=member-${member.id}`}
+                                        to={`members?members=${member.id}`}
                                         className="flex items-center gap-2"
                                     >
                                         <Avatar

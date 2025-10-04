@@ -89,9 +89,13 @@ const Home: React.FC = () => {
                         intent="neutral"
                         className="rounded-xl py-6 bg-surface/20 border-surface text-sm hover:bg-surface/60"
                     >
-                        <span className="rounded-full p-2 bg-surface shadow">
+                        <a
+                            className="rounded-full p-2 bg-surface shadow"
+                            href={SOCIAL_LINKS.demo}
+                            target="_blank"
+                        >
                             <IconPlayerPlay className="size-4 text-action" />
-                        </span>
+                        </a>
                     </Button>
                 </motion.div>
 

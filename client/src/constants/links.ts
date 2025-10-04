@@ -4,4 +4,5 @@ export const SOCIAL_LINKS = {
     telegram: "https://t.me/splitkonapp",
     twitter: "https://twitter.com/splitkonapp",
     gmail: "splitkonapp@gmail.com",
+    demo: "https://www.aparat.com/v/mlkb232",
 } as const;

@@ -4,7 +4,8 @@ import { useCopyToClipboard } from "@/hooks/useCopyToClipboard";
 import { useShare } from "@/hooks/useShare";
 import { useTranslations } from "@/hooks/useTranslations";
 import { useGroupStore } from "@/store/group";
-import { IconShare } from "@tabler/icons-react";
+import { useModalStore } from "@/store/modals";
+import { IconQrcode, IconShare } from "@tabler/icons-react";
 
 function ShareForm() {
     const { t } = useTranslations();
@@ -23,7 +24,7 @@ function ShareForm() {
     const baseUrl = import.meta.env.VITE_FRONTEND_URL || window.location.origin;
     const editUrl = group?.edit_token ? `${baseUrl}/${group.edit_token}` : null;
     const viewUrl = `${baseUrl}/${group?.view_token}`;
-
+    const openModal = useModalStore((state) => state.openModal);
     const shareData = (url: string) => ({
         title: group?.title ?? "",
         text: group?.description ?? "",
@@ -37,15 +38,29 @@ function ShareForm() {
                     <h3 className="text-muted text-xs">{t("ui.editLink")}</h3>
                     <div className="flex items-center justify-between gap-2 rounded border border-border p-1">
                         <div className="flex gap-1">
-                            {canShare(shareData(editUrl)) && (
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    aria-label={t("ui.editLinkShare")}
-                                    onPress={() => share(shareData(editUrl))}
-                                >
-                                    <IconShare className="size-4" />
-                                </Button>
+                            {editUrl && canShare(shareData(editUrl)) && (
+                                <>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        aria-label={t("ui.editLinkShare")}
+                                        onPress={() =>
+                                            share(shareData(editUrl))
+                                        }
+                                    >
+                                        <IconShare className="size-4" />
+                                    </Button>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        aria-label={t("ui.editLinkShare")}
+                                        onPress={() =>
+                                            openModal("qr-code", editUrl)
+                                        }
+                                    >
+                                        <IconQrcode className="size-4" />
+                                    </Button>
+                                </>
                             )}
 
                             <Button
@@ -78,14 +93,26 @@ function ShareForm() {
                 <div className="flex items-center justify-between gap-2 rounded border border-border p-1">
                     <div className="flex gap-1">
                         {canShare(shareData(viewUrl)) && (
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                aria-label={t("ui.viewLinkShare")}
-                                onPress={() => share(shareData(viewUrl))}
-                            >
-                                <IconShare className="size-4" />
-                            </Button>
+                            <>
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    aria-label={t("ui.viewLinkShare")}
+                                    onPress={() => share(shareData(viewUrl))}
+                                >
+                                    <IconShare className="size-4" />
+                                </Button>
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    aria-label={t("ui.viewLinkShare")}
+                                    onPress={() =>
+                                        openModal("qr-code", viewUrl)
+                                    }
+                                >
+                                    <IconQrcode className="size-4" />
+                                </Button>
+                            </>
                         )}
 
                         <Button
