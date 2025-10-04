@@ -7,9 +7,11 @@ import DatePicker from "@/components/common/DatePicker";
 import InputField from "@/components/common/InputField";
 import Select from "@/components/common/Select";
 import MemberListWithForm from "@/components/features/members/MemberListWithForm";
+import QrModal from "@/components/features/share/QrModal";
 import ShareForm from "@/components/features/share/ShareForm";
 import { useTranslations } from "@/hooks/useTranslations";
 import { useGroupStore } from "@/store";
+import { useModalStore } from "@/store/modals";
 import { ApiError } from "@/types/api/errors";
 import { GroupRequest } from "@/types/api/group";
 import { GroupInput, GroupInputSchema } from "@/types/schemas/group";
@@ -425,6 +427,7 @@ function New() {
                                     <span>{t("ui.goToDashboard")}</span>
                                     {nextIcon}
                                 </Button>
+                                <QrModal key="qr-modal" />
                             </>
                         )}
                     </motion.div>
