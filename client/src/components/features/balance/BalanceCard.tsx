@@ -1,10 +1,10 @@
 import Amount from "@/components/common/Amount";
 import Avatar from "@/components/common/Avatar";
-import { Drawer } from "@/components/common/Drawer";
-import { RepaysForm } from "@/components/features/repays/RepayForm";
+import { Button } from "@/components/common/Button";
 import { usePermissions } from "@/hooks/usePermissions";
 import { useTranslations } from "@/hooks/useTranslations";
 import { useMemberStore } from "@/store/members";
+import { useModalStore } from "@/store/modals";
 import { BalanceTransaction } from "@/types/schemas/balance";
 import { Member } from "@/types/schemas/members";
 import { PendingBalance } from "@/types/schemas/summary";
@@ -23,11 +23,18 @@ function BalanceCard({ transaction, member }: BalanceCardProps) {
     const { can } = usePermissions();
     const { direction, t } = useTranslations();
     const getMember = useMemberStore((state) => state.getMember);
+    const openModal = useModalStore((state) => state.openModal);
+
     let fromMember = member;
     if (!member && "from" in transaction && transaction.from) {
         fromMember = getMember(transaction.from);
     }
     const toMember = getMember(transaction.to);
+    const modalQuery = `from-${
+        transaction.amount < 0 ? transaction.to : fromMember?.id
+    }-to-${
+        transaction.amount < 0 ? fromMember?.id : transaction.to
+    }-amount-${Math.abs(transaction.amount)}`;
 
     return (
         toMember && (
@@ -49,7 +56,9 @@ function BalanceCard({ transaction, member }: BalanceCardProps) {
                         </>
                     ) : (
                         <span className="text-muted">
-                            {transaction.amount > 0 ? t("to") : t("from")}
+                            {transaction.amount > 0
+                                ? t("ui.toMember")
+                                : t("fromMember")}
                         </span>
                     )}
                     <Avatar
@@ -63,40 +72,17 @@ function BalanceCard({ transaction, member }: BalanceCardProps) {
                     <div>
                         <Amount amount={Math.abs(transaction.amount)} />
                     </div>
+
                     {can("addRepays") && (
-                        <Drawer
-                            triggerLabel={<IconTransfer className="size-4" />}
-                            id={
-                                "add-repay-from-" +
-                                fromMember?.id +
-                                "-" +
-                                transaction.to
-                            }
-                            title={t("repay")}
-                            children={({ close }) => (
-                                <RepaysForm
-                                    defaultValue={{
-                                        from_id:
-                                            transaction.amount < 0
-                                                ? transaction.to
-                                                : fromMember?.id,
-                                        to_id:
-                                            transaction.amount < 0
-                                                ? fromMember?.id
-                                                : transaction.to,
-                                        amount: Math.abs(transaction.amount),
-                                    }}
-                                    onSubmitSuccess={(data) => {
-                                        console.log(data);
-                                        close();
-                                    }}
-                                />
-                            )}
-                            buttonProps={{
-                                intent: "neutral",
-                                className: "h-6 w-6 p-1",
+                        <Button
+                            onPress={() => {
+                                openModal("repay-form", modalQuery);
                             }}
-                        />
+                            intent="neutral"
+                            className="h-6 w-6 p-1"
+                        >
+                            <IconTransfer className="size-4 text-muted" />
+                        </Button>
                     )}
                 </div>
             </div>

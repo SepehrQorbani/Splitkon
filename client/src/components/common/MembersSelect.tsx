@@ -1,14 +1,16 @@
 import { useTranslations } from "@/hooks/useTranslations";
+import { Member, Members } from "@/types/schemas/members";
 import { cn } from "@/utils/cn";
 import {
     IconCheck,
     IconChevronDown,
+    IconCurrencyDollar,
     IconEqual,
     IconSquare,
     IconSquareCheck,
 } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "motion/react";
-import { useCallback, useMemo, useState, useEffect, memo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
     DialogTrigger,
     GridList,
@@ -16,38 +18,36 @@ import {
     Popover,
     Selection,
 } from "react-aria-components";
-import { FieldError, FieldErrorsImpl, Merge } from "react-hook-form";
+import AmountField from "./AmountField";
 import Avatar from "./Avatar";
 import AvatarGroup from "./AvatarGroup";
 import { Button } from "./Button";
 import NumberField from "./NumberField";
-import { Member, Members, MembersInput } from "@/types/schemas/members";
-
-type ArrayFieldError = { [key: string]: FieldError }[] | undefined;
 
 type SimpleMember = Omit<
     Member,
     "total_expenses" | "payment_balance" | "bank_info"
->;
+> & { share?: number | null };
 
 interface MembersSelectProps {
     members: Members;
     name: string;
     label?: string;
-    value: SimpleMember[];
-    onChange: (value: SimpleMember[] | undefined) => void;
+    value?: SimpleMember[];
+    shareType: "ratio" | "amount";
+    onChange: (value: SimpleMember[]) => void;
     isRequired?: boolean;
     className?: string;
     disabled?: boolean;
     error?: any;
     isInvalid?: boolean;
 }
-
 export default function MembersSelect({
     members,
     name,
     label,
     value,
+    shareType,
     onChange,
     isRequired = false,
     className,
@@ -59,107 +59,162 @@ export default function MembersSelect({
     const { t } = useTranslations();
     const isInvalid = externalInvalid || !!error;
 
-    const [ratios, setRatios] = useState<Map<number, number>>(() => {
-        const initialValue = value || [];
-        return new Map(initialValue.map((m) => [m.id, m.ratio]));
-        // return new Map(value.map((m) => [m.id, m.ratio || 1]));
-    });
-
-    // Memoize selectedIds to avoid recalculation
-    const selectedIds = useMemo(() => new Set(value.map((m) => m.id)), [value]);
-    const isAllSelected = useMemo(
-        () => value.length === members.length && members.length > 0,
-        [value.length, members.length]
+    const [internalValue, setInternalValue] = useState<SimpleMember[]>(
+        value ?? []
     );
+    const [internalShareType, setInternalShareType] = useState<
+        "ratio" | "amount"
+    >(shareType);
 
-    // Sync ratios with value only when value changes
-    // useEffect(() => {
-    //     setRatios((prev) => {
-    //         const updated = new Map(prev);
-    //         value.forEach((m) => {
-    //             if (!updated.has(m.id)) updated.set(m.id, m.ratio);
-    //         });
-    //         return updated;
-    //     });
-    // }, [value]);
     useEffect(() => {
-        setRatios(new Map(value.map((m) => [m.id, m.ratio])));
+        setInternalValue(value ?? []);
     }, [value]);
 
-    // Optimize selection change handler
+    useEffect(() => {
+        setInternalShareType(shareType);
+    }, [shareType]);
+
+    const handleClose = useCallback(() => {
+        if (internalValue !== value) {
+            onChange(internalValue);
+        }
+    }, [internalValue, value, internalShareType, shareType, onChange]);
+
+    const selectedIds = useMemo(
+        () => new Set(internalValue.map((m) => m.id)),
+        [internalValue]
+    );
+    const isAllSelected =
+        internalValue.length === members.length && members.length > 0;
+
+    const summaryDisplay = useMemo(() => {
+        if (!internalValue.length) return t("selectMembers") + "...";
+
+        let suffix = "";
+        if (internalShareType === "ratio") {
+            const total = internalValue.reduce(
+                (sum, v) => sum + (v.ratio ?? 1),
+                0
+            );
+            suffix = `(${t("splitBy")} ${total} ${t("person")})`;
+        } else {
+            const total = internalValue.reduce(
+                (sum, v) => sum + (v.share ?? 0),
+                0
+            );
+            suffix = `(${t("amount")} ${total.toLocaleString()} ${t(
+                "currency"
+            )})`;
+        }
+
+        const names = isAllSelected
+            ? t("all")
+            : internalValue.map((m) => m.name).join(", ");
+        return `${names} ${suffix}`;
+    }, [internalValue, isAllSelected, internalShareType, t]);
+
+    const handleToggleShareType = useCallback(() => {
+        setInternalShareType((prev) => {
+            const newType = prev === "ratio" ? "amount" : "ratio";
+
+            const updated = internalValue.map((member) => {
+                if (newType === "ratio") {
+                    return {
+                        ...member,
+                        ratio: member.ratio ?? 1,
+                        share: undefined,
+                    };
+                } else {
+                    return {
+                        ...member,
+                        share: member.share ?? undefined,
+                        ratio: null,
+                    };
+                }
+            });
+
+            setInternalValue(updated);
+            return newType;
+        });
+    }, [internalValue]);
+
     const handleSelectionChange = useCallback(
         (keys: Selection) => {
             const newSelectedIds = new Set(keys as Set<number>);
+            const prevMemberMap = new Map(internalValue.map((m) => [m.id, m]));
             const newSelected = members
                 .filter((m) => newSelectedIds.has(m.id))
-                .map((m) => ({
-                    ...m,
-                    ratio: ratios.get(m.id) ?? m.ratio ?? 1,
-                }));
-
-            setRatios((prev) => {
-                const updated = new Map(prev);
-                prev.forEach((_, id) => {
-                    if (!newSelectedIds.has(id)) updated.delete(id);
+                .map((m) => {
+                    const prevMember = prevMemberMap.get(m.id);
+                    if (internalShareType === "ratio") {
+                        return {
+                            ...m,
+                            ratio: prevMember?.ratio ?? 1,
+                            share: undefined,
+                        };
+                    } else {
+                        return {
+                            ...m,
+                            share: prevMember?.share ?? undefined,
+                            ratio: null,
+                        };
+                    }
                 });
-                return updated;
-            });
-            onChange(newSelected.length ? newSelected : []);
+
+            setInternalValue(newSelected);
         },
-        [members, ratios, onChange]
+        [members, internalValue, internalShareType]
     );
 
-    // Optimize select all handler
     const handleSelectAll = useCallback(() => {
+        console.log(isAllSelected);
         if (isAllSelected) {
-            setRatios(new Map());
-            onChange([]);
-        } else {
-            // onChange(members);
-            const newMembers = members.map((m) => ({
-                ...m,
-                ratio: ratios.get(m.id) ?? m.ratio ?? 1,
-            }));
-            onChange?.(newMembers);
+            setInternalValue([]);
+            return;
         }
-    }, [isAllSelected, members, onChange, ratios]);
+        const prevMemberMap = new Map(internalValue.map((m) => [m.id, m]));
 
-    // Optimize ratio change handler
-    const handleRatioChange = useCallback(
-        (memberId: number, ratio: number) => {
-            setRatios((prev) => new Map(prev).set(memberId, ratio));
-            onChange(
-                value.map((m) => (m.id === memberId ? { ...m, ratio } : m))
-            );
-        },
-        [value, onChange]
-    );
+        const newSelected = members.map((m) => {
+            const prevMember = prevMemberMap.get(m.id);
+            if (internalShareType === "ratio") {
+                return {
+                    ...m,
+                    ratio: prevMember?.ratio ?? 1,
+                    share: undefined,
+                };
+            } else {
+                return {
+                    ...m,
+                    share: prevMember?.share ?? undefined,
+                    ratio: null,
+                };
+            }
+        });
+
+        setInternalValue(newSelected);
+    }, [members, internalValue, internalShareType]);
 
     const handleEqualizeRatios = useCallback(() => {
-        if (!value.length) return;
-        const equalRatio = 1;
+        if (internalShareType !== "ratio") return;
 
-        setRatios((prev) => {
-            const updated = new Map(prev);
-            value.forEach((m) => updated.set(m.id, equalRatio));
-            return updated;
-        });
-        onChange(value.map((m) => ({ ...m, ratio: equalRatio })));
-    }, [value, onChange]);
+        const equalized = internalValue.map((member) => ({
+            ...member,
+            ratio: 1,
+        }));
 
-    const summaryText = useMemo(() => {
-        if (!value.length) return t("selectMembers") + "...";
-        return isAllSelected ? t("all") : value.map((m) => m.name).join(", ");
-    }, [value, isAllSelected, t]);
-
-    const totalRatio = useMemo(
-        () => value.reduce((sum, v) => sum + v.ratio, 0),
-        [value]
-    );
+        setInternalValue(equalized);
+    }, [internalValue, internalShareType]);
 
     return (
         <div className={cn("w-full relative flex flex-col gap-1", className)}>
-            <DialogTrigger {...props}>
+            <DialogTrigger
+                {...props}
+                onOpenChange={(isOpen) => {
+                    if (!isOpen) {
+                        handleClose();
+                    }
+                }}
+            >
                 {label && (
                     <label
                         className={cn(
@@ -181,26 +236,21 @@ export default function MembersSelect({
                     )}
                 >
                     <div className="flex-1 truncate">
-                        {value.length ? (
+                        {internalValue.length ? (
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-1 truncate">
                                     <AvatarGroup
-                                        members={value}
+                                        members={internalValue}
                                         size="sm"
                                         maxVisible={3}
                                     />
                                     <div className="truncate">
-                                        {summaryText}
+                                        {summaryDisplay}
                                     </div>
-                                </div>
-                                <div className="text-xs text-muted shrink-0 ps-1">
-                                    {value.length} {t("member")} ({" "}
-                                    {t("splitBy")}
-                                    {totalRatio} {t("person")} )
                                 </div>
                             </div>
                         ) : (
-                            <span className="text-muted">{summaryText}</span>
+                            <span className="text-muted">{summaryDisplay}</span>
                         )}
                     </div>
                     <IconChevronDown className="w-4 h-4" />
@@ -208,6 +258,9 @@ export default function MembersSelect({
 
                 <Popover
                     placement="bottom"
+                    onOpenChange={(isOpen) => {
+                        if (!isOpen) handleClose();
+                    }}
                     className={cn(
                         "max-h-40 w-full max-w-md px-4 outline-none",
                         "data-[entering]:animate-slide-down-in data-[exiting]:animate-slide-up-out"
@@ -223,14 +276,24 @@ export default function MembersSelect({
                                     <IconSquare className="size-4" />
                                 )}
                             </Button>
+                            {internalShareType === "ratio" && (
+                                <Button
+                                    onPress={handleEqualizeRatios}
+                                    size="icon"
+                                    isDisabled={!internalValue.length}
+                                >
+                                    <IconEqual className="size-4" />
+                                </Button>
+                            )}
                             <Button
-                                onPress={handleEqualizeRatios}
+                                onPress={handleToggleShareType}
                                 size="icon"
-                                isDisabled={!value.length}
+                                isDisabled={!internalValue.length}
                             >
-                                <IconEqual className="size-4" />
+                                <IconCurrencyDollar className="size-4" />
                             </Button>
                         </div>
+
                         <GridList
                             aria-label={name}
                             className="flex flex-col gap-2 p-1 outline-none"
@@ -262,28 +325,64 @@ export default function MembersSelect({
                                             onPointerDown={(e) =>
                                                 e.stopPropagation()
                                             }
-                                            onPointerUp={(e) =>
-                                                e.stopPropagation()
-                                            }
                                         >
-                                            <NumberField
-                                                name={`${name}-ratio-${item.id}`}
-                                                value={
-                                                    ratios.get(item.id) ??
-                                                    item.ratio ??
-                                                    1
-                                                }
-                                                onChange={(v) =>
-                                                    handleRatioChange(
-                                                        item.id,
-                                                        v
-                                                    )
-                                                }
-                                                aria-label="members-ratio"
-                                                className="w-24"
-                                                inputClassName="bg-surface/75 p-1 h-9"
-                                                minValue={1}
-                                            />
+                                            {internalShareType === "ratio" ? (
+                                                <NumberField
+                                                    name={`${name}-ratio-${item.id}`}
+                                                    value={
+                                                        internalValue.find(
+                                                            (v) =>
+                                                                v.id === item.id
+                                                        )?.ratio ?? 1
+                                                    }
+                                                    onChange={(v) =>
+                                                        setInternalValue(
+                                                            internalValue.map(
+                                                                (m) =>
+                                                                    m.id ===
+                                                                    item.id
+                                                                        ? {
+                                                                              ...m,
+                                                                              ratio: v,
+                                                                              share: undefined,
+                                                                          }
+                                                                        : m
+                                                            )
+                                                        )
+                                                    }
+                                                    className="w-24"
+                                                    inputClassName="bg-surface/75 p-1 h-9"
+                                                    minValue={1}
+                                                />
+                                            ) : (
+                                                <AmountField
+                                                    name={`${name}-ratio-${item.id}`}
+                                                    showWord={false}
+                                                    value={
+                                                        internalValue.find(
+                                                            (v) =>
+                                                                v.id === item.id
+                                                        )?.share ?? undefined
+                                                    }
+                                                    onChange={(v) =>
+                                                        setInternalValue(
+                                                            internalValue.map(
+                                                                (m) =>
+                                                                    m.id ===
+                                                                    item.id
+                                                                        ? {
+                                                                              ...m,
+                                                                              share: v,
+                                                                              ratio: null,
+                                                                          }
+                                                                        : m
+                                                            )
+                                                        )
+                                                    }
+                                                    className="w-48"
+                                                    inputClassName="bg-surface/75 p-1 h-9"
+                                                />
+                                            )}
                                         </div>
                                     )}
                                     {selectedIds.has(item.id) && (
@@ -295,6 +394,7 @@ export default function MembersSelect({
                     </div>
                 </Popover>
             </DialogTrigger>
+
             <AnimatePresence>
                 {error?.message && (
                     <motion.div

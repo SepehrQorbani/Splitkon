@@ -187,10 +187,19 @@ return [
         ],
 
         'members' => [
-            "ratio_zero_for_role" => ":attribute «:role» باید 0 باشد!",
+            'ratio_zero_for_role' => ':attribute «:role» باید 0 باشد!',
             'only_one_default' => 'فقط یک نفر می‌تواند :role باشد.',
             'only_one_fund' => 'در گروه فقط یک :role می تواند وجود داشته باشد.',
-        ]
+        ],
+        'expense' => [
+            'mixed_split_mode' => 'نمی‌توان در یک هزینه هم از حالت "نسبت" و هم از حالت "سهم دستی" استفاده کرد.',
+            'share_required' => 'در حالت سهم دستی، فیلد "share" الزامی است.',
+            'ratio_required' => 'در حالت نسبت، فیلد "ratio" الزامی است.',
+            'share_amount_mismatch' => 'مجموع سهم‌ها (:total) با مبلغ کل هزینه (:amount) برابر نیست.',
+            'total_ratio_zero' => 'مجموع نسبت‌ها نمی‌تواند صفر باشد.',
+            'total_share_zero' => 'مجموع سهم‌ها نمی‌تواند صفر باشد.',
+            'unknown_split_type' => 'نوع تقسیم نامشخص است: :type',
+        ],
     ],
 
     /*
@@ -220,7 +229,7 @@ return [
         'roles' => [
             '1' => 'هزینه‌کننده پیشفرض',
             '2' => 'صندوق خزانه گروه',
-        ]
+        ],
     ],
 
 ];

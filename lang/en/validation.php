@@ -190,6 +190,15 @@ return [
             'only_one_default' => 'Only one member can have the :role role.',
             'only_one_fund' => 'Only one :role can exist in the group.',
         ],
+        'expense' => [
+            'mixed_split_mode' => 'Cannot mix ratio and share mode in a single expense.',
+            'share_required' => 'In share mode, the "share" field is required.',
+            'ratio_required' => 'In ratio mode, the "ratio" field is required.',
+            'share_amount_mismatch' => 'Sum of shares (:total) does not match expense amount (:amount).',
+            'total_ratio_zero' => 'Total ratio cannot be zero.',
+            'total_share_zero' => 'Total share cannot be zero.',
+            'unknown_split_type' => 'Unknown split type: :type',
+        ],
     ],
 
     /*
@@ -216,7 +225,7 @@ return [
         'roles' => [
             '1' => 'Default Spender',
             '2' => 'Group Treasury Fund',
-        ]
+        ],
     ],
 
 ];

@@ -1,21 +1,18 @@
 import { Button } from "@/components/common/Button";
-import { Drawer } from "@/components/common/Drawer";
-import { useModalState } from "@/hooks/useModalState";
 import { usePermissions } from "@/hooks/usePermissions";
 import { useTranslations } from "@/hooks/useTranslations";
 import { useMemberStore } from "@/store";
+import { useModalStore } from "@/store/modals";
 import { PermissionKey } from "@/types";
 import { cn } from "@/utils/cn";
 import { IconPlus } from "@tabler/icons-react";
-import React, { ReactElement, useEffect, useMemo, useState } from "react";
+import React, { ReactElement, useMemo, useState } from "react";
 import { Dialog, DialogTrigger, Popover } from "react-aria-components";
-import { useSearchParams } from "react-router";
 
 export interface ActionButton {
     id: string;
     icon: ReactElement;
     title: string;
-    component: React.ComponentType<{ onSubmitSuccess?: () => void }>;
     showLabel: boolean;
     permission?: PermissionKey;
     canDisabled?: boolean;
@@ -23,7 +20,7 @@ export interface ActionButton {
 
 interface ActionButtonsProps {
     actions: ActionButton[];
-    onActionSelect: (actionId: string) => void;
+    onActionSelect: () => void;
 }
 
 const useAvailableActions = (actions: ActionButton[]) => {
@@ -47,6 +44,7 @@ const RenderActionButtons: React.FC<ActionButtonsProps> = ({
 }) => {
     const { t } = useTranslations();
     const availableActions = useAvailableActions(actions);
+    const openModal = useModalStore((state) => state.openModal);
 
     return (
         <div className="flex flex-col gap-2">
@@ -55,7 +53,10 @@ const RenderActionButtons: React.FC<ActionButtonsProps> = ({
                     key={id}
                     className="justify-between gap-3 text-xs font-light py-3"
                     intent="neutral"
-                    onPress={() => onActionSelect(id)}
+                    onPress={() => {
+                        openModal(id, true);
+                        onActionSelect();
+                    }}
                 >
                     {icon}
                     {t(title)}
@@ -70,36 +71,7 @@ interface ActionMenuButtonsProps {
 }
 
 const ActionMenuButtons: React.FC<ActionMenuButtonsProps> = ({ actions }) => {
-    const { t } = useTranslations();
-    const [searchParams, setSearchParams] = useSearchParams();
     const [isPopoverOpen, setPopoverOpen] = useState(false);
-    const [activeAction, setActiveAction] = useState<ActionButton | null>(null);
-
-    useEffect(() => {
-        const openId = searchParams.get("modal");
-        const action =
-            (openId ? actions.find((a) => a.id === openId) : null) ?? null;
-        setActiveAction(action);
-    }, [searchParams, actions]);
-
-    const openAction = (id: string) => {
-        setSearchParams((prev) => {
-            const next = new URLSearchParams(prev);
-            next.set("modal", id);
-            return next;
-        });
-        setActiveAction(() => actions.find((a) => a.id === id) || null);
-        setPopoverOpen(false);
-    };
-
-    const closeAction = () => {
-        setSearchParams((prev) => {
-            const next = new URLSearchParams(prev);
-            next.delete("modal");
-            return next;
-        });
-        setActiveAction(null);
-    };
 
     return (
         <DialogTrigger>
@@ -111,7 +83,7 @@ const ActionMenuButtons: React.FC<ActionMenuButtonsProps> = ({ actions }) => {
                 <IconPlus
                     className={cn(
                         "size-4 transition-all origin-center rotate-0",
-                        (activeAction !== null || isPopoverOpen) && "rotate-45"
+                        isPopoverOpen && "rotate-45"
                     )}
                 />
             </Button>
@@ -124,37 +96,12 @@ const ActionMenuButtons: React.FC<ActionMenuButtonsProps> = ({ actions }) => {
                 <Dialog>
                     <RenderActionButtons
                         actions={actions}
-                        onActionSelect={openAction}
+                        onActionSelect={() => {
+                            setPopoverOpen(false);
+                        }}
                     />
                 </Dialog>
             </Popover>
-
-            <Drawer
-                id={activeAction?.id || ""}
-                title={
-                    activeAction && (
-                        <div className="flex items-center gap-2">
-                            {activeAction.icon}
-                            <span className="text-sm">
-                                {t(activeAction.title)}
-                            </span>
-                        </div>
-                    )
-                }
-                children={({ close }) =>
-                    activeAction && (
-                        <activeAction.component onSubmitSuccess={close} />
-                    )
-                }
-                buttonProps={{
-                    intent: "neutral",
-                    variant: "ghost",
-                    className: "focus:ring-0 focus:ring-offset-0",
-                }}
-                // onOpenChange={(v) => !v && setActiveAction(null)}
-                isOpen={!!activeAction}
-                onClose={closeAction}
-            />
         </DialogTrigger>
     );
 };

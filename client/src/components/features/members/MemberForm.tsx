@@ -206,12 +206,12 @@ const MemberForm = ({
                         <IconCancel className="size-4" />
                     </Button>
                 )}
-
+            </div>
+            <div className="sticky bottom-0 bg-surface py-2 border-t border-border">
                 <Button
                     type="submit"
-                    size="md"
-                    className="text-xs"
                     isDisabled={disabled || isSubmitting || !isDirty}
+                    className="w-full text-xs"
                 >
                     {useServer ? (
                         <>

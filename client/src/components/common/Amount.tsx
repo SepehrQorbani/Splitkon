@@ -5,12 +5,14 @@ type AmountWrapperProps = {
     amount?: number | string;
     word?: boolean;
     placeholder?: string;
+    showUnit?: boolean;
 };
 
 export default function Amount({
     amount,
     word = false,
     placeholder = "",
+    showUnit = true,
 }: AmountWrapperProps) {
     const { formatCurrency, locale } = useTranslations();
 
@@ -33,7 +35,9 @@ export default function Amount({
                     {formattedAmount}
                 </span>
             )}
-            <span className="text-xs ps-1 text-muted">{unit}</span>
+            {showUnit && (
+                <span className="text-xs ps-1 text-muted">{unit}</span>
+            )}
         </>
     );
 }

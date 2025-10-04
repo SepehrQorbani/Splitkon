@@ -11,8 +11,10 @@ import { ApiError } from "@/types/api/errors";
 import { RepayRequest, RepayResponse } from "@/types/api/repays";
 import { Repay, RepayInput, RepayInputSchema } from "@/types/schemas/repays";
 import { handleApiError } from "@/utils/apiErrorHandler";
+import { cn } from "@/utils/cn";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconChecks } from "@tabler/icons-react";
+import { useEffect } from "react";
 import { Form } from "react-aria-components";
 import { Controller, useForm } from "react-hook-form";
 
@@ -21,6 +23,7 @@ type RepaysFormProps = {
     repay?: Repay;
     defaultValue?: { from_id?: number; to_id?: number; amount?: number };
     disabled?: boolean;
+    className?: string;
 };
 
 export const RepaysForm = ({
@@ -28,6 +31,7 @@ export const RepaysForm = ({
     repay,
     defaultValue,
     disabled = false,
+    className,
 }: RepaysFormProps) => {
     const { t } = useTranslations();
     const group = useGroupStore((state) => state.group);
@@ -42,17 +46,35 @@ export const RepaysForm = ({
         formState: { errors, isSubmitting },
         setError,
         watch,
+        reset,
     } = useForm<RepayInput>({
         defaultValues: {
-            from_id: repay?.from_id || defaultValue?.from_id || undefined,
-            to_id: repay?.to_id || defaultValue?.to_id || undefined,
-            amount: repay?.amount || defaultValue?.amount || undefined,
-            date: repay?.date || new Date().toISOString(),
-            description: repay?.description || "",
+            from_id: undefined,
+            to_id: undefined,
+            amount: undefined,
+            date: new Date().toISOString(),
+            description: "",
         },
         resolver: zodResolver(RepayInputSchema(t)),
         mode: "all",
     });
+    useEffect(() => {
+        if (repay) {
+            reset({
+                from_id: repay?.from.id || repay?.from_id,
+                to_id: repay?.to.id || repay?.to_id,
+                amount: repay?.amount,
+                date: repay?.date,
+                description: repay?.description,
+            });
+        } else if (defaultValue) {
+            reset({
+                from_id: defaultValue?.from_id,
+                to_id: defaultValue?.to_id,
+                amount: defaultValue?.amount,
+            });
+        }
+    }, [repay, defaultValue, reset]);
 
     const fromId = watch("from_id");
     const toId = watch("to_id");
@@ -81,7 +103,10 @@ export const RepaysForm = ({
     };
 
     return (
-        <Form onSubmit={handleSubmit(submit)} className="space-y-4">
+        <Form
+            onSubmit={handleSubmit(submit)}
+            className={cn("space-y-4", className)}
+        >
             <Controller
                 control={control}
                 name="from_id"
@@ -121,10 +146,23 @@ export const RepaysForm = ({
                     <AmountField
                         label={t("attributes.amount")}
                         {...field}
-                        isInvalid={!!errors.amount}
                         error={errors?.amount}
                         minValue={1}
                         disabled={disabled || isSubmitting}
+                        allowClear={true}
+                    />
+                )}
+            />
+            <Controller
+                control={control}
+                name="date"
+                render={({ field }) => (
+                    <DatePicker
+                        label={t("attributes.date")}
+                        {...field}
+                        isInvalid={!!errors.date}
+                        error={errors?.date}
+                        // disabled={disabled || isSubmitting}
                     />
                 )}
             />
@@ -142,23 +180,17 @@ export const RepaysForm = ({
                     />
                 )}
             />
-            <Controller
-                control={control}
-                name="date"
-                render={({ field }) => (
-                    <DatePicker
-                        label={t("attributes.date")}
-                        {...field}
-                        isInvalid={!!errors.date}
-                        error={errors?.date}
-                        // disabled={disabled || isSubmitting}
-                    />
-                )}
-            />
-            <Button type="submit" isDisabled={disabled || isSubmitting}>
-                <IconChecks className="size-4 me-2" />
-                {isEditMode ? t("update") : t("submit")}
-            </Button>
+
+            <div className="sticky bottom-0 bg-surface py-2 border-t border-border">
+                <Button
+                    type="submit"
+                    isDisabled={disabled || isSubmitting}
+                    className="w-full text-xs"
+                >
+                    <IconChecks className="size-4 me-2" />
+                    {isEditMode ? t("update") : t("submit")}
+                </Button>
+            </div>
         </Form>
     );
 };

@@ -13,6 +13,7 @@ import {
     IconUsers,
 } from "@tabler/icons-react";
 import { FC } from "react";
+import { Link } from "react-router";
 
 interface MembersOverviewCardProps {
     summary: Summary;
@@ -100,7 +101,10 @@ export const MembersOverviewCard: FC<MembersOverviewCardProps> = ({
                                             `bg-${member.status?.title}`
                                         )}
                                     ></span>
-                                    <div className="flex items-center gap-2">
+                                    <Link
+                                        to={`members?view=member-${member.id}`}
+                                        className="flex items-center gap-2"
+                                    >
                                         <Avatar
                                             alt={member.name}
                                             size="sm"
@@ -109,7 +113,7 @@ export const MembersOverviewCard: FC<MembersOverviewCardProps> = ({
                                         <span className="text-xs">
                                             {member.name}
                                         </span>
-                                    </div>
+                                    </Link>
                                     <div>
                                         {member.status?.net === 0 ? (
                                             <IconChecks

@@ -25,7 +25,7 @@ interface ProgressChartProps extends AriaProgressBarProps {
         | "settled"
         | "creditor"
         | "debtor";
-    percentageMode?: "plain" | "tooltip";
+    percentageMode?: "plain" | "tooltip" | "inline";
 }
 function ProgressBar({
     label,
@@ -38,14 +38,19 @@ function ProgressBar({
 }: ProgressChartProps) {
     return (
         <AriaProgressBar
-            className={cn("text-[10px] pe-2", className)}
+            className={cn(
+                "text-[10px] pe-2",
+                className,
+                percentageMode === "inline" && "flex"
+            )}
             {...props}
         >
             {({ percentage, valueText }) => (
                 <>
                     <div
                         className={cn(
-                            "w-full text-right relative",
+                            "text-right relative  order-last text-nowrap",
+                            percentageMode !== "inline" && "w-full",
                             percentageMode === "tooltip" && "mb-1.5"
                         )}
                     >
@@ -73,9 +78,16 @@ function ProgressBar({
                                 </span>
                             </div>
                         ) : (
-                            <div className="flex justify-between ms-2">
+                            <div
+                                className={cn(
+                                    "flex justify-between",
+                                    percentageMode === "inline"
+                                        ? "ms-1"
+                                        : "ms-2"
+                                )}
+                            >
                                 <span>{valueText}</span>
-                                <Label>{label}</Label>
+                                {label && <Label>{label}</Label>}
                             </div>
                         )}
                     </div>

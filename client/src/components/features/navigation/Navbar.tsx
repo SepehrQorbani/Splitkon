@@ -1,6 +1,6 @@
 import MobileMenu from "@/components/features/navigation/MobileMenu";
 import { NavItems } from "@/components/features/navigation/NavItems";
-import SettingMenu from "@/components/features/navigation/SettingMenu";
+import UiConfigMenu from "@/components/features/navigation/UiConfigMenu";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { cn } from "@/utils/cn";
 import { useMotionValueEvent, useScroll } from "motion/react";
@@ -49,7 +49,7 @@ export const Navbar = ({ layout }: { layout: "main" | "group" }) => {
                     {isDesktop && <NavItems />}
                 </div>
                 <div className="flex items-center gap-2">
-                    {isDesktop ? <SettingMenu /> : <MobileMenu />}
+                    {isDesktop ? <UiConfigMenu /> : <MobileMenu />}
                 </div>
             </nav>
         </>

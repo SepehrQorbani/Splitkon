@@ -7,39 +7,44 @@ export const ExpenseCardSkeleton: React.FC<
     return (
         <div
             className={cn(
-                "relative bg-surface w-full pb-4 rounded ring-1 ring-border space-y-4 shadow-sm",
+                "relative bg-surface w-full p-4 rounded ring-1 ring-border space-y-4 shadow-sm",
                 className
             )}
             {...props}
         >
-            <div className="flex items-center justify-between border-border pt-6 px-4">
-                <div className="space-y-2">
-                    <Skeleton className="h-4 w-32" />
-                    <Skeleton className="h-3 w-16" />
+            <div className="flex items-center gap-2 py-3 w-full h-12">
+                <div className="flex flex-col gap-1.5">
+                    <Skeleton className="h-4 w-24" />
+                    <div className="flex items-center gap-1">
+                        <Skeleton className="h-3 w-3" />
+                        <Skeleton className="h-3 w-16" />
+                    </div>
                 </div>
-                <Skeleton className="size-6" />
-            </div>
-            <div className="flex items-center justify-between px-4 pb-2">
-                <div className="flex items-center gap-2">
-                    <Skeleton className="w-6 h-6 rounded" />
-                    <Skeleton className="h-3 w-20" />
+                <div className="flex flex-col gap-1.5 ms-auto items-end">
+                    <Skeleton className="h-4 w-20" />
+                    <Skeleton className="h-3 w-12" />
                 </div>
-                <Skeleton className="h-4 w-24" />
             </div>
 
-            <div className="flex items-center justify-between text-xs px-4">
-                <div className="flex items-center gap-1">
-                    <Skeleton className="size-6 border border-surface rounded-full" />
-                    <Skeleton className="size-6 border border-surface rounded-full -ms-4" />
-                    <Skeleton className="size-6 border border-surface rounded-full -ms-4" />
-                    <Skeleton className="size-6 border border-surface rounded-full -ms-4" />
+            <div className="mt-6 space-y-3">
+                <div className="flex justify-between">
+                    <Skeleton className="h-3 w-8" />
+                    <div className="flex items-center gap-1">
+                        <Skeleton className="size-6 rounded" />
+                        <Skeleton className="h-3 w-12" />
+                    </div>
                 </div>
-                <div className="flex items-center gap-1">
-                    <Skeleton className="h-3 w-20" />
+                <div className="flex justify-between">
+                    <Skeleton className="h-3 w-24" />
+                    <Skeleton className="w-24 h-6 rounded" />
                 </div>
             </div>
-            <div className="flex items-center justify-center mt-2">
-                <Skeleton className="h-2 w-8" />
+            <div className="w-full flex items-center justify-between border-t border-border-subtle pt-4 mb-2 text-muted">
+                <div className="flex items-center gap-2">
+                    <Skeleton className="size-4" />
+                    <Skeleton className="size-4" />
+                </div>
+                <Skeleton className="size-4" />
             </div>
         </div>
     );

@@ -23,17 +23,23 @@ interface UIState {
     direction: Direction;
     translations: Translations;
     theme: Theme;
+    view: "grid" | "table";
     setTheme: (theme: Theme) => void;
     setLocale: (locale: string) => void;
+    setView: (view: "grid" | "table") => void;
 }
 
 export const useUIStore = create<UIState>((set) => {
     const savedLocale = localStorage.getItem("locale") || "fa-IR";
     const savedTheme = localStorage.getItem("theme") as Theme | null;
+    const savedView = (localStorage.getItem("view") ?? "grid") as
+        | "grid"
+        | "table";
+
     const isSystemDark = window.matchMedia(
         "(prefers-color-scheme: dark)"
     ).matches;
-    const initialTheme = savedTheme || "system";
+    const initialTheme = savedTheme || "light";
     const initialLocale = new Intl.Locale(savedLocale);
     const initialLang = initialLocale.language as Language;
     const initialDir = initialLang === "fa" ? "rtl" : "ltr";
@@ -55,6 +61,7 @@ export const useUIStore = create<UIState>((set) => {
         direction: initialDir,
         translations: translationsMap[initialLang],
         theme: initialTheme,
+        view: savedView,
         setTheme: (theme: Theme) => {
             const isDark =
                 theme === "dark" ||
@@ -77,6 +84,10 @@ export const useUIStore = create<UIState>((set) => {
                 direction: newDir,
                 translations: translationsMap[newLocale.language as Language],
             });
+        },
+        setView: (view: "grid" | "table") => {
+            localStorage.setItem("view", view);
+            set({ view: view });
         },
     };
 });

@@ -1,3 +1,4 @@
+//TODO: Check for types and unnecessary keys
 import { z } from "zod";
 import { Member } from "./members";
 
@@ -104,13 +105,28 @@ export const ExpenseInputSchema = (
                     id: z.number(),
                     name: z.string(),
                     avatar: z.string().nullable().optional(),
-                    ratio: z.number().min(
-                        1,
-                        t("validation.min", {
-                            attribute: t("attributes.ratio"),
-                            min: "1",
-                        })
-                    ),
+                    ratio: z
+                        .number()
+                        .min(
+                            1,
+                            t("validation.min", {
+                                attribute: t("attributes.ratio"),
+                                min: "1",
+                            })
+                        )
+                        .nullable()
+                        .optional(),
+                    share: z
+                        .number()
+                        .min(
+                            1,
+                            t("validation.min", {
+                                attribute: t("attributes.ratio"),
+                                min: "1",
+                            })
+                        )
+                        .nullable()
+                        .optional(),
                 })
             )
             .nonempty(

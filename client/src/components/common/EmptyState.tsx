@@ -3,7 +3,7 @@ import { CardStack } from "./CardStack";
 
 type EmptyStateProps = {
     items: { id: number; content: ReactNode }[];
-    message: string;
+    message: string | ReactNode;
     action?: ReactNode;
 };
 
@@ -19,7 +19,7 @@ export function EmptyState({ items, message, action }: EmptyStateProps) {
             />
 
             <div className="relative z-10 bottom-4 pt-4 bg-linear-0 from-background to-background/0 from-70% flex flex-col justify-end gap-4">
-                <p className="text-center text-muted">{message}</p>
+                <div className="text-center text-muted">{message}</div>
                 {action}
             </div>
         </div>

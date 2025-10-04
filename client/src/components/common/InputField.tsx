@@ -60,16 +60,19 @@ const InputField = ({
             isDisabled={disabled}
             isInvalid={isInvalid}
             className={cn("w-full relative flex flex-col gap-1", className)}
+            aria-label={name}
             {...props}
         >
-            <Label
-                className={cn(
-                    "block text-xs text-text-subtle",
-                    isInvalid && "text-error font-medium"
-                )}
-            >
-                {resolvedLabel}
-            </Label>
+            {label && (
+                <Label
+                    className={cn(
+                        "block text-xs text-text-subtle",
+                        isInvalid && "text-error font-medium"
+                    )}
+                >
+                    {resolvedLabel}
+                </Label>
+            )}
 
             {multiline ? (
                 <TextArea
