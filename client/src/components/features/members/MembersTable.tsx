@@ -1,5 +1,6 @@
 import Amount from "@/components/common/Amount";
 import Avatar from "@/components/common/Avatar";
+import BankLogo from "@/components/common/BankLogo";
 import { Button } from "@/components/common/Button";
 import CopyButton from "@/components/common/CopyButton";
 import { GenericTable } from "@/components/common/GenericTable";
@@ -84,7 +85,18 @@ export default function MembersTable({
                     className: "hidden md:table-cell",
                     render: (member) =>
                         member.bank_info && (
-                            <div className="flex items-center">
+                            <div className="flex items-center gap-1">
+                                <CopyButton
+                                    data={member.bank_info}
+                                    className="size-8 text-muted shrink-0"
+                                    iconSize="size-4"
+                                    copyIcon={
+                                        <BankLogo
+                                            account={member.bank_info}
+                                            className="size-6"
+                                        />
+                                    }
+                                />
                                 <span
                                     className="shrink-0 text-xs font-medium font-mono"
                                     dir="ltr"
@@ -94,11 +106,6 @@ export default function MembersTable({
                                         "$1 - "
                                     )}
                                 </span>
-                                <CopyButton
-                                    data={member.bank_info}
-                                    className="size-6 text-muted shrink-0"
-                                    iconSize="size-3"
-                                />
                             </div>
                         ),
                 },

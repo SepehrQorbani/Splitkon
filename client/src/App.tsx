@@ -5,6 +5,7 @@ import { ErrorBoundary } from "./components/common/ErrorBoundary";
 import { LoadingIndicator } from "./components/common/LoadingIndicator";
 import GroupLayout from "./layouts/GroupLayout";
 import MainLayout from "./layouts/MainLayout";
+import MainError from "./pages/MainError";
 import ExpensesIndex from "./pages/expenses/Index";
 import Dashboard from "./pages/group/Dashboard";
 import MembersIndex from "./pages/members/Index";
@@ -63,9 +64,7 @@ const AppContent = () => {
 const App: React.FC = () => {
     return (
         <BrowserRouter>
-            <ErrorBoundary
-                fallback={<div>مشکلی پیش اومد! لطفاً دوباره امتحان کنید.</div>}
-            >
+            <ErrorBoundary fallback={<MainError />}>
                 <AppContent />
             </ErrorBoundary>
         </BrowserRouter>

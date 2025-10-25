@@ -11,7 +11,7 @@ import QrModal from "@/components/features/share/QrModal";
 import ShareForm from "@/components/features/share/ShareForm";
 import { useTranslations } from "@/hooks/useTranslations";
 import { useGroupStore } from "@/store";
-import { useModalStore } from "@/store/modals";
+import { useRecentGroupsStore } from "@/store/recentGroups";
 import { ApiError } from "@/types/api/errors";
 import { GroupRequest } from "@/types/api/group";
 import { GroupInput, GroupInputSchema } from "@/types/schemas/group";
@@ -45,6 +45,9 @@ function New() {
     const createGroup = useCreateGroup();
     const group = useGroupStore((state) => state.group);
     const setGroup = useGroupStore((state) => state.setGroup);
+    const addRecentGroup = useRecentGroupsStore(
+        (state) => state.addRecentGroup
+    );
     const navigate = useNavigate();
     const [step, setStep] = useState(1);
     const [searchParams, setSearchParams] = useSearchParams();
@@ -185,6 +188,12 @@ function New() {
         try {
             const result = await createGroup.mutateAsync({ data });
             setGroup(result.data);
+            addRecentGroup({
+                id: result.data.id,
+                title: result.data.title,
+                edit_token: result.data.edit_token,
+                view_token: result.data.view_token,
+            });
             setStep(3);
             window.history.pushState({}, "", `/${result.data.edit_token}`);
         } catch (error: any) {

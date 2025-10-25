@@ -399,7 +399,12 @@
         "roles": {
             "defaultPayer": "هزینه کننده پیش فرض"
         },
-        "view": "حالت نمایش"
+        "view": "نمایش",
+        "recentGroup": "گروه های اخیر",
+        "removeFromList": "حذف از لیست",
+        "recentGroupsList": "لیست گروه های اخیر",
+        "noRecentGroups": "هیچ گروهی برروی این دستگاه وجود ندارد",
+        "noFilterResult": "هیچ موردی پیدا نشد!"
     },
     "validation": {
         "bankAccount": ":attribute باید یک شماره حساب معتبر باشد",

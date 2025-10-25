@@ -6,6 +6,7 @@ import { cn } from "@/utils/cn";
 import { useMotionValueEvent, useScroll } from "motion/react";
 import { useState } from "react";
 import { NavLink } from "react-router";
+import RecentGroupMenu from "./RecentGroupMenu";
 
 export const Navbar = ({ layout }: { layout: "main" | "group" }) => {
     const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -49,7 +50,14 @@ export const Navbar = ({ layout }: { layout: "main" | "group" }) => {
                     {isDesktop && <NavItems />}
                 </div>
                 <div className="flex items-center gap-2">
-                    {isDesktop ? <UiConfigMenu /> : <MobileMenu />}
+                    {isDesktop ? (
+                        <>
+                            <RecentGroupMenu />
+                            <UiConfigMenu />
+                        </>
+                    ) : (
+                        <MobileMenu />
+                    )}
                 </div>
             </nav>
         </>

@@ -1,14 +1,20 @@
 import { useCopyToClipboard } from "@/hooks/useCopyToClipboard";
-import { Button } from "./Button";
-import { IconChecks, IconCopy } from "@tabler/icons-react";
 import { useTranslations } from "@/hooks/useTranslations";
 import { cn } from "@/utils/cn";
 import type { Icon } from "@tabler/icons-react";
+import { IconChecks, IconCopy } from "@tabler/icons-react";
+import {
+    ReactElement,
+    cloneElement,
+    createElement,
+    isValidElement,
+} from "react";
+import { Button } from "./Button";
 
 type CopyButtonProps = {
     data: string;
     className?: string;
-    copyIcon?: Icon;
+    copyIcon?: Icon | ReactElement;
     copiedIcon?: Icon;
     iconSize?: string;
 };
@@ -20,22 +26,33 @@ export function CopyIcons({
     iconSize,
 }: {
     isCopied: boolean;
-    copyIcon?: Icon;
+    copyIcon?: Icon | ReactElement;
     copiedIcon?: Icon;
     iconSize?: string;
 }) {
-    const CopyIconEl = copyIcon ?? IconCopy;
+    const CopyIconComponent = isValidElement(copyIcon)
+        ? undefined
+        : (copyIcon as any) ?? IconCopy;
     const CopiedIconEl = copiedIcon ?? IconChecks;
 
     return (
         <>
-            <CopyIconEl
-                className={cn(
-                    "size-4 transition-all duration-300",
-                    iconSize,
-                    isCopied ? "scale-0" : "scale-100"
-                )}
-            />
+            {isValidElement(copyIcon)
+                ? cloneElement(copyIcon as any, {
+                      className: cn(
+                          "size-4 transition-all duration-300",
+                          iconSize,
+                          isCopied ? "scale-0" : "scale-100",
+                          (copyIcon as any).props?.className
+                      ),
+                  })
+                : createElement(CopyIconComponent as any, {
+                      className: cn(
+                          "size-4 transition-all duration-300",
+                          iconSize,
+                          isCopied ? "scale-0" : "scale-100"
+                      ),
+                  })}
             <CopiedIconEl
                 className={cn(
                     "absolute size-4 transition-all duration-300",

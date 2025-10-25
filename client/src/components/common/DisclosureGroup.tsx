@@ -44,57 +44,64 @@ export function DisclosureGroup({
             className={cn("space-y-2 w-full relative", className)}
         >
             {items.map((item) => {
-                const [ref, { height }] = useMeasure();
-                return (
-                    <Disclosure key={item.id}>
-                        {({ isExpanded }) => (
-                            <>
-                                <Heading>
-                                    <Button
-                                        slot="trigger"
-                                        className="flex gap-2 w-full p-3 hover:cursor-pointer text-sm text-start"
-                                    >
-                                        <ExpandableIcon
-                                            isExpanded={isExpanded}
-                                        />
-                                        {item.title}
-                                    </Button>
-                                </Heading>
-                                <AnimatePresence>
-                                    {isExpanded && (
-                                        <motion.div
-                                            key={`disclosure-content-${item.id}`}
-                                            initial={{ opacity: 0, height: 0 }}
-                                            animate={{
-                                                opacity: 1,
-                                                height: height || 100,
-                                            }}
-                                            exit={{ opacity: 0, height: 0 }}
-                                            transition={{
-                                                duration: 0.3,
-                                                ease: "easeInOut",
-                                                height: { duration: 0.3 },
-                                                opacity: { duration: 0.2 },
-                                            }}
-                                            style={{ overflow: "hidden" }}
-                                            className="ps-8 text-start"
-                                        >
-                                            <div
-                                                ref={ref}
-                                                className="p-4 text-gray-700 rounded bg-surface/40 border shadow-xs border-surface text-sm leading-8"
-                                            >
-                                                <DisclosurePanel>
-                                                    {item.content}
-                                                </DisclosurePanel>
-                                            </div>
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
-                            </>
-                        )}
-                    </Disclosure>
-                );
+                return <DisclosureItem item={item} key={item.id} />;
             })}
         </AriaDisclosureGroup>
+    );
+}
+
+type DisclosureItemProps = {
+    item: { id: string | number; title: string; content: string };
+};
+
+function DisclosureItem({ item }: DisclosureItemProps) {
+    const [ref, { height }] = useMeasure();
+
+    return (
+        <Disclosure>
+            {({ isExpanded }) => (
+                <>
+                    <Heading>
+                        <Button
+                            slot="trigger"
+                            className="flex gap-2 w-full p-3 hover:cursor-pointer text-sm text-start"
+                        >
+                            <ExpandableIcon isExpanded={isExpanded} />
+                            {item.title}
+                        </Button>
+                    </Heading>
+                    <AnimatePresence>
+                        {isExpanded && (
+                            <motion.div
+                                key={`disclosure-content-${item.id}`}
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{
+                                    opacity: 1,
+                                    height: height || 100,
+                                }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{
+                                    duration: 0.3,
+                                    ease: "easeInOut",
+                                    height: { duration: 0.3 },
+                                    opacity: { duration: 0.2 },
+                                }}
+                                style={{ overflow: "hidden" }}
+                                className="ps-8 text-start"
+                            >
+                                <div
+                                    ref={ref}
+                                    className="p-4 text-gray-700 rounded bg-surface/40 border shadow-xs border-surface text-sm leading-8"
+                                >
+                                    <DisclosurePanel>
+                                        {item.content}
+                                    </DisclosurePanel>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </>
+            )}
+        </Disclosure>
     );
 }

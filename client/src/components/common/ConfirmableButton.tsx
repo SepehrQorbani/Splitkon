@@ -1,19 +1,22 @@
-import { Button, ButtonProps } from "./Button";
+import { cn } from "@/utils/cn";
+import { AnimatePresence, motion } from "motion/react";
 import { FC, ReactNode, useRef, useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
 import { Pressable } from "react-aria-components";
+import { Button, ButtonProps } from "./Button";
 
 interface ConfirmableButtonProps extends Omit<ButtonProps, "onPress"> {
     onConfirm: () => void;
     confirm?: ReactNode;
     cancel?: ReactNode;
     children?: ReactNode;
+    className?: string;
 }
 export const ConfirmableButton: FC<ConfirmableButtonProps> = ({
     onConfirm,
     confirm = "Confirm",
     cancel = "Cancel",
     children = "Delete",
+    className,
     intent,
     ...props
 }) => {
@@ -31,14 +34,16 @@ export const ConfirmableButton: FC<ConfirmableButtonProps> = ({
                     <div className="absolute bg-transparent inset-0 z-99999"></div>
                 </Pressable>
             )}
-            <div className="relative" ref={containerRef}>
+            <div className="relative w-full" ref={containerRef}>
                 <Button
                     variant={props.variant || "solid"}
                     intent={intent}
                     size={props.size}
                     onPress={() => setConfirming(true)}
                     {...props}
-                    className={confirming ? "opacity-0 transition-all" : ""}
+                    className={
+                        confirming ? "opacity-10 transition-all" : cn(className)
+                    }
                 >
                     {children}
                 </Button>
@@ -50,7 +55,7 @@ export const ConfirmableButton: FC<ConfirmableButtonProps> = ({
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.95 }}
                             // transition={{ duration: 0.2 }}
-                            className="absolute end-0 -top-1 z-100000 rounded p-1 bg-white shadow-lg flex gap-2"
+                            className="absolute end-0 -top-1 z-100000 rounded p-1 bg-surface-subtle shadow-lg flex gap-2"
                         >
                             <Button
                                 variant={props.variant || "solid"}

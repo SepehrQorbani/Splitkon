@@ -23,6 +23,7 @@ import {
 } from "@tabler/icons-react";
 import { Heading } from "react-aria-components";
 import BalanceCard from "../balance/BalanceCard";
+import BankLogo from "@/components/common/BankLogo";
 
 type Props = { member: Member | null; onClose: () => void };
 
@@ -73,8 +74,14 @@ function MemberDetail({ member, onClose }: Props) {
                                 </span>
                                 <CopyButton
                                     data={member?.bank_info}
-                                    className="size-6 text-muted shrink-0"
-                                    iconSize="size-3"
+                                    className="size-8 text-muted shrink-0"
+                                    iconSize="size-4"
+                                    copyIcon={
+                                        <BankLogo
+                                            account={member.bank_info}
+                                            className="size-6"
+                                        />
+                                    }
                                 />
                             </div>
                         </div>

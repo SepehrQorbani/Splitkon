@@ -8,7 +8,7 @@ import { Member } from "@/types";
 
 function MemberFormModal() {
     const { t } = useTranslations();
-    console.log("member form modal");
+
     return (
         <Drawer modalKey="member-form">
             {({ data, close }) => {

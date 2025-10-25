@@ -335,7 +335,13 @@
         "cloneMembers": "Clone only the member list",
         "roles": {
             "defaultPayer": "Default Payer"
-        }
+        },
+        "view": "View",
+        "recentGroup": "Recent group",
+        "removeFromList": "Remove From List",
+        "recentGroupsList": "Recent Group List",
+        "noRecentGroups": "Recent group list is empty!",
+        "noFilterResult": "No result!"
     },
     "validation": {
         "bankAccount": "The :attribute must be a valid bank account number",

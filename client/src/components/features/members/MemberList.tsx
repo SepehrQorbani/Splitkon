@@ -1,4 +1,5 @@
 import Avatar from "@/components/common/Avatar";
+import BankLogo from "@/components/common/BankLogo";
 import { Button } from "@/components/common/Button";
 import { ConfirmableButton } from "@/components/common/ConfirmableButton";
 import CopyButton from "@/components/common/CopyButton";
@@ -58,7 +59,7 @@ export function MemberList({
     const defaultPayer = members?.find((m) => hasRole("default", m));
 
     const totalRatio = useMemo(
-        () => members.reduce((pv, cv) => cv.ratio + pv, 0),
+        () => members.reduce((pv, cv) => (cv.ratio ?? 0) + pv, 0),
         [members]
     );
 
@@ -225,15 +226,23 @@ export function MemberList({
                                                 <CopyButton
                                                     data={item.bank_info}
                                                     className="size-8 text-muted shrink-0"
-                                                    copyIcon={IconCreditCard}
+                                                    copyIcon={
+                                                        <BankLogo
+                                                            account={
+                                                                item.bank_info
+                                                            }
+                                                            className="size-6"
+                                                        />
+                                                    }
                                                 />
+
                                                 <span
-                                                    className="shrink-0"
+                                                    className="shrink-0 font-mono"
                                                     dir="ltr"
                                                 >
                                                     {item.bank_info.replace(
                                                         /(\S{4})(?=\S)/g,
-                                                        "$1 "
+                                                        "$1-"
                                                     )}
                                                 </span>
                                             </div>
@@ -242,7 +251,7 @@ export function MemberList({
                                 </div>
                                 <div className="flex gap-2 mb-auto">
                                     <Button
-                                        className="w-8 h-8 p-0"
+                                        className="w-8 h-8 p-0 shrink-0"
                                         isDisabled={disabled}
                                         variant={
                                             selectedMember?.id === item.id
@@ -276,6 +285,7 @@ export function MemberList({
                                         isDisabled={
                                             selectedMember?.id === item.id
                                         }
+                                        className="shrink-0"
                                     >
                                         <IconTrash className="size-4" />
                                     </ConfirmableButton>

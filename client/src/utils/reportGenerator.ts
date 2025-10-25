@@ -5,6 +5,7 @@ import { BalanceTransaction } from "@/types/schemas/balance";
 import { Repay } from "@/types/schemas/repays";
 import { Group } from "@/types/schemas/group";
 import { formatDate } from "./date";
+import { RecentGroup } from "@/store/recentGroups";
 
 // Constants for Emojis
 const EMOJIS = {
@@ -24,8 +25,12 @@ const EMOJIS = {
     DESCRIPTION: "📝",
     TRANSFER: "↔️",
     AMOUNT: "💵",
-    GROUP: "🗂",
+    GROUP: "🗂️",
     STAT: "📊",
+    EYE: "👁️",
+    EDIT: "✏️",
+    RECENT: "♻️",
+    SQUARE: "◾️",
 };
 
 const UNKNOWN_MEMBER_NAME = "[Unknown Member]";
@@ -303,4 +308,42 @@ ${EMOJIS.DATE} ${t("attributes.date")}: ${formatDate(
         .join("\n");
 
     return report;
+}
+
+export function generateRecentGroupsReport(
+    recentGroups: RecentGroup[],
+    options: { t: (key: string) => string }
+): string {
+    const { t } = options;
+
+    if (recentGroups.length === 0) {
+        return t("ui.noRecentGroups");
+    }
+
+    const lines = recentGroups.map((group) => {
+        const name = group.title;
+        const viewLink = group.view_token ? `/${group.view_token}` : "";
+        const editLink = group.edit_token ? `/${group.edit_token}` : "";
+
+        const links = [];
+        if (editLink)
+            links.push(
+                `${t("ui.editLink")}:\n${window.location.origin}${editLink}`
+            );
+        if (viewLink)
+            links.push(
+                `${t("ui.viewLink")}:\n${window.location.origin}${viewLink}`
+            );
+
+        return `${EMOJIS.SQUARE} ${name}\n${links.join("\n")}`;
+    });
+
+    const fullReport = [
+        `${EMOJIS.RECENT} ${t("recentGroupsList")}\n`,
+        // "━".repeat(15),
+        lines.join("\n\n"),
+        `\n\n https://splitkon.ir`,
+    ].join("\n");
+
+    return fullReport;
 }

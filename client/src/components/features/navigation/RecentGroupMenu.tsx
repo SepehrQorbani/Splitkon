@@ -1,13 +1,12 @@
 import { Button } from "@/components/common/Button";
-import { LanguageToggle } from "@/components/common/LanguageToggle";
-import { ThemeToggle } from "@/components/common/ThemeToggle";
+import { RecentGroupsList } from "@/components/common/RecentGroupsList";
 import { useTranslations } from "@/hooks/useTranslations";
 import { cn } from "@/utils/cn";
-import { IconLanguage, IconPalette, IconSunMoon } from "@tabler/icons-react";
+import { IconHistory } from "@tabler/icons-react";
 import { useState } from "react";
-import { Label, MenuTrigger, Popover } from "react-aria-components";
+import { MenuTrigger, Popover } from "react-aria-components";
 
-function UiConfigMenu({}) {
+function RecentGroupMenu({}) {
     const { t, direction } = useTranslations();
     const [isOpen, setIsOpen] = useState(false);
 
@@ -26,34 +25,23 @@ function UiConfigMenu({}) {
                     setIsOpen((prevVal) => !prevVal);
                 }}
             >
-                <IconPalette className="size-4" />
+                <IconHistory className="size-4" />
             </Button>
             <Popover
-                dir={direction}
                 isOpen={isOpen}
                 onOpenChange={setIsOpen}
                 placement={direction === "ltr" ? "bottom end" : "bottom start"}
                 className="p-2 border border-border overflow-auto select-none outline-none rounded bg-surface text-sm shadow-lg ring-0 data-[entering]:animate-slide-down-in data-[exiting]:animate-slide-up-out    "
             >
-                <div dir={direction} className="flex flex-col gap-4">
-                    <div className="flex items-center justify-between gap-8">
-                        <Label>
-                            <IconSunMoon className="size-4 inline me-1" />
-                            {t("ui.theme")}
-                        </Label>
-                        <ThemeToggle />
-                    </div>
-                    <div className="flex items-center justify-between gap-8">
-                        <Label>
-                            <IconLanguage className="size-4 inline me-1" />
-                            {t("ui.language")}
-                        </Label>
-                        <LanguageToggle />
-                    </div>
+                <div
+                    dir={direction}
+                    className="flex flex-col max-h-64 max-w-64 w-64"
+                >
+                    <RecentGroupsList />
                 </div>
             </Popover>
         </MenuTrigger>
     );
 }
 
-export default UiConfigMenu;
+export default RecentGroupMenu;

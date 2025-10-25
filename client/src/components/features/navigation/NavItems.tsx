@@ -1,6 +1,7 @@
 import { NavItem } from "@/components/features/navigation/NavItem";
 import { usePermissions } from "@/hooks/usePermissions";
 import { useTranslations } from "@/hooks/useTranslations";
+import { PermissionKey } from "@/types";
 import {
     IconCash,
     IconCashBanknoteFilled,
@@ -27,7 +28,7 @@ export interface NavItem {
     icon: React.ComponentType<{ className?: string }>;
     activeIcon?: React.ComponentType<{ className?: string }>;
     className?: string;
-    permission?: string;
+    permission?: PermissionKey;
 }
 
 interface NavItemsProps {

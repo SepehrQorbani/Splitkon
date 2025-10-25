@@ -1,5 +1,6 @@
 import { Button } from "@/components/common/Button";
 import { LanguageToggle } from "@/components/common/LanguageToggle";
+import RecentGroupsDisclosure from "@/components/common/RecentGroupsDisclosure";
 import { ThemeToggle } from "@/components/common/ThemeToggle";
 import { useTranslations } from "@/hooks/useTranslations";
 import { cn } from "@/utils/cn";
@@ -9,6 +10,7 @@ import {
     IconSunMoon,
     IconX,
 } from "@tabler/icons-react";
+import { useEffect, useState } from "react";
 import {
     Dialog,
     DialogTrigger,
@@ -17,9 +19,8 @@ import {
     Modal,
     ModalOverlay,
 } from "react-aria-components";
-import { NavItems } from "./NavItems";
-import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
+import { NavItems } from "./NavItems";
 
 function MobileMenu() {
     const { t, direction } = useTranslations();
@@ -57,24 +58,29 @@ function MobileMenu() {
                             <Heading slot="title"></Heading>
                         </div>
 
-                        <div className="flex flex-col justify-between h-full">
+                        <div className="flex flex-col justify-between gap-2 h-full overflow-y-auto relative">
                             <div className="space-y-2">
                                 <NavItems />
-                            </div>
-                            <div className="flex flex-col gap-4 bg-background- p-4 rounded border border-border">
-                                <div className="flex items-center justify-between gap-2">
-                                    <Label>
-                                        <IconSunMoon className="size-4 inline me-1" />
-                                        {t("ui.theme")}
-                                    </Label>
-                                    <ThemeToggle />
+                                <div className="px-1">
+                                    <RecentGroupsDisclosure />
                                 </div>
-                                <div className="flex items-center justify-between gap-2">
-                                    <Label>
-                                        <IconLanguage className="size-4 inline me-1" />
-                                        {t("ui.language")}
-                                    </Label>
-                                    <LanguageToggle />
+                            </div>
+                            <div className="sticky bottom-0 bg-surface pt-2">
+                                <div className="flex flex-col gap-4 p-4 rounded border border-border">
+                                    <div className="flex items-center justify-between gap-2">
+                                        <Label>
+                                            <IconSunMoon className="size-4 inline me-1" />
+                                            {t("ui.theme")}
+                                        </Label>
+                                        <ThemeToggle />
+                                    </div>
+                                    <div className="flex items-center justify-between gap-2">
+                                        <Label>
+                                            <IconLanguage className="size-4 inline me-1" />
+                                            {t("ui.language")}
+                                        </Label>
+                                        <LanguageToggle />
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -18,13 +18,23 @@ function ShareForm() {
         timeout: 2000,
     });
     const { isShared, error: shareError, canShare, share } = useShare();
+    const openModal = useModalStore((state) => state.openModal);
 
-    if (!group) return;
+    if (!group) {
+        return (
+            <div className="flex items-center justify-center flex-1 p-12">
+                <div
+                    className="inline-block animate-spin rounded-full border-2 border-t-action border-r-action border-b-border border-l-border size-4"
+                    role="status"
+                    aria-label="Loading"
+                />
+            </div>
+        );
+    }
 
     const baseUrl = import.meta.env.VITE_FRONTEND_URL || window.location.origin;
     const editUrl = group?.edit_token ? `${baseUrl}/${group.edit_token}` : null;
     const viewUrl = `${baseUrl}/${group?.view_token}`;
-    const openModal = useModalStore((state) => state.openModal);
     const shareData = (url: string) => ({
         title: group?.title ?? "",
         text: group?.description ?? "",
