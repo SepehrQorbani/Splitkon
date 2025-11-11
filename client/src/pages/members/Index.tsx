@@ -97,7 +97,6 @@ function MembersIndex({}: Props) {
                             />
                         </div>
                     )}
-                    {/* <MemberDetailModal /> */}
                 </>
             ) : (
                 <EmptyState
@@ -137,23 +136,6 @@ function MembersIndex({}: Props) {
                             </NavLink>
                         )
                     }
-                    // message={t("ui.noMember")}
-                    // action={
-                    //     can("addMembers") &&
-                    //     members.length == 0 && (
-                    //         <NavLink
-                    //             to={`/${token}/setting`}
-                    //             className={getButtonStyles({
-                    //                 className: "mx-auto",
-                    //             })}
-                    //         >
-                    //             <div className="flex gap-1 items-center text-sm">
-                    //                 <IconSettings className="size-4" />
-                    //                 <span>{t("ui.settings")}</span>
-                    //             </div>
-                    //         </NavLink>
-                    //     )
-                    // }
                 />
             )}
         </AsyncContent>

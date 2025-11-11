@@ -16,6 +16,7 @@ import {
 } from "motion/react";
 import { useEffect, useState } from "react";
 import QrModal from "../features/share/QrModal";
+import ExportModal from "../features/export/ExportModal";
 
 const modalRegistry: Record<string, React.ReactNode> = {
     members: <MemberDetailModal />,
@@ -26,6 +27,7 @@ const modalRegistry: Record<string, React.ReactNode> = {
     "repay-form": <RepayFormModal />,
     share: <ShareModal />,
     "qr-code": <QrModal />,
+    export: <ExportModal />,
 };
 
 export function ModalRoot() {

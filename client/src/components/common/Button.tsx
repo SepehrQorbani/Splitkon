@@ -56,7 +56,7 @@ export function getButtonStyles({
                 "text-action hover:bg-action-subtle hover:text-action-strong focus:ring-action focus:ring-inset focus:ring-offset-0",
             danger: "text-error hover:bg-error-subtle hover:text-error-strong focus:ring-error disabled:text-error-subtle disabled:bg-transparent",
             neutral:
-                "text-surface-fg hover:bg-surface-subtle hover:text-surface-fg focus:ring-error disabled:text-error-subtle disabled:bg-transparent",
+                "text-surface-fg hover:bg-surface-subtle hover:text-surface-fg focus:ring-action disabled:text-error-subtle disabled:bg-transparent",
         },
         input: {
             primary: defaultInputClass + " focus:ring-3 focus:ring-offset-0",

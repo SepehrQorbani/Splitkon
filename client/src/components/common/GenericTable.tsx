@@ -13,7 +13,7 @@ import {
     IconSortAscending2,
     IconSortDescending2,
 } from "@tabler/icons-react";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { cn } from "@/utils/cn";
 
 type GenericTableProps<T> = {
@@ -30,12 +30,10 @@ type GenericTableProps<T> = {
     }[];
 };
 
-export function GenericTable<T>({
-    items,
-    filterConfig,
-    FilterComponent,
-    columns,
-}: GenericTableProps<T>) {
+export const GenericTable = React.forwardRef(function GenericTableInner<T>(
+    { items, filterConfig, FilterComponent, columns }: GenericTableProps<T>,
+    ref: React.Ref<HTMLTableElement> | null
+) {
     const { result, ...filterProps } = useFilters(items ?? [], filterConfig);
     const toggleSort = (field: string) => {
         const sortBy = filterProps.filters.sortBy;
@@ -60,8 +58,11 @@ export function GenericTable<T>({
                 <FilterComponent {...filterProps} result={result} />
             </div>
             <div>
-                <div className="max-h-[200px]- w-full overflow-auto text-nowrap scroll-pt-[2.321rem] relative text-action">
-                    <Table className="border-spacing-0 w-full">
+                <div className="max-h-[200px]- w-full overflow-auto text-nowrap scroll-pt-[2.321rem] text-action relative">
+                    <Table
+                        ref={ref}
+                        className="border-spacing-0 w-full relative"
+                    >
                         {/* <div className="max-h-[200px]- w-full overflow-auto text-nowrap scroll-pt-[2.321rem] relative text-action">
                         <Table
                             selectionMode="multiple"
@@ -134,4 +135,6 @@ export function GenericTable<T>({
             </div>
         </Card>
     );
-}
+}) as <T>(
+    props: GenericTableProps<T> & { ref?: React.Ref<HTMLTableElement> }
+) => React.ReactElement | null;

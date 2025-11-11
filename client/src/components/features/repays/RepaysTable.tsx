@@ -65,7 +65,7 @@ export default function RepaysTable({ repays }: { repays: Repay[] }) {
                 },
                 {
                     key: "amount",
-                    label: t("ui.amount"),
+                    label: t("attributes.amount"),
                     sortable: true,
                     render: (repay) => (
                         <div>

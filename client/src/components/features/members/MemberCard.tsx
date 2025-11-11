@@ -15,6 +15,7 @@ import {
     IconChecks,
     IconChevronLeft,
     IconCurrencyDollar,
+    IconDownload,
     IconHexagonFilled,
     IconPercentage,
     IconTransfer,
@@ -134,6 +135,16 @@ function MemberCard({ member }: MemberCardProps) {
                         data={generateMemberReport(member, memberBalance)}
                         className="size-8 p-1 text-muted"
                     />
+                    <Button
+                        onPress={() => {
+                            openModal("export", { member: member });
+                        }}
+                        intent="neutral"
+                        variant="ghost"
+                        className="h-8 w-8 p-1"
+                    >
+                        <IconDownload className="size-4 text-muted" />
+                    </Button>
                 </div>
                 <Button
                     variant="ghost"

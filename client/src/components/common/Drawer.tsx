@@ -33,21 +33,20 @@ export function Drawer({ modalKey, children }: DrawerProps) {
     const contentRef = useRef(null);
 
     useEffect(() => {
-        const scrollableDiv = scrollableRef.current;
-        if (!scrollableDiv) return;
+        const el = scrollableRef.current;
+        if (!el) return;
 
         const handleScroll = () => {
-            setIsScrolled(scrollableDiv.scrollTop > 0);
+            if (el.scrollTop > 0) {
+                el.classList.add("scrolled");
+            } else {
+                el.classList.remove("scrolled");
+            }
         };
 
-        scrollableDiv.addEventListener("scroll", handleScroll, {
-            passive: true,
-        });
-
-        return () => {
-            scrollableDiv.removeEventListener("scroll", handleScroll);
-        };
-    }, [scrollableRef.current]);
+        el.addEventListener("scroll", handleScroll, { passive: true });
+        return () => el.removeEventListener("scroll", handleScroll);
+    }, []);
 
     const handleDragEnd = (
         event: MouseEvent | TouchEvent | PointerEvent,
@@ -87,7 +86,10 @@ export function Drawer({ modalKey, children }: DrawerProps) {
                         onClick={(e) => e.stopPropagation()}
                         className="absolute top-18 bottom-14 md:top-32 md:bottom-0 w-full md:max-w-md flex flex-col overflow-hidden"
                     >
-                        <Dialog className="absolute bottom-0 outline-hidden w-full h-full overflow-hidden flex flex-col md:px-2 md:pt-2 justify-end">
+                        <Dialog
+                            className="absolute bottom-0 outline-hidden w-full h-full overflow-hidden flex flex-col md:px-2 md:pt-2 justify-end"
+                            aria-label={modalKey}
+                        >
                             <Pressable onPress={() => closeModal(modalKey)}>
                                 <div
                                     className="fixed inset-0"
@@ -121,7 +123,7 @@ export function Drawer({ modalKey, children }: DrawerProps) {
                             >
                                 <motion.div
                                     className={cn(
-                                        "relative max-h-full h-fit w-full overflow-auto bg-surface border border-border shadow-center rounded-t-xl"
+                                        "group relative max-h-full h-fit w-full overflow-auto bg-surface border border-border shadow-center rounded-t-xl"
                                     )}
                                     ref={scrollableRef}
                                 >
@@ -133,11 +135,7 @@ export function Drawer({ modalKey, children }: DrawerProps) {
                                         <>
                                             <div
                                                 slot="title"
-                                                className={cn(
-                                                    "sticky top-0 z-10 bg-surface *:select-none text-sm font-semibold mb-4 p-2 border-border-subtle animate transition-all duration-150",
-                                                    isScrolled &&
-                                                        "shadow-sm border-b border-border-subtle"
-                                                )}
+                                                className="sticky top-0 z-10 bg-surface *:select-none text-sm font-semibold mb-4 p-2 border-border-subtle animate transition-all duration-150 group-[.scrolled]:shadow-sm group-[.scrolled]:border-b"
                                                 onPointerDown={(e) =>
                                                     dragControls.start(e)
                                                 }

@@ -7,6 +7,7 @@ type Props = {
     size?: "xs" | "sm" | "md" | "lg";
     className?: string;
     style?: CSSProperties;
+    imgStyle?: CSSProperties;
     alt?: string;
 };
 function getFallbackLetters(text: string): string {
@@ -30,6 +31,7 @@ function Avatar({
     className,
     size = "md",
     style,
+    imgStyle,
 }: Props) {
     const sizeClass = {
         xs: "size-4 text-[6px]",
@@ -60,6 +62,7 @@ function Avatar({
                     src={src}
                     alt={alt}
                     className="w-full h-full object-cover"
+                    style={imgStyle}
                 />
             ) : letters ? (
                 <span

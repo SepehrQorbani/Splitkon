@@ -298,6 +298,8 @@
         "totalExpenses": "Total Expenses",
         "update": "Update",
         "yes": "Yes",
+        "export": "Export",
+        "download": "Download",
         "time": {
             "zeroDays": "Today",
             "year": ":count year",

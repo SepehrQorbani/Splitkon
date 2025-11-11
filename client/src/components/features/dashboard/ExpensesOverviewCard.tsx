@@ -1,16 +1,22 @@
+import { Button } from "@/components/common/Button";
 import { Card } from "@/components/common/Card";
 import ToggleButtonGroup from "@/components/common/ToggleButtonGroup";
 import { DailyExpenseChart } from "@/components/features/expenses/DailyExpenseChart";
+import { useDomCapture } from "@/hooks/useDomCapture";
 import { useTranslations } from "@/hooks/useTranslations";
 import { Summary } from "@/types/schemas/summary";
 import { cn } from "@/utils/cn";
+import { expandScrollPlugin } from "@/utils/expandScrollPlugin";
+import { logoOverlayPlugin } from "@/utils/logoOverlayPlugin";
 import {
     IconChartArea,
     IconChartBar,
     IconChartHistogram,
     IconChartLine,
+    IconPhotoDown,
 } from "@tabler/icons-react";
-import { useState } from "react";
+import { snapdom } from "@zumer/snapdom";
+import { useRef, useState } from "react";
 
 interface ExpensesOverviewCardProps {
     summary: Summary;
@@ -24,6 +30,11 @@ export function ExpensesOverviewCard({
 }: ExpensesOverviewCardProps) {
     const { t } = useTranslations();
     const [chartType, setChartType] = useState<"area" | "line" | "bar">("bar");
+    const { targetRef, capture } = useDomCapture({
+        filename: "splitkon-members",
+        withLogo: true,
+        logoOptions: { height: 12, opacity: 0.85, margin: 10 },
+    });
 
     return (
         <Card className={cn("p-1 justify-between", className)}>
@@ -33,6 +44,16 @@ export function ExpensesOverviewCard({
                     <h4 className="text-sm font-medium ">
                         {t("dailyExpenses")}
                     </h4>
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onPress={() => {
+                            capture();
+                        }}
+                        className="p-1"
+                    >
+                        <IconPhotoDown className="size-4" />
+                    </Button>
                 </div>
 
                 <ToggleButtonGroup
@@ -55,6 +76,7 @@ export function ExpensesOverviewCard({
                 />
             </div>
             <DailyExpenseChart
+                ref={targetRef}
                 groupToken={groupToken}
                 chartType={chartType}
                 onChartTypeChange={setChartType}

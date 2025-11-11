@@ -68,7 +68,7 @@ export default function ExpensesTable({ expenses }: { expenses: Expense[] }) {
                 },
                 {
                     key: "amount",
-                    label: t("ui.amount"),
+                    label: t("attributes.amount"),
                     sortable: true,
                     render: (expense) => (
                         <div>

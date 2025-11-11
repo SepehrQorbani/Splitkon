@@ -4,12 +4,23 @@ import { usePermissions } from "@/hooks/usePermissions";
 import { useTranslations } from "@/hooks/useTranslations";
 import { useMemberStore } from "@/store";
 import { useModalStore } from "@/store/modals";
-import { IconCashPlus, IconShare, IconTransfer } from "@tabler/icons-react";
+import {
+    IconCashPlus,
+    IconDownload,
+    IconShare,
+    IconTransfer,
+} from "@tabler/icons-react";
 import React from "react";
 import { ActionButton } from "./ActionMenuButtons";
 import { GroupBottomNavbar } from "./GroupBottomNavbar";
 
 const actionButtons: ActionButton[] = [
+    {
+        id: "export",
+        icon: <IconDownload className="size-4 shrink-0" />,
+        title: "ui.export",
+        showLabel: false,
+    },
     {
         id: "share",
         icon: <IconShare className="size-4 shrink-0" />,

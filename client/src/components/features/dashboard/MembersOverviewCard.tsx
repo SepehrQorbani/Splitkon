@@ -9,11 +9,17 @@ import { cn } from "@/utils/cn";
 import {
     IconChecks,
     IconPercentage,
+    IconPhotoDown,
     IconUser,
     IconUsers,
 } from "@tabler/icons-react";
-import { FC } from "react";
+import { FC, useRef } from "react";
 import { Link } from "react-router";
+import { Button } from "@/components/common/Button";
+import { expandScrollPlugin } from "@/utils/expandScrollPlugin";
+import { snapdom } from "@zumer/snapdom";
+import { logoOverlayPlugin } from "@/utils/logoOverlayPlugin";
+import { useDomCapture } from "@/hooks/useDomCapture";
 
 interface MembersOverviewCardProps {
     summary: Summary;
@@ -27,6 +33,13 @@ export const MembersOverviewCard: FC<MembersOverviewCardProps> = ({
     className,
 }) => {
     const { t } = useTranslations();
+
+    const { targetRef, capture } = useDomCapture({
+        filename: "splitkon-members",
+        withLogo: true,
+        logoOptions: { height: 10, opacity: 0.9, margin: 8 },
+    });
+
     const memberBalanceDistribution = summary?.net_balances.reduce(
         (prev, curr) => {
             if (curr.net > 0)
@@ -68,6 +81,16 @@ export const MembersOverviewCard: FC<MembersOverviewCardProps> = ({
                             </span>
                         </div>
                     </div>
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onPress={() => {
+                            capture();
+                        }}
+                        className="mb-auto p-1"
+                    >
+                        <IconPhotoDown className="size-4" />
+                    </Button>
                 </div>
                 <div className="flex flex-col justify-between">
                     <h4 className="text-sm font-medium ">
@@ -88,7 +111,10 @@ export const MembersOverviewCard: FC<MembersOverviewCardProps> = ({
                         membersCount={summary.members_count}
                         memberBalanceDistribution={memberBalanceDistribution}
                     />
-                    <div className="max-h-48 overflow-y-auto border border-border rounded">
+                    <div
+                        className="max-h-48 overflow-y-auto border border-border rounded bg-surface relative"
+                        ref={targetRef}
+                    >
                         {members.map((member) => {
                             return (
                                 <div
