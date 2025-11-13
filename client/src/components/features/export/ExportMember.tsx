@@ -21,11 +21,7 @@ type Props = { member: Member };
 type ExportStyle = "table" | "cards";
 
 function ExportMember({ member }: Props) {
-    const [exportSection, setExportSection] = useState([
-        "summary",
-        "pending",
-        "expenses",
-    ]);
+    const [exportSection, setExportSection] = useState(["summary", "pending"]);
     const [exportStyle, setExportStyle] = useState<ExportStyle>("table");
     const { targetRef, capture } = useDomCapture({
         filename: "splitkon-members",
@@ -33,6 +29,8 @@ function ExportMember({ member }: Props) {
         logoOptions: { height: 10, opacity: 0.9, margin: 8 },
     });
     const group = useGroupStore((state) => state.group);
+    const baseUrl = import.meta.env.VITE_FRONTEND_URL || window.location.origin;
+    const [qrUrl, setQrUrl] = useState(`${baseUrl}/${group?.view_token}`);
 
     return (
         <div className="relative">
@@ -56,6 +54,8 @@ function ExportMember({ member }: Props) {
                         icon: <IconCash className="size-4" />,
                     },
                 ]}
+                qrUrl={qrUrl}
+                onQrUrlChange={setQrUrl}
             />
             <div
                 ref={targetRef}
@@ -105,10 +105,10 @@ function ExportMember({ member }: Props) {
                     {exportStyle === "table" ? (
                         <>
                             <Separator className="border-dashed border-border h-px" />
-                            <SectionFooter group={group} />
+                            <SectionFooter url={qrUrl} />
                         </>
                     ) : (
-                        <SectionFooterCard group={group} />
+                        <SectionFooterCard url={qrUrl} />
                     )}
                 </div>
             </div>

@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { preCache, snapdom } from "@zumer/snapdom";
+import { snapdom } from "@zumer/snapdom";
 import { expandScrollPlugin } from "@/utils/expandScrollPlugin";
 import { logoOverlayPlugin } from "@/utils/logoOverlayPlugin";
 
@@ -32,9 +32,10 @@ export const useDomCapture = <T extends HTMLElement = HTMLDivElement>({
         }
 
         try {
-            await preCache(targetRef.current, {
-                embedFonts,
-            });
+            // console.log(preCache);
+            // await preCache(targetRef.current, {
+            //     embedFonts,
+            // });
             const outputImage = await snapdom(targetRef.current, {
                 scale,
                 backgroundColor,

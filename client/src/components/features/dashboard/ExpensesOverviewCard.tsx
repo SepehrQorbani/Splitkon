@@ -31,7 +31,7 @@ export function ExpensesOverviewCard({
     const { t } = useTranslations();
     const [chartType, setChartType] = useState<"area" | "line" | "bar">("bar");
     const { targetRef, capture } = useDomCapture({
-        filename: "splitkon-members",
+        filename: "splitkon-chart",
         withLogo: true,
         logoOptions: { height: 12, opacity: 0.85, margin: 10 },
     });

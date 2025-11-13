@@ -1,16 +1,15 @@
+import { LoadingIndicator } from "@/components/common/LoadingIndicator";
 import LogoType from "@/components/common/logo/LogoType";
-import { useQRCode } from "@/hooks/useQRCode";
+import { useQRCodeBlob } from "@/hooks/useQRCodeBlob";
 import { useTranslations } from "@/hooks/useTranslations";
 import { Group } from "@/types/schemas/group";
 
-export const SectionFooter = ({ group }: { group: Group | null }) => {
+export const SectionFooter = ({ url }: { url: string }) => {
     const { formatDate } = useTranslations();
-    const baseUrl = import.meta.env.VITE_FRONTEND_URL || window.location.origin;
-    const viewUrl = `${baseUrl}/${group?.view_token}`;
     const actionColor = getComputedStyle(
         document.documentElement
     ).getPropertyValue("--color-action");
-    const { ref: qrCode } = useQRCode(viewUrl, {
+    const { qrBlobUrl, isLoading } = useQRCodeBlob(url, {
         width: 250,
         height: 250,
         color: actionColor,
@@ -23,7 +22,19 @@ export const SectionFooter = ({ group }: { group: Group | null }) => {
             <span className="absolute -top-1.5 -left-1.5 size-3 rounded-r-full bg-surface border-r-2 border-border" />
             <span className="absolute -top-1.5 -right-1.5 size-3 rounded-l-full bg-surface border-l-2 border-border" />
 
-            <div ref={qrCode} className="w-16 h-16 *:w-16 *:h-16" />
+            <div className="">
+                {isLoading ? (
+                    <div className="flex items-center justify-center size-16 border rounded border-border">
+                        <LoadingIndicator size="sm" />
+                    </div>
+                ) : qrBlobUrl ? (
+                    <img
+                        src={qrBlobUrl}
+                        alt="QR Code"
+                        className="size-16 border rounded border-border"
+                    />
+                ) : null}
+            </div>
             <div className="flex flex-col justify-end gap-2 items-end">
                 <div className="text-[10px] text-muted">
                     <span>{formatDate(new Date())}</span>

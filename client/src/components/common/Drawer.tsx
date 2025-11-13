@@ -25,7 +25,6 @@ interface DrawerProps {
 
 export function Drawer({ modalKey, children }: DrawerProps) {
     const modals = useModalStore((state) => state.modals);
-    const [isScrolled, setIsScrolled] = useState(false);
     const scrollableRef = useRef<HTMLDivElement>(null);
     const closeModal = useModalStore((state) => state.closeModal);
     const data = modals[modalKey];
@@ -54,7 +53,7 @@ export function Drawer({ modalKey, children }: DrawerProps) {
     ) => {
         const velocity = info.velocity.y;
         const offset = info.offset.y;
-        console.log(velocity, offset);
+
         if (velocity > 300) {
             closeModal(modalKey);
         } else if (velocity < -300) {

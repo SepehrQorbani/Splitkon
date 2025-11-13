@@ -96,7 +96,7 @@ export const useQRCode = (
     return { ref };
 };
 
-const generateLogoSVG = (color: string): string => {
+export const generateLogoSVG = (color: string): string => {
     const svg = `
     <svg width="510" height="510" viewBox="0 0 510 510" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M283.624 120C293.982 120 300.319 131.368 294.873 140.178L144.473 383.472C137.469 394.803 120 389.839 120 376.519L120 133.224C120 125.921 125.921 120 133.224 120L283.624 120Z" fill="${color}"/>
@@ -108,7 +108,7 @@ const generateLogoSVG = (color: string): string => {
     return `data:image/svg+xml;base64,${svgToBase64(svg)}`;
 };
 
-const svgToBase64 = (svg: string): string => {
+export const svgToBase64 = (svg: string): string => {
     const encoded = encodeURIComponent(svg).replace(
         /%([0-9A-F]{2})/g,
         (_, p1) => String.fromCharCode(parseInt(p1, 16))

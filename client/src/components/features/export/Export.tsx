@@ -38,6 +38,8 @@ function Export() {
     const group = useGroupStore((state) => state.group);
     const members = useMemberStore((state) => state.members);
     const [summary, setSummary] = useState<Summary | null>(null);
+    const baseUrl = import.meta.env.VITE_FRONTEND_URL || window.location.origin;
+    const [qrUrl, setQrUrl] = useState(`${baseUrl}/${group?.view_token}`);
 
     const {
         data: summaryData,
@@ -73,6 +75,8 @@ function Export() {
                         icon: <IconTransfer className="size-4" />,
                     },
                 ]}
+                qrUrl={qrUrl}
+                onQrUrlChange={setQrUrl}
             />
             <div
                 ref={targetRef}
@@ -122,10 +126,10 @@ function Export() {
                     {exportStyle === "table" ? (
                         <>
                             <Separator className="border-dashed border-border h-px" />
-                            <SectionFooter group={group} />
+                            <SectionFooter url={qrUrl} />
                         </>
                     ) : (
-                        <SectionFooterCard group={group} />
+                        <SectionFooterCard url={qrUrl} />
                     )}
                 </div>
             </div>

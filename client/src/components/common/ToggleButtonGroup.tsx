@@ -10,6 +10,7 @@ import {
 type ButtonConfig = {
     id: string;
     icon?: React.ReactNode;
+    disabled?: boolean;
 };
 
 type Props = {
@@ -62,6 +63,7 @@ function ToggleButtonGroup({
                     <ToggleButton
                         key={button.id}
                         id={button.id}
+                        isDisabled={button.disabled ?? false}
                         className={({ isSelected }) =>
                             cn(
                                 "inline-flex items-center justify-center px-2 py-1.5 rounded-input focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-surface/100 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed transition-colors",

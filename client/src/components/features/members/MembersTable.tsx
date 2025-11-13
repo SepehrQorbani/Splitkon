@@ -16,6 +16,7 @@ import { hasRole } from "@/utils/checkRoles";
 import { memberFilterConfig } from "@/utils/filters/memberConfig";
 import {
     IconCurrencyDollar,
+    IconDownload,
     IconEye,
     IconHexagonFilled,
     IconPercentage,
@@ -176,6 +177,16 @@ const Actions = ({ member }: { member: Member }) => {
                 className="h-8 w-8 p-1"
             >
                 <IconEye className="size-4 text-muted" />
+            </Button>
+            <Button
+                onPress={() => {
+                    openModal("export", { member: member });
+                }}
+                intent="neutral"
+                variant="ghost"
+                className="h-8 w-8 p-1"
+            >
+                <IconDownload className="size-4 text-muted" />
             </Button>
             {can("editMembers") && (
                 <Button

@@ -1,16 +1,16 @@
+import { LoadingIndicator } from "@/components/common/LoadingIndicator";
 import LogoType from "@/components/common/logo/LogoType";
 import { useQRCode } from "@/hooks/useQRCode";
+import { useQRCodeBlob } from "@/hooks/useQRCodeBlob";
 import { useTranslations } from "@/hooks/useTranslations";
 import { Group } from "@/types/schemas/group";
 
-export const SectionFooterCard = ({ group }: { group: Group | null }) => {
+export const SectionFooterCard = ({ url }: { url: string }) => {
     const { formatDate } = useTranslations();
-    const baseUrl = import.meta.env.VITE_FRONTEND_URL || window.location.origin;
-    const viewUrl = `${baseUrl}/${group?.view_token}`;
     const actionColor = getComputedStyle(
         document.documentElement
     ).getPropertyValue("--color-action");
-    const { ref: qrCode } = useQRCode(viewUrl, {
+    const { qrBlobUrl, isLoading } = useQRCodeBlob(url, {
         width: 250,
         height: 250,
         color: actionColor,
@@ -20,7 +20,17 @@ export const SectionFooterCard = ({ group }: { group: Group | null }) => {
 
     return (
         <div className="flex justify-between items-end">
-            <div ref={qrCode} className="w-16 h-16 *:w-16 *:h-16" />
+            {isLoading ? (
+                <div className="flex items-center justify-center size-16 border rounded border-border">
+                    <LoadingIndicator size="sm" />
+                </div>
+            ) : qrBlobUrl ? (
+                <img
+                    src={qrBlobUrl}
+                    alt="QR Code"
+                    className="size-16 border rounded border-border"
+                />
+            ) : null}
 
             <div className="flex flex-col justify-end gap-2 items-end">
                 <div className="text-[10px] text-muted">
