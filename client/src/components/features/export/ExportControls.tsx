@@ -38,7 +38,7 @@ export const ExportControls = ({
     const group = useGroupStore((state) => state.group);
 
     return (
-        <div className="sticky -mt-5 top-9 bg-surface mx-1- border-b border-border p-1 rounded- shadow-xs z-10">
+        <div className="sticky -mt-5 top-10 bg-surface mx-1- border-b border-border p-1 rounded- shadow-xs z-10">
             <div className="flex overflow-auto items-center justify-between gap-2 pb-2 px-2">
                 <div>
                     <Label className="block mb-2">
