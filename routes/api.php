@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BalanceController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\RepayController;
@@ -10,7 +11,7 @@ use App\Http\Middleware\CheckGroupAccess;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-//---------- temp
+// ---------- temp
 Route::get('/data', function (Request $request) {
     $delay = rand(1, 2);
     sleep($delay);
@@ -20,7 +21,7 @@ Route::get('/data', function (Request $request) {
     return response()->json(['message' => $message]);
 });
 // Route::get('/groups/{group}/members/{id}', [MemberController::class, 'show']);
-//---------- end temp
+// ---------- end temp
 
 Route::post('/groups', [GroupController::class, 'store']);
 Route::prefix('groups')->middleware(CheckGroupAccess::class)->group(function () {
@@ -52,6 +53,8 @@ Route::prefix('groups')->middleware(CheckGroupAccess::class)->group(function () 
     Route::patch('/{token}/repays/{repay}', [RepayController::class, 'update']);
 
     Route::get('/{token}/balance', [BalanceController::class, 'index']);
+    Route::get('/{token}/export', ExportController::class)
+        ->name('export');
 
     // Route::get('/{token}/attachments', [AttachmentController::class, 'index']);
     // Route::post('/{token}/attachments', [AttachmentController::class, 'store']);
