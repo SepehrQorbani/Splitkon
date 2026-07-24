@@ -374,6 +374,8 @@
         "update": "ذخیره تغییرات",
         "yes": "بله",
         "export": "ذخیره خروجی",
+        "imageExport": "خروجی تصویر",
+        "fileExport": "خروجی فایل",
         "download": "دانلود",
         "time": {
             "zeroDays": "امروز",
@@ -425,7 +427,8 @@
         "after_last_expense": "باید بعد از تاریخ آخرین هزینه باشد!(:min)",
         "after_date": "باید بعد از تاریخ شروع گروه باشد!",
         "date": ":attribute باید یک تاریخ معتبر باشد.",
-        "invalid_type": ":attribute اشتباه وارد شده است."
+        "invalid_type": ":attribute اشتباه وارد شده است.",
+        "at_least_one_required": "حداقل یک گزینه را پرکنید"
     },
     "banks": {
         "ansar": "بانک انصار",
