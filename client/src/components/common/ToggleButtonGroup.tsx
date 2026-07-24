@@ -66,10 +66,10 @@ function ToggleButtonGroup({
                         isDisabled={button.disabled ?? false}
                         className={({ isSelected }) =>
                             cn(
-                                "inline-flex items-center justify-center px-2 py-1.5 rounded-input focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-surface/100 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed transition-colors",
+                                "inline-flex items-center justify-center px-2 py-1.5 rounded-input cursor-pointer transition-all focus:outline-none focus:ring-2 focus:ring-action focus:scale-90 disabled:opacity-50 disabled:cursor-not-allowed",
                                 isSelected
                                     ? "bg-action text-action-fg"
-                                    : "text-action hover:bg-action hover:text-action-fg"
+                                    : "text-action hover:bg-action-subtle hover:scale-90"
                             )
                         }
                     >

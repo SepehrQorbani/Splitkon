@@ -23,10 +23,6 @@ export const useQRCodeBlob = (
     const [qrBlobUrl, setQrBlobUrl] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
-    if (!data) {
-        return { qrBlobUrl: null, isLoading: false };
-    }
-
     const {
         width = 250,
         height = 250,
@@ -40,14 +36,17 @@ export const useQRCodeBlob = (
         cornersDotOptions = {},
     } = options;
 
+    // ✅ useMemo همیشه فراخوانی می‌شه — حتی اگر data خالی باشه
     const qr = useMemo(() => {
+        if (!data) return null; // فقط QR را null می‌کنیم
+
         const image = generateLogoSVG(color);
         return new QRCodeStyling({
             type: "svg",
             shape: "square",
             width,
             height,
-            data: data || "",
+            data,
             margin: 0,
             qrOptions: {
                 typeNumber: 0,
@@ -64,7 +63,7 @@ export const useQRCodeBlob = (
             },
             dotsOptions: {
                 type: "rounded",
-                color: color,
+                color,
                 roundSize: true,
                 ...dotsOptions,
             },
@@ -76,12 +75,12 @@ export const useQRCodeBlob = (
             image,
             cornersSquareOptions: {
                 type: "rounded",
-                color: color,
+                color,
                 ...cornersSquareOptions,
             },
             cornersDotOptions: {
                 type: "rounded",
-                color: color,
+                color,
                 ...cornersDotOptions,
             },
         });
@@ -99,18 +98,25 @@ export const useQRCodeBlob = (
         JSON.stringify(cornersDotOptions),
     ]);
 
+    // ✅ useEffect هم همیشه فراخوانی می‌شه
     useEffect(() => {
-        if (data) {
-            setIsLoading(true);
+        if (!data || !qr) {
+            setQrBlobUrl(null);
+            setIsLoading(false);
+            return;
+        }
 
-            qr.getRawData("png").then((blob) => {
+        setIsLoading(true);
+        qr.getRawData("png").then((blob) => {
+            if (blob) {
                 const url = URL.createObjectURL(blob as Blob);
                 setQrBlobUrl(url);
-                setIsLoading(false);
-            });
-        }
-    }, [data, color, backgroundColor, width, height]);
+            }
+            setIsLoading(false);
+        });
+    }, [data, qr]);
 
+    // ✅ cleanup هم همیشه فعال است
     useEffect(() => {
         return () => {
             if (qrBlobUrl) {
@@ -119,5 +125,6 @@ export const useQRCodeBlob = (
         };
     }, [qrBlobUrl]);
 
+    // ✅ حالا خروجی همیشه بعد از تمام هُک‌هاست
     return { qrBlobUrl, isLoading };
 };
